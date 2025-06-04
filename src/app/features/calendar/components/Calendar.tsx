@@ -1,7 +1,11 @@
 import dayjs from 'dayjs';
 import 'dayjs/locale/ja';
 import { useState } from 'react';
-import { Button, Table } from 'react-bootstrap';
+import { Table } from 'react-bootstrap';
+import CalendarHeader from './CalendarHeader';
+import CalendarNavigation from './CalendarNavigation';
+import CalendarStyles from './CalendarStyles';
+import CalendarTimeRow from './CalendarTimeRow';
 
 const sampleReservations = [
   {
@@ -25,8 +29,7 @@ const sampleReservations = [
 ];
 
 export default function Calendar() {
-
-  const [startOfWeek] = useState(dayjs(('2025-06-04')).startOf('week').add(1, 'day'));
+  const [startOfWeek, setStartOfWeek] = useState(dayjs('2025-06-04').startOf('week').add(1, 'day'));
 
   const days = Array.from({ length: 7 }, (_, i) => startOfWeek.add(i, 'day'));
   const hours = Array.from({ length: 10 }, (_, i) => i + 9); // 9:00〜18:00
@@ -37,67 +40,34 @@ export default function Calendar() {
     );
   };
 
+  const handlePrevWeek = () => {
+    setStartOfWeek(prev => prev.subtract(1, 'week'));
+  };
+
+  const handleNextWeek = () => {
+    setStartOfWeek(prev => prev.add(1, 'week'));
+  };
+
   return (
     <div>
-      <style>
-        {`
-        th {
-            font-weight: normal;
-          }
-        .reservation-cell {
-          background-color: #f0f0f0;
-        }
-        table th.saturday,
-        table td.saturday {
-          color: #007Bcc !important;
-          background-color: #e6f0ff !important;
-        }
-
-        table th.sunday,
-        table td.sunday {
-          color: #cc3B30 !important;
-          background-color: #ffe6e6 !important;
-        }
-        `}
-      </style>
-      <div className="d-flex justify-content-between mb-2">
-        <Button variant="outline-primary" size="sm" onClick={() => {}}>
-          &lt; 前の1週間
-        </Button>
-        <Button variant="outline-primary" size="sm" onClick={() => {}}>
-          次の1週間 &gt;
-        </Button>
-      </div>
+      <CalendarStyles />
+      
+      <CalendarNavigation 
+        onPrevWeek={handlePrevWeek}
+        onNextWeek={handleNextWeek}
+      />
+      
       <Table bordered hover responsive className="w-100 text-center align-middle small">
-        <thead>
-          <tr>
-            <th rowSpan={2} className="align-middle">日時</th>
-            <th colSpan={7}>2026年6月</th>
-          </tr>
-          <tr>
-            { days.map((day, index) => {
-              const isSaturday = day.format('d') === '6';
-              const isSunday = day.format('d') === '0';
-              const className = isSaturday ? 'saturday' : isSunday ? 'sunday' : '';
-              return (
-                <th key={day.format()} className={className}>{day.format('D')}<br />({day.locale('ja').format('ddd')})</th>
-              )
-            }) }
-          </tr>
-        </thead>
+        <CalendarHeader days={days} />
         <tbody>
-          {hours.map(hour => {
-            return (
-            <tr key={hour}>
-              <td className="fw-bold">{hour}:00</td>
-              {days.map((day) => {
-                return (
-                  <td key={day.format()}>〇</td>
-                );
-              })}
-          </tr>
-            )
-          })}
+          {hours.map(hour => (
+            <CalendarTimeRow
+              key={hour}
+              hour={hour}
+              days={days}
+              getReservation={getReservation}
+            />
+          ))}
         </tbody>
       </Table>
     </div>
