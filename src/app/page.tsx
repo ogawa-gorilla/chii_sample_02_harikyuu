@@ -2,16 +2,18 @@
 
 import AppNavbar from "./components/AppNavbar";
 import Footer from "./components/Footer";
+import CalendarPage from "./features/calendar/CalendarPage";
 import HomePage from "./HomePage";
 import { useAppSelector } from "./hooks";
 import NotImplementedPage from "./NotImplementedPage";
 import { Page } from "./types/Page";
 
-
 const showPage = (page: Page) => {
   switch (page) {
     case Page.HOME:
       return <HomePage />
+    case Page.CALENDAR:
+      return <CalendarPage />
     default:
       return <NotImplementedPage />
   }

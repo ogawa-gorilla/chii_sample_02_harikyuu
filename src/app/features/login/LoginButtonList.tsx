@@ -1,5 +1,7 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { setUser } from "@/app/store/loginSlice";
+import { setCurrentPage } from "@/app/store/navigationSlice";
+import { Page } from "@/app/types/Page";
 import { User } from "@/app/types/user";
 import { Button, Card, Row } from "react-bootstrap";
 
@@ -10,6 +12,7 @@ export default function LoginButtonList() {
 
   const handleLogin = (user: User) => {
     dispatch(setUser(user));
+    dispatch(setCurrentPage(Page.CALENDAR));
   }
 
   return (

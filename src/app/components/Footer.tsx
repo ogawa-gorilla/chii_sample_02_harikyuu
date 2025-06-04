@@ -24,7 +24,7 @@ export default function Footer() {
         `}
       </style>
       <Container>
-        <small>&copy; 2025 針灸院予約管理システム | <span className="logout-link" onClick={handleLogout}>ログアウト</span></small>
+        <small>&copy; 2025 鈴木針灸院予約管理システム | <span className="logout-link" onClick={handleLogout}>ログアウト</span></small>
       </Container>
     </footer>
   );
