@@ -23,7 +23,7 @@ const Home = () => {
   return (
     <div className="app-container">
     {
-      <div style={{ paddingTop: '70px', paddingBottom: '80px' }}>
+      <div style={{ paddingTop: '70px' }}>
         <AppNavbar />
         {showPage(currentPage)}
         <Footer />
