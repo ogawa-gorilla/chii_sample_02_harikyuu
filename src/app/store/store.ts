@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import loginReducer from './loginSlice';
 import navigationReducer from './navigationSlice';
+import reservationReducer from './reservationSlice';
 import userReducer from './userSlice';
 
 export const store = configureStore({
@@ -8,6 +9,7 @@ export const store = configureStore({
         navigation: navigationReducer,
         login: loginReducer,
         user: userReducer,
+        reservation: reservationReducer,
     },
 });
 

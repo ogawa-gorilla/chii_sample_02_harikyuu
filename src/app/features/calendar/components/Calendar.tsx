@@ -1,5 +1,6 @@
 import { HOURS } from '@/app/constants/hours';
 import { VIRUTAL_TODAY } from '@/app/constants/virtualToday';
+import { useAppSelector } from '@/app/hooks';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ja';
 import { useState } from 'react';
@@ -10,45 +11,6 @@ import CalendarStyles from './CalendarStyles';
 import CalendarTimeRow from './CalendarTimeRow';
 import StaffSelector from './StaffSelector';
 
-const sampleReservations = [
-  {
-    id: 1,
-    staff: '山田',
-    client: '田中 太郎',
-    date: '2025-06-03',
-    time: '10:00',
-    duration: 1, // 時間単位
-    status: '予約済'
-  },
-  {
-    id: 2,
-    staff: '鈴木',
-    client: '佐藤 花子',
-    date: '2025-06-05',
-    time: '13:00',
-    duration: 2,
-    status: '施術完了'
-  },
-  {
-    id: 3,
-    staff: '佐藤',
-    client: '山田 次郎',
-    date: '2025-06-04',
-    time: '11:00',
-    duration: 1,
-    status: '予約済'
-  },
-  {
-    id: 4,
-    staff: '田中',
-    client: '鈴木 恵子',
-    date: '2025-06-06',
-    time: '14:00',
-    duration: 2,
-    status: '予約済'
-  }
-];
-
 export default function Calendar() {
   const [startOfWeek, setStartOfWeek] = useState(dayjs(VIRUTAL_TODAY).startOf('week').add(1, 'day'));
   const [selectedStaff, setSelectedStaff] = useState('all');
@@ -56,18 +18,11 @@ export default function Calendar() {
   const days = Array.from({ length: 7 }, (_, i) => startOfWeek.add(i, 'day'));
   const hours = Array.from({ length: HOURS }, (_, i) => i + 9); // 9:00〜18:00
 
-  const getReservation = (date: string, hour: number) => {
-    const reservation = sampleReservations.find(
-      (r) => r.date === date && parseInt(r.time) === hour
-    );
-    
-    // スタッフが選択されている場合は、そのスタッフの予約のみを表示
-    if (selectedStaff !== 'all' && reservation && reservation.staff !== selectedStaff) {
-      return undefined;
-    }
-    
-    return reservation;
-  };
+  const allReservations = useAppSelector((state) => state.reservation.reservations);
+  const reservations = allReservations.filter((reservation) => 
+    reservation.date >= startOfWeek.format('YYYY-MM-DD') &&
+    reservation.date <= startOfWeek.add(6, 'day').format('YYYY-MM-DD')
+  );
 
   const handlePrevWeek = () => {
     setStartOfWeek(prev => prev.subtract(1, 'week'));
@@ -108,7 +63,7 @@ export default function Calendar() {
               key={hour}
               hour={hour}
               days={days}
-              getReservation={getReservation}
+              reservations={reservations}
               isFirstRow={index === 0}
             />
           ))}

@@ -1,5 +1,6 @@
 import { HOURS } from '@/app/constants/hours';
 import { weeklyClosedDays } from '@/app/constants/weeklyClosedDays';
+import { Reservation } from '@/app/types/reservation';
 import dayjs from 'dayjs';
 import CalendarCell from './CalendarCell';
 
@@ -7,7 +8,7 @@ interface CalendarTimeRowProps {
   hour: number;
   days: dayjs.Dayjs[];
   isFirstRow: boolean;
-  getReservation: (date: string, hour: number) => any;
+  reservations: Reservation[];
 }
 
 const firstRowForClosedDays = (day: dayjs.Dayjs) => (
@@ -16,7 +17,7 @@ const firstRowForClosedDays = (day: dayjs.Dayjs) => (
                 </td>
 )
 
-export default function CalendarTimeRow({ hour, days, isFirstRow }: CalendarTimeRowProps) {
+export default function CalendarTimeRow({ hour, days, isFirstRow, reservations }: CalendarTimeRowProps) {
   return (
     <tr key={hour}>
             <style>
@@ -35,6 +36,7 @@ export default function CalendarTimeRow({ hour, days, isFirstRow }: CalendarTime
             key={day.format()}
             day={day}
             hour={hour}
+            reservations={reservations}
           />
         );
       })}
