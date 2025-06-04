@@ -1,4 +1,5 @@
 import { HOURS } from '@/app/constants/hours';
+import { VIRUTAL_TODAY } from '@/app/constants/virtualToday';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ja';
 import { useState } from 'react';
@@ -28,8 +29,6 @@ const sampleReservations = [
     status: '施術完了'
   }
 ];
-
-const VIRUTAL_TODAY = '2025-06-04'
 
 export default function Calendar() {
   const [startOfWeek, setStartOfWeek] = useState(dayjs(VIRUTAL_TODAY).startOf('week').add(1, 'day'));

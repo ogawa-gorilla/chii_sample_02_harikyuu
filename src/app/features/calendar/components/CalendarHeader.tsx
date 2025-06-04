@@ -1,3 +1,4 @@
+import { VIRUTAL_TODAY } from '@/app/constants/virtualToday';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ja';
 
@@ -38,7 +39,8 @@ const renderMonthCell = (days: dayjs.Dayjs[]) => {
 const renderDay = (day: dayjs.Dayjs) => {
   const isSaturday = day.format('d') === '6';
   const isSunday = day.format('d') === '0';
-  const className = isSaturday ? 'saturday' : isSunday ? 'sunday' : '';
+  const isToday = day.format('YYYY-MM-DD') === VIRUTAL_TODAY;
+  const className = isToday ? 'today' : isSaturday ? 'saturday' : isSunday ? 'sunday' : '';
   return (
     <th key={day.format()} className={className}>
       {day.format('D')}<br />({day.locale('ja').format('ddd')})

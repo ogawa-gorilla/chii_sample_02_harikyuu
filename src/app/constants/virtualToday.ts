@@ -1,0 +1,1 @@
+export const VIRUTAL_TODAY = '2025-06-04'

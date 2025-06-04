@@ -19,6 +19,11 @@ export default function CalendarStyles() {
         color: #cc3B30 !important;
         background-color: #ffe6e6 !important;
       }
+
+      table th.today,
+      table td.today {
+        background-color: #e6f0e6 !important;
+      }
       `}
     </style>
   );
