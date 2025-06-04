@@ -1,3 +1,4 @@
+import { HOURS } from '@/app/constants/hours';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ja';
 import { useState } from 'react';
@@ -32,7 +33,7 @@ export default function Calendar() {
   const [startOfWeek, setStartOfWeek] = useState(dayjs('2025-06-04').startOf('week').add(1, 'day'));
 
   const days = Array.from({ length: 7 }, (_, i) => startOfWeek.add(i, 'day'));
-  const hours = Array.from({ length: 10 }, (_, i) => i + 9); // 9:00〜18:00
+  const hours = Array.from({ length: HOURS }, (_, i) => i + 9); // 9:00〜18:00
 
   const getReservation = (date: string, hour: number) => {
     return sampleReservations.find(
@@ -57,15 +58,16 @@ export default function Calendar() {
         onNextWeek={handleNextWeek}
       />
       
-      <Table bordered hover responsive className="w-100 text-center align-middle small">
+      <Table bordered responsive className="w-100 text-center align-middle small">
         <CalendarHeader days={days} />
         <tbody>
-          {hours.map(hour => (
+          {hours.map((hour, index) => (
             <CalendarTimeRow
               key={hour}
               hour={hour}
               days={days}
               getReservation={getReservation}
+              isFirstRow={index === 0}
             />
           ))}
         </tbody>
