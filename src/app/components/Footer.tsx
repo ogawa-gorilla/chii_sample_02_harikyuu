@@ -1,12 +1,15 @@
 import { Container } from 'react-bootstrap';
 import { useAppDispatch } from '../hooks';
 import { logout } from '../store/loginSlice';
+import { setCurrentPage } from '../store/navigationSlice';
+import { Page } from '../types/Page';
 
 export default function Footer() {
 
   const dispatch = useAppDispatch();
 
   const handleLogout = () => {
+    dispatch(setCurrentPage(Page.HOME));
     dispatch(logout());
   }
 
