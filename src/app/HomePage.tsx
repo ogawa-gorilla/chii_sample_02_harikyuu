@@ -1,8 +1,9 @@
 import LoginPage from "./features/login/LoginPage";
 import { useAppSelector } from "./hooks";
+import { isLoggedin } from "./store/loginSlice";
 
 const HomePage = () => {
-  const loggedIn = useAppSelector((state) => state.login.loggedIn);
+  const loggedIn = useAppSelector(isLoggedin);
 
   return (
     <div>
