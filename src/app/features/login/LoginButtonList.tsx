@@ -1,9 +1,16 @@
-import { useAppSelector } from "@/app/hooks";
+import { useAppDispatch, useAppSelector } from "@/app/hooks";
+import { setUser } from "@/app/store/loginSlice";
+import { User } from "@/app/types/user";
 import { Button, Card, Row } from "react-bootstrap";
 
 export default function LoginButtonList() {
 
+  const dispatch = useAppDispatch();
   const users = useAppSelector((state) => state.user.users);
+
+  const handleLogin = (user: User) => {
+    dispatch(setUser(user));
+  }
 
   return (
   <Card style={{ width: '100%', maxWidth: '400px' }} className="p-4 shadow-sm">
@@ -11,7 +18,7 @@ export default function LoginButtonList() {
       <p>サンプルサイト用ログインボタン:</p>
       {users.map((user) => (
         <Row className="mb-2" key={user.id}>
-          <Button variant="success">{user.name}({user.role})としてログイン</Button>
+          <Button variant="success" onClick={() => handleLogin(user)}>{user.name}({user.role})としてログイン</Button>
         </Row>
       ))}
     </div>
