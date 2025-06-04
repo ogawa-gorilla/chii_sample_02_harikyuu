@@ -1,10 +1,18 @@
 import { Container, Nav, Navbar, NavDropdown } from 'react-bootstrap';
+import { useAppSelector } from '../hooks';
+import { isLoggedin } from '../store/loginSlice';
 
 export default function AppNavbar() {
+
+  const loggedin = useAppSelector(isLoggedin);
+
   return (
     <Navbar bg="primary" variant="dark" expand="lg" fixed="top">
-      <Container>
-        <Navbar.Brand href="#">針灸院</Navbar.Brand>
+      
+        {
+          loggedin ? (
+            <Container>
+              <Navbar.Brand href="#">針灸院</Navbar.Brand>
         <Navbar.Toggle aria-controls="navbar-main" />
         <Navbar.Collapse id="navbar-main">
           <Nav className="me-auto">
@@ -24,6 +32,13 @@ export default function AppNavbar() {
           </Nav>
         </Navbar.Collapse>
       </Container>
+        ) : (
+          <Container>
+            <Navbar.Brand href="#">針灸院</Navbar.Brand>
+          </Container>
+        )
+        }
+        
     </Navbar>
   );
 }
