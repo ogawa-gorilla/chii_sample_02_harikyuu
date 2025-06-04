@@ -8,6 +8,7 @@ import CalendarHeader from './CalendarHeader';
 import CalendarNavigation from './CalendarNavigation';
 import CalendarStyles from './CalendarStyles';
 import CalendarTimeRow from './CalendarTimeRow';
+import StaffSelector from './StaffSelector';
 
 const sampleReservations = [
   {
@@ -27,19 +28,45 @@ const sampleReservations = [
     time: '13:00',
     duration: 2,
     status: '施術完了'
+  },
+  {
+    id: 3,
+    staff: '佐藤',
+    client: '山田 次郎',
+    date: '2025-06-04',
+    time: '11:00',
+    duration: 1,
+    status: '予約済'
+  },
+  {
+    id: 4,
+    staff: '田中',
+    client: '鈴木 恵子',
+    date: '2025-06-06',
+    time: '14:00',
+    duration: 2,
+    status: '予約済'
   }
 ];
 
 export default function Calendar() {
   const [startOfWeek, setStartOfWeek] = useState(dayjs(VIRUTAL_TODAY).startOf('week').add(1, 'day'));
+  const [selectedStaff, setSelectedStaff] = useState('all');
 
   const days = Array.from({ length: 7 }, (_, i) => startOfWeek.add(i, 'day'));
   const hours = Array.from({ length: HOURS }, (_, i) => i + 9); // 9:00〜18:00
 
   const getReservation = (date: string, hour: number) => {
-    return sampleReservations.find(
+    const reservation = sampleReservations.find(
       (r) => r.date === date && parseInt(r.time) === hour
     );
+    
+    // スタッフが選択されている場合は、そのスタッフの予約のみを表示
+    if (selectedStaff !== 'all' && reservation && reservation.staff !== selectedStaff) {
+      return undefined;
+    }
+    
+    return reservation;
   };
 
   const handlePrevWeek = () => {
@@ -54,6 +81,10 @@ export default function Calendar() {
     setStartOfWeek(dayjs(VIRUTAL_TODAY).startOf('week').add(1, 'day'));
   };
 
+  const handleStaffChange = (staff: string) => {
+    setSelectedStaff(staff);
+  };
+
   return (
     <div>
       <CalendarStyles />
@@ -62,6 +93,11 @@ export default function Calendar() {
         onPrevWeek={handlePrevWeek}
         onNextWeek={handleNextWeek}
         onToday={handleToday}
+      />
+      
+      <StaffSelector 
+        selectedStaff={selectedStaff}
+        onStaffChange={handleStaffChange}
       />
       
       <Table bordered responsive className="w-100 text-center align-middle small">
