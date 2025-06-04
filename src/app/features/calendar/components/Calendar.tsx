@@ -39,6 +39,27 @@ export default function Calendar() {
 
   return (
     <div>
+      <style>
+        {`
+        th {
+            font-weight: normal;
+          }
+        .reservation-cell {
+          background-color: #f0f0f0;
+        }
+        table th.saturday,
+        table td.saturday {
+          color: #007Bcc !important;
+          background-color: #e6f0ff !important;
+        }
+
+        table th.sunday,
+        table td.sunday {
+          color: #cc3B30 !important;
+          background-color: #ffe6e6 !important;
+        }
+        `}
+      </style>
       <div className="d-flex justify-content-between mb-2">
         <Button variant="outline-primary" size="sm" onClick={() => {}}>
           &lt; 前の1週間
@@ -47,39 +68,36 @@ export default function Calendar() {
           次の1週間 &gt;
         </Button>
       </div>
-      <Table striped bordered hover responsive className="w-100 text-center align-middle small">
-        <style>
-          {`
-          th {
-            font-weight: normal;
-          }
-          `}
-        </style>
+      <Table bordered hover responsive className="w-100 text-center align-middle small">
         <thead>
           <tr>
             <th rowSpan={2} className="align-middle">日時</th>
             <th colSpan={7}>2026年6月</th>
           </tr>
           <tr>
-            { days.map(day => {
+            { days.map((day, index) => {
+              const isSaturday = day.format('d') === '6';
+              const isSunday = day.format('d') === '0';
+              const className = isSaturday ? 'saturday' : isSunday ? 'sunday' : '';
               return (
-                <th>{day.format('D')}<br />({day.locale('ja').format('ddd')})</th>
+                <th key={day.format()} className={className}>{day.format('D')}<br />({day.locale('ja').format('ddd')})</th>
               )
             }) }
           </tr>
         </thead>
         <tbody>
-          {/* 任意のデータ行 */}
-          <tr>
-            <td className="fw-bold">9:00</td>
-            <td>〇</td>
-            <td>×</td>
-            <td>〇</td>
-            <td>〇</td>
-            <td>×</td>
-            <td>△</td>
-            <td>〇</td>
+          {hours.map(hour => {
+            return (
+            <tr key={hour}>
+              <td className="fw-bold">{hour}:00</td>
+              {days.map((day) => {
+                return (
+                  <td key={day.format()}>〇</td>
+                );
+              })}
           </tr>
+            )
+          })}
         </tbody>
       </Table>
     </div>
