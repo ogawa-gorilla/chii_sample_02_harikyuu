@@ -29,8 +29,10 @@ const sampleReservations = [
   }
 ];
 
+const VIRUTAL_TODAY = '2025-06-04'
+
 export default function Calendar() {
-  const [startOfWeek, setStartOfWeek] = useState(dayjs('2025-06-04').startOf('week').add(1, 'day'));
+  const [startOfWeek, setStartOfWeek] = useState(dayjs(VIRUTAL_TODAY).startOf('week').add(1, 'day'));
 
   const days = Array.from({ length: 7 }, (_, i) => startOfWeek.add(i, 'day'));
   const hours = Array.from({ length: HOURS }, (_, i) => i + 9); // 9:00〜18:00
@@ -49,6 +51,10 @@ export default function Calendar() {
     setStartOfWeek(prev => prev.add(1, 'week'));
   };
 
+  const handleToday = () => {
+    setStartOfWeek(dayjs(VIRUTAL_TODAY).startOf('week').add(1, 'day'));
+  };
+
   return (
     <div>
       <CalendarStyles />
@@ -56,6 +62,7 @@ export default function Calendar() {
       <CalendarNavigation 
         onPrevWeek={handlePrevWeek}
         onNextWeek={handleNextWeek}
+        onToday={handleToday}
       />
       
       <Table bordered responsive className="w-100 text-center align-middle small">
