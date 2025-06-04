@@ -15,7 +15,7 @@ export default function AppNavbar() {
             <Nav.Link href="#">ダッシュボード</Nav.Link>
           </Nav>
           <Nav>
-            <NavDropdown title="ユーザー名" id="user-dropdown" align="end">
+            <NavDropdown title="ユーザー: " id="user-dropdown" align="end">
               <NavDropdown.Item href="#">プロフィール</NavDropdown.Item>
               <NavDropdown.Item href="#">設定</NavDropdown.Item>
               <NavDropdown.Divider />
