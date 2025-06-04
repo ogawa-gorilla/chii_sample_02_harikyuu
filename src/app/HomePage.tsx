@@ -1,5 +1,5 @@
+import LoginPage from "./features/login/LoginPage";
 import { useAppSelector } from "./hooks";
-import LoginPage from "./LoginPage";
 
 const HomePage = () => {
   const loggedIn = useAppSelector((state) => state.login.loggedIn);

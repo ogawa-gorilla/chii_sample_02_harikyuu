@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Alert, Button, Card, Container, Form, Row } from 'react-bootstrap';
+import { Alert, Button, Card, Container, Form } from 'react-bootstrap';
+import LoginButtonList from './LoginButtonList';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -55,23 +56,7 @@ export default function LoginPage() {
             </div>
           </Form>
         </Card>
-        <Card style={{ width: '100%', maxWidth: '400px' }} className="p-4 shadow-sm">
-        <div className="text-center">
-              <p>サンプルサイト用ログインボタン:</p>
-              <Row className="mb-2">
-              <Button variant="success">鈴木(店長)としてログイン</Button>
-              </Row>
-              <Row className="mb-2">
-              <Button variant="success">佐藤(施術スタッフ)としてログイン</Button>
-              </Row>
-              <Row className="mb-2">
-              <Button variant="success">山田(施術スタッフ)としてログイン</Button>
-              </Row>
-              <Row className="mb-2">
-              <Button variant="success">上野(事務)としてログイン</Button>
-              </Row>
-            </div>
-        </Card>
+        <LoginButtonList  />
       </Container>
   );
 }
