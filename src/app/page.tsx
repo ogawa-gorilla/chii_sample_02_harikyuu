@@ -1,5 +1,8 @@
 'use client'
 
+import AppNavbar from "./components/AppNavbar";
+import Footer from "./components/Footer";
+import HomePage from "./HomePage";
 import { useAppSelector } from "./hooks";
 import NotImplementedPage from "./NotImplementedPage";
 import { Page } from "./types/Page";
@@ -8,7 +11,7 @@ import { Page } from "./types/Page";
 const showPage = (page: Page) => {
   switch (page) {
     case Page.HOME:
-      return <NotImplementedPage />
+      return <HomePage />
     default:
       return <NotImplementedPage />
   }
@@ -18,9 +21,13 @@ const Home = () => {
   const currentPage = useAppSelector((state) => state.navigation.currentPage);
 
   return (
-    <div>
+    <div className="app-container">
     {
-      showPage(currentPage)
+      <div style={{ paddingTop: '70px', paddingBottom: '80px' }}>
+        <AppNavbar />
+        {showPage(currentPage)}
+        <Footer />
+      </div>
     }
     </div>
   );
