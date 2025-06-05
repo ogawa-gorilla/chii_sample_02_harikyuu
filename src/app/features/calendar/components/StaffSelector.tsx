@@ -1,3 +1,5 @@
+import { useAppSelector } from '@/app/hooks';
+import { Role } from '@/app/types/role';
 import { Form } from 'react-bootstrap';
 
 interface StaffSelectorProps {
@@ -5,21 +7,35 @@ interface StaffSelectorProps {
   onStaffChange: (staff: string) => void;
 }
 
-const staffOptions = [
-  { value: 'all', label: 'すべて' },
-  { value: '鈴木', label: '鈴木(店長)' },
-  { value: '佐藤', label: '佐藤' },
-  { value: '田中', label: '田中' }
-];
+interface StaffOption {
+  value: string;
+  label: string;
+  themeColor: string;
+}
 
 export default function StaffSelector({ selectedStaff, onStaffChange }: StaffSelectorProps) {
+
+  const staffs = useAppSelector((state) => state.user.users.filter(
+    (user) => user.role === Role.STAFF || user.role === Role.MANAGER));
+  
+  const staffOptions: StaffOption[] = [{
+    value: 'all',
+    label: 'すべて',
+    themeColor: '#000000',
+  }, ...staffs.map((staff) => ({
+    value: staff.id,
+    label: staff.name,
+    themeColor: staff.themeColor,
+  }))];
+
   return (
     <div className="mb-3">
-      <div className="mb-2">
+      <div >
         <strong>スタッフを選択</strong>
       </div>
-      <div className="d-flex flex-wrap gap-3">
+      <div className="d-flex flex-wrap gap-3 p-1">
         {staffOptions.map((option) => (
+          <div className="p-1" style={{ backgroundColor: option.themeColor, color: 'white' }}>
           <Form.Check
             key={option.value}
             type="radio"
@@ -30,7 +46,9 @@ export default function StaffSelector({ selectedStaff, onStaffChange }: StaffSel
             checked={selectedStaff === option.value}
             onChange={(e) => onStaffChange(e.target.value)}
             className="mb-1"
+            style={{ color: 'white' }}
           />
+          </div>
         ))}
       </div>
     </div>
