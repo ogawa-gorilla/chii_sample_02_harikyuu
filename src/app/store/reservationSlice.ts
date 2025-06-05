@@ -20,7 +20,8 @@ const initialState: ReservationState = {
         name: '山田',
         email: 'yama@example.com',
         role: Role.STAFF,
-        password: 'password'
+        password: 'password',
+        themeColor: '#4B000F',
       }
     }
   ]  
