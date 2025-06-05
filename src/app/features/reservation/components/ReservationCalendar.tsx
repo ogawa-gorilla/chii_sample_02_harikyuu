@@ -1,4 +1,5 @@
 import { useAppSelector } from '@/app/hooks';
+import { useState } from 'react';
 import { Table } from 'react-bootstrap';
 import CalendarStyles from '../../../components/CalendarStyles';
 import { useCalendar } from '../../../hooks/useCalendar';
@@ -22,9 +23,9 @@ export default function ReservationCalendar() {
     reservation.date >= startOfWeek.format('YYYY-MM-DD') &&
     reservation.date <= startOfWeek.add(6, 'day').format('YYYY-MM-DD')
   );
-  const selectedStaff = 'all';
+  const [selectedStaff, setSelectedStaff] = useState('none');
   const onStaffChange = (staff: string) => {
-    console.log(staff);
+    setSelectedStaff(staff);
   };
   const onTimeSlotSelect = (date: string, hour: number, staffId: string) => {
     console.log(date, hour, staffId);
@@ -59,22 +60,28 @@ export default function ReservationCalendar() {
         onStaffChange={onStaffChange}
       />
       
-      <Table bordered responsive className="w-100 text-center align-middle small">
-        <CalendarHeader days={days} />
-        <tbody>
-          {hours.map((hour, index) => (
-            <ReservationTimeRow
-              key={hour}
-              hour={hour}
-              days={days}
-              reservations={reservationsOnTheWeek}
-              selectedStaff={selectedStaff}
-              isFirstRow={index === 0}
-              onTimeSlotSelect={onTimeSlotSelect}
-            />
-          ))}
-        </tbody>
-      </Table>
+      {(selectedStaff === 'none') ?
+      <div>
+        <p>スタッフを選択してください</p>
+      </div>
+      :
+        <Table bordered responsive className="w-100 text-center align-middle small">
+          <CalendarHeader days={days} />
+          <tbody>
+            {hours.map((hour, index) => (
+              <ReservationTimeRow
+                key={hour}
+                hour={hour}
+                days={days}
+                reservations={reservationsOnTheWeek}
+                selectedStaff={selectedStaff}
+                isFirstRow={index === 0}
+                onTimeSlotSelect={onTimeSlotSelect}
+              />
+            ))}
+          </tbody>
+        </Table>
+}
     </div>
   );
 } 
