@@ -71,12 +71,12 @@ export default function ReservationTimeSlot({
       }}
     >
       {hasConflict ? (
-        <div className="text-center">
-          <small className="text-muted">予約済</small>
+        <div className="text-center bg-danger">
+          <small className="text-muted">×</small>
         </div>
       ) : isAvailable ? (
         <div className="text-center">
-          <small className="text-success">予約可能</small>
+          <small className="text-success">空</small>
         </div>
       ) : (
         <div className="text-center">
