@@ -21,7 +21,7 @@ const getReservation = (reservations: Reservation[], day: dayjs.Dayjs, hour: num
 const renderReservation = (reservation: Reservation) => {
   return (
     <div key={reservation.id}>
-      <span style={{ backgroundColor: reservation.staff.themeColor, color: 'white', borderRadius: '30%', padding: '8px 12px' }}>{reservation.staff.name[0]}</span>
+      <span style={{ backgroundColor: reservation.staff.themeColor, color: 'white', borderRadius: '30%', padding: '8px 4px' }}>{reservation.staff.name[0]}</span>
     </div>
   );
 }
