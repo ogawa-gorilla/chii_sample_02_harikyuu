@@ -1,7 +1,7 @@
 import { HOURS } from '@/app/constants/hours';
-import { weeklyClosedDays } from '@/app/constants/weeklyClosedDays';
 import { Reservation } from '@/app/types/reservation';
 import dayjs from 'dayjs';
+import { isClosedDay } from '../utils/calendarUtils';
 import CalendarCell from './CalendarCell';
 
 interface CalendarTimeRowProps {
@@ -25,7 +25,7 @@ export default function CalendarTimeRow({ hour, days, isFirstRow, reservations, 
       </style>
       <td className="fw-bold">{hour}:00</td>
       {days.map((day) => {
-        if (weeklyClosedDays.includes(day.format('d'))) {
+        if (isClosedDay(day)) {
             if (isFirstRow) {
               return firstRowForClosedDays(day);
             } else {

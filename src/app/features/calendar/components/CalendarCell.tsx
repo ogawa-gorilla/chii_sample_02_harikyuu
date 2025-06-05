@@ -1,6 +1,6 @@
-import { VIRUTAL_TODAY } from '@/app/constants/virtualToday';
 import { Reservation } from '@/app/types/reservation';
 import dayjs from 'dayjs';
+import { isToday } from '../utils/calendarUtils';
 
 interface CalendarCellProps {
   day: dayjs.Dayjs;
@@ -10,8 +10,7 @@ interface CalendarCellProps {
 }
 
 const getClassName = (day: dayjs.Dayjs, hour: number, hasReservations: boolean) => {
-  const isToday = day.format('YYYY-MM-DD') === VIRUTAL_TODAY;
-  let className = isToday ? 'today' : '';
+  let className = isToday(day) ? 'today' : '';
   
   if (hasReservations) {
     className += ' clickable-cell';

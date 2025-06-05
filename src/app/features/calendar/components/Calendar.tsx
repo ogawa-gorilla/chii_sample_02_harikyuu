@@ -1,11 +1,8 @@
-import { HOURS } from '@/app/constants/hours';
-import { VIRUTAL_TODAY } from '@/app/constants/virtualToday';
 import { useAppSelector } from '@/app/hooks';
 import { Reservation } from '@/app/types/reservation';
-import dayjs from 'dayjs';
-import 'dayjs/locale/ja';
 import { useState } from 'react';
 import { Table } from 'react-bootstrap';
+import { useCalendar } from '../hooks/useCalendar';
 import CalendarHeader from './CalendarHeader';
 import CalendarNavigation from './CalendarNavigation';
 import CalendarStyles from './CalendarStyles';
@@ -14,15 +11,20 @@ import ReservationModal from './ReservationModal';
 import StaffSelector from './StaffSelector';
 
 export default function Calendar() {
-  const [startOfWeek, setStartOfWeek] = useState(dayjs(VIRUTAL_TODAY).startOf('week').add(1, 'day'));
+  const { 
+    startOfWeek, 
+    days, 
+    hours, 
+    handlePrevWeek, 
+    handleNextWeek, 
+    handleToday 
+  } = useCalendar();
+  
   const [selectedStaff, setSelectedStaff] = useState('all');
   const [showModal, setShowModal] = useState(false);
   const [selectedReservations, setSelectedReservations] = useState<Reservation[]>([]);
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedHour, setSelectedHour] = useState(0);
-
-  const days = Array.from({ length: 7 }, (_, i) => startOfWeek.add(i, 'day'));
-  const hours = Array.from({ length: HOURS }, (_, i) => i + 9); // 9:00〜18:00
 
   const allReservations = useAppSelector((state) => state.reservation.reservations);
   const reservationsOnTheWeek = allReservations.filter((reservation) => 
@@ -30,18 +32,6 @@ export default function Calendar() {
     reservation.date <= startOfWeek.add(6, 'day').format('YYYY-MM-DD')
   );
   const filteredReservations = selectedStaff === 'all' ? reservationsOnTheWeek : reservationsOnTheWeek.filter((reservation) => reservation.staff.id === selectedStaff);
-
-  const handlePrevWeek = () => {
-    setStartOfWeek(prev => prev.subtract(1, 'week'));
-  };
-
-  const handleNextWeek = () => {
-    setStartOfWeek(prev => prev.add(1, 'week'));
-  };
-
-  const handleToday = () => {
-    setStartOfWeek(dayjs(VIRUTAL_TODAY).startOf('week').add(1, 'day'));
-  };
 
   const handleStaffChange = (staff: string) => {
     setSelectedStaff(staff);
