@@ -6,4 +6,5 @@ export interface User {
   email: string;
   role: Role;
   password: string;
+  themeColor: string;
 }

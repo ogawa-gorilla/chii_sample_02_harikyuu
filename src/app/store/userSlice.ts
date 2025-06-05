@@ -14,6 +14,7 @@ const initialState: UserState = {
       email: 'manager@example.com',
       role: Role.MANAGER,
       password: 'suzuki',
+      themeColor: '#0A192F',
     },
     {
       id: '2',
@@ -21,6 +22,7 @@ const initialState: UserState = {
       email: 'sato@example.com',
       role: Role.STAFF,
       password: 'sato',
+      themeColor: '#2D0B5A',
     },
     {
       id: '3',
@@ -28,6 +30,7 @@ const initialState: UserState = {
       email: 'yamada@example.com',
       role: Role.STAFF,
       password: 'yamada',
+      themeColor: '#4B000F',
     },
     {
       id: '4',
@@ -35,6 +38,7 @@ const initialState: UserState = {
       email: 'ue@example.com',
       role: Role.OFFICE,
       password: 'ueno',
+      themeColor: '#014421',
     },
   ]
 }
