@@ -6,11 +6,17 @@ interface CalendarCellProps {
   day: dayjs.Dayjs;
   hour: number;
   allReservations: Reservation[];
+  onCellClick?: (date: string, hour: number, reservations: Reservation[]) => void;
 }
 
-const getClassName = (day: dayjs.Dayjs, hour: number) => {
+const getClassName = (day: dayjs.Dayjs, hour: number, hasReservations: boolean) => {
   const isToday = day.format('YYYY-MM-DD') === VIRUTAL_TODAY;
-  const className = isToday ? 'today' : '';
+  let className = isToday ? 'today' : '';
+  
+  if (hasReservations) {
+    className += ' clickable-cell';
+  }
+  
   return className;
 }
 
@@ -26,13 +32,25 @@ const renderReservations = (reservations: Reservation[]) => {
   ));
 }
 
-export default function CalendarCell({ day, hour, allReservations }: CalendarCellProps) {
+export default function CalendarCell({ day, hour, allReservations, onCellClick }: CalendarCellProps) {
 
   const reservations = getReservations(allReservations, day, hour);
+  const hasReservations = reservations.length > 0;
+
+  const handleClick = () => {
+    if (hasReservations && onCellClick) {
+      onCellClick(day.format('YYYY-MM-DD'), hour, reservations);
+    }
+  };
 
   return (
-    <td key={`${day.format()}-${hour}`} className={getClassName(day, hour)}>
-      {(reservations.length > 0) ? (
+    <td 
+      key={`${day.format()}-${hour}`} 
+      className={getClassName(day, hour, hasReservations)}
+      onClick={handleClick}
+      style={{ cursor: hasReservations ? 'pointer' : 'default' }}
+    >
+      {hasReservations ? (
         <div className="align-items-center">
           {renderReservations(reservations)}
         </div>

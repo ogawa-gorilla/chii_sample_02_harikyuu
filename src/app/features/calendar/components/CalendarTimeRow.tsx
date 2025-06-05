@@ -9,6 +9,7 @@ interface CalendarTimeRowProps {
   days: dayjs.Dayjs[];
   isFirstRow: boolean;
   reservations: Reservation[];
+  onCellClick?: (date: string, hour: number, reservations: Reservation[]) => void;
 }
 
 const firstRowForClosedDays = (day: dayjs.Dayjs) => (
@@ -17,7 +18,7 @@ const firstRowForClosedDays = (day: dayjs.Dayjs) => (
                 </td>
 )
 
-export default function CalendarTimeRow({ hour, days, isFirstRow, reservations }: CalendarTimeRowProps) {
+export default function CalendarTimeRow({ hour, days, isFirstRow, reservations, onCellClick }: CalendarTimeRowProps) {
   return (
     <tr key={hour}>
             <style>
@@ -37,6 +38,7 @@ export default function CalendarTimeRow({ hour, days, isFirstRow, reservations }
             day={day}
             hour={hour}
             allReservations={reservations}
+            onCellClick={onCellClick}
           />
         );
       })}
