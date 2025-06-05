@@ -1,23 +1,13 @@
 import { useAppSelector } from '@/app/hooks';
 import { Table } from 'react-bootstrap';
+import CalendarStyles from '../../../components/CalendarStyles';
+import { useCalendar } from '../../../hooks/useCalendar';
 import CalendarHeader from '../../calendar/components/CalendarHeader';
 import CalendarNavigation from '../../calendar/components/CalendarNavigation';
-import CalendarStyles from '../../calendar/components/CalendarStyles';
 import StaffSelectorForReservation from '../../calendar/components/StaffSelectorForReservation';
-import { useCalendar } from '../../calendar/hooks/useCalendar';
 import ReservationTimeRow from './ReservationTimeRow';
 
-interface ReservationCalendarProps {
-  selectedStaff: string;
-  onStaffChange: (staffId: string) => void;
-  onTimeSlotSelect: (date: string, hour: number, staffId: string) => void;
-}
-
-export default function ReservationCalendar({ 
-  selectedStaff, 
-  onStaffChange, 
-  onTimeSlotSelect 
-}: ReservationCalendarProps) {
+export default function ReservationCalendar() {
   const { 
     startOfWeek, 
     days, 
@@ -32,6 +22,13 @@ export default function ReservationCalendar({
     reservation.date >= startOfWeek.format('YYYY-MM-DD') &&
     reservation.date <= startOfWeek.add(6, 'day').format('YYYY-MM-DD')
   );
+  const selectedStaff = 'all';
+  const onStaffChange = (staff: string) => {
+    console.log(staff);
+  };
+  const onTimeSlotSelect = (date: string, hour: number, staffId: string) => {
+    console.log(date, hour, staffId);
+  };
 
   return (
     <div>

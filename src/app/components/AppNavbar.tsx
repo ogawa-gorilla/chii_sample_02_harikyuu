@@ -1,9 +1,12 @@
 import { Container, Nav, Navbar, NavDropdown } from 'react-bootstrap';
-import { useAppSelector } from '../hooks';
+import { useAppDispatch, useAppSelector } from '../hooks';
 import { isLoggedin } from '../store/loginSlice';
+import { setCurrentPage } from '../store/navigationSlice';
+import { Page } from '../types/Page';
 
 export default function AppNavbar() {
 
+  const dispatch = useAppDispatch();
   const loggedin = useAppSelector(isLoggedin);
 
   return (
@@ -16,8 +19,8 @@ export default function AppNavbar() {
         <Navbar.Toggle aria-controls="navbar-main" />
         <Navbar.Collapse id="navbar-main">
           <Nav className="me-auto">
-            <Nav.Link href="#">予約管理</Nav.Link>
-            <Nav.Link href="#">カレンダー</Nav.Link>
+            <Nav.Link href="#" onClick={() => dispatch(setCurrentPage(Page.RESERVATION_CALENDAR))}>予約作成</Nav.Link>
+            <Nav.Link href="#" onClick={() => dispatch(setCurrentPage(Page.CALENDAR))}>予約カレンダー</Nav.Link>
             <Nav.Link href="#">施術記録</Nav.Link>
             <Nav.Link href="#">シフト管理</Nav.Link>
             <Nav.Link href="#">ダッシュボード</Nav.Link>
