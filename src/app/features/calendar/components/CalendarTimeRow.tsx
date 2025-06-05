@@ -36,7 +36,7 @@ export default function CalendarTimeRow({ hour, days, isFirstRow, reservations }
             key={day.format()}
             day={day}
             hour={hour}
-            reservations={reservations}
+            allReservations={reservations}
           />
         );
       })}
