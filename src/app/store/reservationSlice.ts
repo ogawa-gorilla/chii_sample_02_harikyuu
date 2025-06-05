@@ -16,7 +16,7 @@ const initialState: ReservationState = {
       duration: 1,
       status: '予約済',
       staff: {
-        id: '1',
+        id: '3',
         name: '山田',
         email: 'yama@example.com',
         role: Role.STAFF,

@@ -19,10 +19,11 @@ export default function Calendar() {
   const hours = Array.from({ length: HOURS }, (_, i) => i + 9); // 9:00〜18:00
 
   const allReservations = useAppSelector((state) => state.reservation.reservations);
-  const reservations = allReservations.filter((reservation) => 
+  const reservationsOnTheWeek = allReservations.filter((reservation) => 
     reservation.date >= startOfWeek.format('YYYY-MM-DD') &&
     reservation.date <= startOfWeek.add(6, 'day').format('YYYY-MM-DD')
   );
+  const filteredReservations = selectedStaff === 'all' ? reservationsOnTheWeek : reservationsOnTheWeek.filter((reservation) => reservation.staff.id === selectedStaff);
 
   const handlePrevWeek = () => {
     setStartOfWeek(prev => prev.subtract(1, 'week'));
@@ -63,7 +64,7 @@ export default function Calendar() {
               key={hour}
               hour={hour}
               days={days}
-              reservations={reservations}
+              reservations={filteredReservations}
               isFirstRow={index === 0}
             />
           ))}
