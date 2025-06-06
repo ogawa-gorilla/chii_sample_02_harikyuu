@@ -5,6 +5,7 @@ import { Form } from 'react-bootstrap';
 interface StaffSelectorProps {
   selectedStaff: string;
   onStaffChange: (staff: string) => void;
+  labelForNone: string;
 }
 
 interface StaffOption {
@@ -13,14 +14,14 @@ interface StaffOption {
   themeColor: string;
 }
 
-export default function StaffSelector({ selectedStaff, onStaffChange }: StaffSelectorProps) {
+export default function StaffSelector({ selectedStaff, onStaffChange, labelForNone = '(選択してください)' }: StaffSelectorProps) {
 
   const staffs = useAppSelector((state) => state.user.users.filter(
     (user) => user.role === Role.STAFF || user.role === Role.MANAGER));
   
   const staffOptions: StaffOption[] = [{
-    value: 'all',
-    label: 'すべて',
+    value: 'none',
+    label: labelForNone,
     themeColor: '#000000',
   }, ...staffs.map((staff) => ({
     value: staff.id,

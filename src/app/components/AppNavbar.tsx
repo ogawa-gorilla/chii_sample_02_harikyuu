@@ -33,7 +33,7 @@ export default function AppNavbar() {
         <Navbar.Toggle aria-controls="navbar-main" />
         <Navbar.Collapse id="navbar-main">
           <Nav className="me-auto">
-            <Nav.Link href="#" onClick={() => handleNavLinkClick(Page.RESERVATION_CALENDAR)}>新規予約</Nav.Link>
+            <Nav.Link href="#" onClick={() => handleNavLinkClick(Page.RESERVATION_CREATE_CALENDAR)}>新規予約</Nav.Link>
             <Nav.Link href="#" onClick={() => handleNavLinkClick(Page.RESERVATION_CALENDAR)}>予約カレンダー</Nav.Link>
             <Nav.Link href="#">施術記録</Nav.Link>
             <Nav.Link href="#">シフト管理</Nav.Link>

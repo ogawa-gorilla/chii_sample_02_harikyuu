@@ -11,7 +11,7 @@ export default function ReservationCalendarPage() {
 
   const [selectedStaff, setSelectedStaff] = useState<string>('all');
 
-  const allReservations = useAppSelector((state) => state.reservation.reservations).filter((reservation) => selectedStaff === 'all' || reservation.staff.id === selectedStaff);
+  const allReservations = useAppSelector((state) => state.reservation.reservations).filter((reservation) => selectedStaff === 'none' || reservation.staff.id === selectedStaff);
   const [showReservationModal, setShowReservationModal] = useState(false);
   const [reservationsShown, setReservationsShown] = useState<Reservation[]>([]);
   const [selectedDate, setSelectedDate] = useState<string>('');
@@ -32,7 +32,7 @@ export default function ReservationCalendarPage() {
     <Container fluid className="py-3">
       <ReservationModal show={showReservationModal} onHide={() => setShowReservationModal(false)} reservations={reservationsShown} selectedDate={selectedDate} selectedHour={selectedHour} />
       <h5 className="text-center mb-3">予約カレンダー</h5>
-      <StaffSelector selectedStaff={selectedStaff} onStaffChange={handleStaffChange} />
+      <StaffSelector selectedStaff={selectedStaff} onStaffChange={handleStaffChange} labelForNone="すべて" />
       <Calendar cellComponent={ReservationCell} cellProps={{ allReservations, onCellClick: handleCellClick }} />
   </Container>
   );
