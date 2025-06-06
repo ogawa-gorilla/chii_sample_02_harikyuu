@@ -1,6 +1,6 @@
 import { Reservation } from '@/app/types/reservation';
 import dayjs from 'dayjs';
-import { getDayClassName } from '../../calendar/utils/calendarUtils';
+import { getDayClassName } from '../../../utils/calendarUtils';
 
 interface ReservationTimeSlotProps {
   day: dayjs.Dayjs;

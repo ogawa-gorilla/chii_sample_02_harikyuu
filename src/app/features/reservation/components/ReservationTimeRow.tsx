@@ -1,7 +1,7 @@
 import { HOURS } from '@/app/constants/hours';
 import { Reservation } from '@/app/types/reservation';
 import dayjs from 'dayjs';
-import { isClosedDay } from '../../calendar/utils/calendarUtils';
+import { isClosedDay } from '../../../utils/calendarUtils';
 import ReservationTimeSlot from './ReservationTimeSlot';
 
 interface ReservationTimeRowProps {

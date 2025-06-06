@@ -1,9 +1,8 @@
 'use client'
 
+import ReservationCalendarPage from "@/app/features/reservationCalendar/ReservationCalendarPage";
 import AppNavbar from "./components/AppNavbar";
 import Footer from "./components/Footer";
-import CalendarPage from "./features/calendar/CalendarPage";
-import ReservationCalendarPage from "./features/reservation/ReservationCalendarPage";
 import HomePage from "./HomePage";
 import { useAppSelector } from "./hooks";
 import NotImplementedPage from "./NotImplementedPage";
@@ -13,8 +12,6 @@ const showPage = (page: Page) => {
   switch (page) {
     case Page.HOME:
       return <HomePage />
-    case Page.CALENDAR:
-      return <CalendarPage />
     case Page.RESERVATION_CALENDAR:
       return <ReservationCalendarPage />
     default:

@@ -1,6 +1,6 @@
 import { Reservation } from '@/app/types/reservation';
+import { isToday } from '@/app/utils/calendarUtils';
 import dayjs from 'dayjs';
-import { isToday } from '../utils/calendarUtils';
 
 interface CalendarCellProps {
   day: dayjs.Dayjs;

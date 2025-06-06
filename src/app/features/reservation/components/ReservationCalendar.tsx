@@ -1,7 +1,7 @@
 import { useAppSelector } from '@/app/hooks';
 import { useState } from 'react';
 import { Table } from 'react-bootstrap';
-import CalendarStyles from '../../../components/CalendarStyles';
+import CalendarStyles from '../../../components/calendar/CalendarStyles';
 import { useCalendar } from '../../../hooks/useCalendar';
 import CalendarHeader from '../../calendar/components/CalendarHeader';
 import CalendarNavigation from '../../calendar/components/CalendarNavigation';

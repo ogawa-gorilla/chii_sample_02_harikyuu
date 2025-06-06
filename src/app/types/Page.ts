@@ -13,10 +13,10 @@ export const Page = {
   RESERVE_EDIT: 'reserve-edit',
   RESERVE_STATUS_EDIT: 'reserve-status-edit',
 
-  CALENDAR: 'calendar',
+  RESERVATION_CALENDAR: 'reservation-calendar',
   RESERVES_ON_DATE: 'reserves-on-date',
 
-  RESERVATION_CALENDAR: 'reservation-calendar',
+  RESERVATION_CREATE_CALENDAR: 'reservation-create-calendar',
 
   SHIFT: 'shift',
   SHIFT_EDIT: 'shift-edit',

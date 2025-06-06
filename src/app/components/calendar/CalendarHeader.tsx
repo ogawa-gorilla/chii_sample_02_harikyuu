@@ -1,6 +1,6 @@
+import { getDayClassName } from '@/app/utils/calendarUtils';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ja';
-import { getDayClassName } from '../utils/calendarUtils';
 
 interface CalendarHeaderProps {
   days: dayjs.Dayjs[];
