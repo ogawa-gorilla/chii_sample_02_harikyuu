@@ -3,12 +3,12 @@ import { isClosedDay } from '@/app/utils/calendarUtils';
 import dayjs from 'dayjs';
 import { CalendarCellProps } from './types';
 
-interface CalendarTimeRowProps {
+interface CalendarTimeRowProps<TCellProps extends CalendarCellProps = CalendarCellProps> {
   hour: number;
   days: dayjs.Dayjs[];
   isFirstRow: boolean;
-  CellComponent?: React.ComponentType<CalendarCellProps>;
-  cellProps?: Record<string, any>;
+  CellComponent?: React.ComponentType<TCellProps>;
+  cellProps?: Omit<TCellProps, keyof CalendarCellProps>;
 }
 
 const firstRowForClosedDays = (day: dayjs.Dayjs) => (
@@ -23,7 +23,13 @@ const DefaultCell = ({ day, hour }: CalendarCellProps) => (
   </td>
 );
 
-export default function CalendarTimeRow({ hour, days, isFirstRow, CellComponent, cellProps = {} }: CalendarTimeRowProps) {
+export default function CalendarTimeRow<TCellProps extends CalendarCellProps = CalendarCellProps>({ 
+  hour, 
+  days, 
+  isFirstRow, 
+  CellComponent, 
+  cellProps = {} as Omit<TCellProps, keyof CalendarCellProps>
+}: CalendarTimeRowProps<TCellProps>) {
   const CellToRender = CellComponent || DefaultCell;
 
   return (
@@ -42,9 +48,11 @@ export default function CalendarTimeRow({ hour, days, isFirstRow, CellComponent,
         return (
           <CellToRender 
             key={`${day.format()}-${hour}`}
-            day={day} 
-            hour={hour} 
-            {...cellProps}
+            {...({
+              day, 
+              hour, 
+              ...cellProps
+            } as TCellProps)}
           />
         );
       })}

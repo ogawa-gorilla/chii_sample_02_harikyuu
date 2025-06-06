@@ -5,7 +5,7 @@ export interface CalendarCellProps {
   hour: number;
 }
 
-export interface CalendarProps {
-  cellComponent?: React.ComponentType<CalendarCellProps>;
-  cellProps?: Record<string, any>;
+export interface CalendarProps<TCellProps extends CalendarCellProps = CalendarCellProps> {
+  cellComponent?: React.ComponentType<TCellProps>;
+  cellProps?: Omit<TCellProps, keyof CalendarCellProps>;
 } 

@@ -4,9 +4,12 @@ import CalendarHeader from "./CalendarHeader";
 import CalendarNavigation from "./CalendarNavigation";
 import CalendarStyles from "./CalendarStyles";
 import CalendarTimeRow from "./CalendarTimeRow";
-import { CalendarProps } from "./types";
+import { CalendarCellProps, CalendarProps } from "./types";
 
-export default function Calendar({ cellComponent: CellComponent, cellProps = {} }: CalendarProps) {
+export default function Calendar<TCellProps extends CalendarCellProps = CalendarCellProps>({ 
+  cellComponent: CellComponent, 
+  cellProps = {} as Omit<TCellProps, keyof CalendarCellProps>
+}: CalendarProps<TCellProps>) {
 
   const { 
     startOfWeek, 
@@ -29,7 +32,7 @@ export default function Calendar({ cellComponent: CellComponent, cellProps = {} 
         <CalendarHeader days={days} />
         <tbody>
           {hours.map((hour, index) => (
-            <CalendarTimeRow
+            <CalendarTimeRow<TCellProps>
               key={hour}
               hour={hour}
               days={days}
