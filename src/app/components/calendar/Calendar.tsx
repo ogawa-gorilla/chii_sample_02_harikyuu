@@ -4,8 +4,9 @@ import CalendarHeader from "./CalendarHeader";
 import CalendarNavigation from "./CalendarNavigation";
 import CalendarStyles from "./CalendarStyles";
 import CalendarTimeRow from "./CalendarTimeRow";
+import { CalendarProps } from "./types";
 
-export default function Calendar() {
+export default function Calendar({ cellComponent: CellComponent, cellProps = {} }: CalendarProps) {
 
   const { 
     startOfWeek, 
@@ -33,6 +34,8 @@ export default function Calendar() {
               hour={hour}
               days={days}
               isFirstRow={index === 0}
+              CellComponent={CellComponent}
+              cellProps={cellProps}
             />
           ))}
         </tbody>
