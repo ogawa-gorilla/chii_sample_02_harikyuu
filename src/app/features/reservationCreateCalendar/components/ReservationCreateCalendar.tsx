@@ -1,14 +1,9 @@
 import { useAppSelector } from '@/app/hooks';
 import { useState } from 'react';
 import { Table } from 'react-bootstrap';
-import CalendarStyles from '../../../components/calendar/CalendarStyles';
 import { useCalendar } from '../../../hooks/useCalendar';
-import CalendarHeader from '../../calendar/components/CalendarHeader';
-import CalendarNavigation from '../../calendar/components/CalendarNavigation';
-import StaffSelectorForReservation from '../../calendar/components/StaffSelectorForReservation';
-import ReservationTimeRow from './ReservationTimeRow';
 
-export default function ReservationCalendar() {
+export default function ReservationCreateCalendarPage() {
   const { 
     startOfWeek, 
     days, 
@@ -33,32 +28,6 @@ export default function ReservationCalendar() {
 
   return (
     <div>
-      <CalendarStyles />
-      <style jsx>{`
-        .available-slot {
-          background-color: #e8f5e8 !important;
-          cursor: pointer;
-          transition: background-color 0.2s ease;
-        }
-        .available-slot:hover {
-          background-color: #d4edda !important;
-        }
-        .unavailable-slot {
-          background-color: #f8d7da !important;
-          cursor: not-allowed;
-        }
-      `}</style>
-      
-      <CalendarNavigation 
-        onPrevWeek={handlePrevWeek}
-        onNextWeek={handleNextWeek}
-        onToday={handleToday}
-      />
-      
-      <StaffSelectorForReservation 
-        selectedStaff={selectedStaff}
-        onStaffChange={onStaffChange}
-      />
       
       {(selectedStaff === 'none') ?
       <div>
