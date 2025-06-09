@@ -32,14 +32,14 @@ const showPage = (page: Page) => {
 }
 
 const Home = () => {
-  const currentPage = useAppSelector((state) => state.navigation.currentPage);
+  const pageStack = useAppSelector((state) => state.navigation.pageStack);
 
   return (
     <div className="app-container">
     {
       <div style={{ paddingTop: '70px' }}>
         <AppNavbar />
-        {showPage(currentPage)}
+        {showPage(pageStack[pageStack.length - 1])}
         <Footer />
       </div>
     }

@@ -2,11 +2,11 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Page } from "../types/Page";
 
 interface NavigationState {
-  currentPage: Page;
+  pageStack: Page[];
 }
 
 const initialState: NavigationState = {
-  currentPage: Page.HOME,
+  pageStack: [Page.HOME],
 }
 
 const navigationSlice = createSlice({
@@ -14,7 +14,13 @@ const navigationSlice = createSlice({
   initialState,
   reducers: {
     setCurrentPage: (state, action: PayloadAction<Page>) => {
-      state.currentPage = action.payload;
+      state.pageStack = [action.payload];
+    },
+    pushPage: (state, action: PayloadAction<Page>) => {
+      state.pageStack.push(action.payload);
+    },
+    popPage: (state) => {
+      state.pageStack.pop();
     }
   }
 })
