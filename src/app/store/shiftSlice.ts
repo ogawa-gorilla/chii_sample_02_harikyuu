@@ -1,8 +1,10 @@
 import { Shift } from "@/app/types/shift";
 import { createSlice } from "@reduxjs/toolkit";
+import { TemporalHoliday } from "../types/temporalHoliday";
 
 interface ShiftState {
   shifts: Shift[];
+  temporalHolidays: TemporalHoliday[];
 }
 
 const initialState: ShiftState = {
@@ -16,7 +18,6 @@ const initialState: ShiftState = {
     { id: 's1-20250604', staffId: '1', date: '2025-06-04', startTime: '09:00', endTime: '18:00' },
     { id: 's1-20250605', staffId: '1', date: '2025-06-05', startTime: '09:00', endTime: '18:00' },
     { id: 's1-20250606', staffId: '1', date: '2025-06-06', startTime: '09:00', endTime: '18:00' },
-    { id: 's1-20250607', staffId: '1', date: '2025-06-07', startTime: '09:00', endTime: '18:00' },
     { id: 's1-20250608', staffId: '1', date: '2025-06-08', startTime: '09:00', endTime: '18:00' },
     { id: 's1-20250609', staffId: '1', date: '2025-06-09', startTime: '09:00', endTime: '18:00' },
     // 2025-06-11は鈴木の全休日
@@ -46,7 +47,6 @@ const initialState: ShiftState = {
     { id: 's2-20250602', staffId: '2', date: '2025-06-02', startTime: '09:00', endTime: '18:00' },
     { id: 's2-20250603', staffId: '2', date: '2025-06-03', startTime: '09:00', endTime: '18:00' },
     { id: 's2-20250605', staffId: '2', date: '2025-06-05', startTime: '09:00', endTime: '18:00' },
-    { id: 's2-20250607', staffId: '2', date: '2025-06-07', startTime: '09:00', endTime: '18:00' },
     { id: 's2-20250608', staffId: '2', date: '2025-06-08', startTime: '09:00', endTime: '18:00' },
     { id: 's2-20250609', staffId: '2', date: '2025-06-09', startTime: '09:00', endTime: '18:00' },
     { id: 's2-20250610', staffId: '2', date: '2025-06-10', startTime: '09:00', endTime: '18:00' },
@@ -72,7 +72,6 @@ const initialState: ShiftState = {
     { id: 's3-20250601', staffId: '3', date: '2025-06-01', startTime: '09:00', endTime: '18:00' },
     { id: 's3-20250604', staffId: '3', date: '2025-06-04', startTime: '09:00', endTime: '18:00' },
     { id: 's3-20250603', staffId: '3', date: '2025-06-06', startTime: '13:00', endTime: '18:00' }, // 午前半休
-    { id: 's3-20250607', staffId: '3', date: '2025-06-07', startTime: '09:00', endTime: '18:00' },
     { id: 's3-20250608', staffId: '3', date: '2025-06-08', startTime: '09:00', endTime: '18:00' },
     { id: 's3-20250609', staffId: '3', date: '2025-06-09', startTime: '09:00', endTime: '18:00' },
     { id: 's3-20250610', staffId: '3', date: '2025-06-10', startTime: '09:00', endTime: '18:00' },
@@ -92,6 +91,9 @@ const initialState: ShiftState = {
     { id: 's3-20250627', staffId: '3', date: '2025-06-27', startTime: '09:00', endTime: '18:00' },
     { id: 's3-20250628', staffId: '3', date: '2025-06-28', startTime: '09:00', endTime: '18:00' },
     { id: 's3-20250629', staffId: '3', date: '2025-06-29', startTime: '09:00', endTime: '18:00' },
+  ],
+  temporalHolidays: [
+    { date: '2025-06-07', name: '店長出張' },
   ]
 }
 
