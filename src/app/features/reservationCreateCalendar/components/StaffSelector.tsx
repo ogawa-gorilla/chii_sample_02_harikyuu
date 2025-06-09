@@ -29,7 +29,7 @@ export default function StaffSelector({
         onChange={(e) => onStaffChange(e.target.value)}
         required={required}
       >
-        <option value="none">スタッフを選択</option>
+        <option value="none">すべて</option>
         {staffs.map((staff) => (
           <option key={staff.id} value={staff.id}>
             {staff.name}
