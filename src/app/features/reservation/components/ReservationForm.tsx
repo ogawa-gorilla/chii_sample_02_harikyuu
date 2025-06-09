@@ -1,0 +1,157 @@
+import React, { useState } from 'react';
+import { User } from '../../../types/user';
+
+interface ReservationFormData {
+  staffId: string;
+  clientName: string;
+  notes: string;
+}
+
+interface ReservationFormProps {
+  scheduledDate: string; // 予約日時（編集不能）
+  scheduledTime: string;// 予約時間(編集不能)
+  staff: User;
+  availableStaffs: User[]; // 選択可能なスタッフリスト
+  onSubmit: (formData: ReservationFormData) => void; // 決定ボタン押下時のイベント
+  onCancel?: () => void; // キャンセル時のイベント（オプション）
+}
+
+export default function ReservationForm({ 
+  scheduledDate,
+  scheduledTime, 
+  staff,
+  availableStaffs, 
+  onSubmit, 
+  onCancel 
+}: ReservationFormProps) {
+  const [formData, setFormData] = useState<ReservationFormData>({
+    staffId: staff.id,
+    clientName: '',
+    notes: ''
+  });
+
+  const [errors, setErrors] = useState<Partial<ReservationFormData>>({});
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // バリデーション
+    const newErrors: Partial<ReservationFormData> = {};
+    if (!formData.staffId) {
+      newErrors.staffId = '担当スタッフを選択してください';
+    }
+    if (!formData.clientName.trim()) {
+      newErrors.clientName = '顧客名を入力してください';
+    }
+
+    setErrors(newErrors);
+
+    // エラーがなければ送信
+    if (Object.keys(newErrors).length === 0) {
+      onSubmit(formData);
+    }
+  };
+
+  const handleInputChange = (field: keyof ReservationFormData, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+    // エラーをクリア
+    if (errors[field]) {
+      setErrors(prev => ({ ...prev, [field]: undefined }));
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50 px-4 py-6">
+      <div className="max-w-md mx-auto bg-white rounded-lg shadow-md overflow-hidden">
+
+        {/* フォーム */}
+        <form onSubmit={handleSubmit} className="p-6 space-y-6">
+          {/* 予約日時（編集不能） */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              予約日時
+            </label>
+            <div className="bg-gray-100 border border-gray-300 rounded-lg px-4 py-3 text-gray-700">
+              {scheduledDate} {scheduledTime}
+            </div>
+          </div>
+
+          {/* 担当スタッフ */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              担当スタッフ <span className="text-red-500">*</span>
+            </label>
+            <select
+              value={formData.staffId}
+              onChange={(e) => handleInputChange('staffId', e.target.value)}
+              className={`w-full border rounded-lg px-4 py-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                errors.staffId ? 'border-red-500' : 'border-gray-300'
+              }`}
+            >
+              {availableStaffs.map((staff) => (
+                <option key={staff.id} value={staff.id}>
+                  {staff.name}
+                </option>
+              ))}
+            </select>
+            {errors.staffId && (
+              <p className="mt-1 text-sm text-red-500">{errors.staffId}</p>
+            )}
+          </div>
+
+          {/* 顧客名 */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              顧客名 <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              value={formData.clientName}
+              onChange={(e) => handleInputChange('clientName', e.target.value)}
+              placeholder="顧客名を入力してください"
+              className={`w-full border rounded-lg px-4 py-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                errors.clientName ? 'border-red-500' : 'border-gray-300'
+              }`}
+            />
+            {errors.clientName && (
+              <p className="mt-1 text-sm text-red-500">{errors.clientName}</p>
+            )}
+          </div>
+
+          {/* 特記事項 */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              特記事項
+            </label>
+            <textarea
+              value={formData.notes}
+              onChange={(e) => handleInputChange('notes', e.target.value)}
+              placeholder="特記事項があれば入力してください"
+              rows={4}
+              className="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+            />
+          </div>
+
+          {/* ボタン */}
+          <div className="flex gap-3 pt-4">
+            {onCancel && (
+              <button
+                type="button"
+                onClick={onCancel}
+                className="flex-1 bg-gray-500 text-white py-3 px-4 rounded-lg font-medium hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors"
+              >
+                キャンセル
+              </button>
+            )}
+            <button
+              type="submit"
+              className="flex-1 bg-blue-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
+            >
+              決定
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
