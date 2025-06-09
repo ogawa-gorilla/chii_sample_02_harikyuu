@@ -1,5 +1,5 @@
 import { useAppSelector } from '@/app/hooks';
-import { Role } from '@/app/types/role';
+import { getStaffs } from '@/app/store/userSlice';
 import { Form } from 'react-bootstrap';
 
 interface StaffSelectorForReservationProps {
@@ -13,11 +13,7 @@ export default function StaffSelector({
   onStaffChange, 
   required = true 
 }: StaffSelectorForReservationProps) {
-  const staffs = useAppSelector((state) => 
-    state.user.users.filter(
-      (user) => user.role === Role.STAFF || user.role === Role.MANAGER
-    )
-  );
+  const staffs = useAppSelector(getStaffs)
 
   return (
     <div className="mb-3">

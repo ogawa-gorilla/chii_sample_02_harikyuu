@@ -1,5 +1,5 @@
 import { useAppSelector } from '@/app/hooks';
-import { Role } from '@/app/types/role';
+import { getStaffs } from '@/app/store/userSlice';
 import { Form } from 'react-bootstrap';
 
 interface StaffSelectorProps {
@@ -16,8 +16,7 @@ interface StaffOption {
 
 export default function StaffSelector({ selectedStaff, onStaffChange, labelForNone = '(選択してください)' }: StaffSelectorProps) {
 
-  const staffs = useAppSelector((state) => state.user.users.filter(
-    (user) => user.role === Role.STAFF || user.role === Role.MANAGER));
+  const staffs = useAppSelector(getStaffs);
   
   const staffOptions: StaffOption[] = [{
     value: 'none',
