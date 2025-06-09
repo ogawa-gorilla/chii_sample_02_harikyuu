@@ -1,3 +1,4 @@
+import { Reservation } from '@/app/types/reservation';
 import { User } from '@/app/types/user';
 import dayjs from 'dayjs';
 import { Button, Modal } from 'react-bootstrap';
@@ -8,6 +9,7 @@ interface AvailableStaffModalProps {
   date: string;
   hour: number;
   availableStaffs: User[];
+  reservations: Reservation[];
   onStaffSelect?: (staffId: string) => void;
   onCreateWithoutStaff?: () => void;
 }
@@ -18,6 +20,7 @@ export default function AvailableStaffModal({
   date,
   hour,
   availableStaffs,
+  reservations,
 }: AvailableStaffModalProps) {
   
   const formatDateTime = () => {
@@ -81,6 +84,22 @@ export default function AvailableStaffModal({
             )}
           </div>
         </div>
+
+        {(reservations.length > 0) ? (
+          <div>
+            {/* 区切り線 */}
+            <hr className="my-4" />
+            <div className="text-center">
+              <h6 className="text-muted fw-bold mb-3">この時間の予約</h6>
+            </div>
+            <div className="d-grid gap-2">
+              {reservations.map((reservation) => (
+                <div key={reservation.id}>{reservation.staff.name}</div>
+              ))}
+            </div>
+          </div>
+        ) : null
+        }
 
         {/* 区切り線 */}
         <hr className="my-4" />
