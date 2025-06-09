@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
-import { setCurrentPage } from "@/app/store/navigationSlice";
+import { popPage, setCurrentPage } from "@/app/store/navigationSlice";
 import { Page } from "@/app/types/Page";
 import ReservationDetail from "./components/ReservationDetail";
 
@@ -17,7 +17,7 @@ export default function ReservationDetailPage() {
   }
 
   const handleBack = () => {
-    console.log("back")
+    dispatch(popPage())
   }
 
   return (

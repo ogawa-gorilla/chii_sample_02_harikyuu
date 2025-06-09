@@ -25,5 +25,5 @@ const navigationSlice = createSlice({
   }
 })
 
-export const { setCurrentPage } = navigationSlice.actions;
+export const { setCurrentPage, pushPage, popPage } = navigationSlice.actions;
 export default navigationSlice.reducer;
