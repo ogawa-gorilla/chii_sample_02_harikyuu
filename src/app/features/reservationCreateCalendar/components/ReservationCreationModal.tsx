@@ -34,6 +34,8 @@ export default function ReservationCreationModal({
     return `${formattedDate}(${dayOfWeek}) ${formattedHour}`;
   };
 
+  const hasExistingReservations = reservations.length > 0;
+
   return (
     <Modal 
       show={show} 
@@ -41,13 +43,25 @@ export default function ReservationCreationModal({
       centered
       size="lg"
     >
-      <Modal.Header closeButton className="border-0 pb-0">
+      <Modal.Header 
+        closeButton 
+        className={`border-0 pb-0 ${hasExistingReservations ? 'bg-danger-subtle border-danger' : ''}`}
+      >
         <Modal.Title className="w-100 text-center fs-5 fw-bold">
           {formatDateTime()}
         </Modal.Title>
       </Modal.Header>
       
-      <Modal.Body className="pt-2">
+      <Modal.Body className={`pt-2 ${hasExistingReservations ? 'bg-danger-subtle' : ''}`}>
+        {hasExistingReservations && (
+          <div className="alert alert-danger d-flex align-items-center mb-3" role="alert">
+            <span className="me-2">⚠️</span>
+            <div className="fw-bold">
+              この時間にはすでに予約があります！
+            </div>
+          </div>
+        )}
+        
         <div className="mb-3 text-center">
           
           {/* スタッフボタン一覧 */}
