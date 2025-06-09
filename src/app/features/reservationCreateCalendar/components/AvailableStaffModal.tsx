@@ -1,4 +1,4 @@
-import ReservationDetail from '@/app/components/common/ReservationDetail';
+import ReservationSimpleView from '@/app/components/common/ReservationSimpleView';
 import StaffButton from '@/app/components/common/StaffButton';
 import { Reservation } from '@/app/types/reservation';
 import { User } from '@/app/types/user';
@@ -79,7 +79,7 @@ export default function AvailableStaffModal({
             </div>
             <div className="d-grid gap-2">
               {reservations.map((reservation) => (
-                <ReservationDetail key={reservation.id} reservation={reservation} />
+                <ReservationSimpleView key={reservation.id} reservation={reservation} />
               ))}
             </div>
           </div>

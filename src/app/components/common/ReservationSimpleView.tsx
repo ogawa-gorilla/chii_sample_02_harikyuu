@@ -4,7 +4,7 @@ interface ReservationDetailProps {
   reservation: Reservation;
 }
 
-export default function ReservationDetail({ reservation }: ReservationDetailProps) {
+export default function ReservationSimpleView({ reservation }: ReservationDetailProps) {
   return (
     <div className="border-bottom pb-3 mb-3">
       <div className="d-flex align-items-center mb-2">

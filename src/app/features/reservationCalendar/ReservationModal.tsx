@@ -1,4 +1,4 @@
-import ReservationDetail from '@/app/components/common/ReservationDetail';
+import ReservationSimpleView from '@/app/components/common/ReservationSimpleView';
 import { Reservation } from '@/app/types/reservation';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ja';
@@ -40,7 +40,7 @@ export default function ReservationModal({
         {reservations.length > 0 ? (
           <div>
             {reservations.map((reservation) => (
-              <ReservationDetail key={reservation.id} reservation={reservation} />
+              <ReservationSimpleView key={reservation.id} reservation={reservation} />
             ))}
           </div>
         ) : (
