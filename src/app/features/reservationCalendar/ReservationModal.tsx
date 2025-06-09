@@ -10,6 +10,8 @@ interface ReservationModalProps {
   reservations: Reservation[];
   selectedDate: string;
   selectedHour: number;
+  onEditClick: (reservation: Reservation) => void;
+  onDetailClick: (reservation: Reservation) => void;
 }
 
 export default function ReservationModal({ 
@@ -17,7 +19,9 @@ export default function ReservationModal({
   onHide, 
   reservations, 
   selectedDate, 
-  selectedHour 
+  selectedHour,
+  onEditClick,
+  onDetailClick
 }: ReservationModalProps) {
   dayjs.locale('ja');
   
@@ -40,7 +44,7 @@ export default function ReservationModal({
         {reservations.length > 0 ? (
           <div>
             {reservations.map((reservation) => (
-              <ReservationSimpleView key={reservation.id} reservation={reservation} />
+              <ReservationSimpleView key={reservation.id} reservation={reservation} onDetailClick={() => onDetailClick(reservation)} onEditClick={() => onEditClick(reservation)} />
             ))}
           </div>
         ) : (
