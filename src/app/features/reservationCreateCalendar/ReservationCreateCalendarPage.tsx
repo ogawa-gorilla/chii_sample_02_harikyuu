@@ -1,3 +1,5 @@
+import { useAppSelector } from "@/app/hooks";
+import { getStaffs } from "@/app/store/userSlice";
 import { useState } from "react";
 import { Container } from "react-bootstrap";
 import ReservationCreateCalendarForAllSection from "./components/ReservationCreateCalendarForAllSection";
@@ -6,6 +8,7 @@ import StaffSelector from "./components/StaffSelector";
 
 export default function ReservationCreateCalendarPage() {
 
+  const allStaffs = useAppSelector(getStaffs);
   const [selectedStaff, setSelectedStaff] = useState<string>('all');
 
   const handleStaffChange = (staff: string) => {
@@ -30,7 +33,7 @@ export default function ReservationCreateCalendarPage() {
       { (selectedStaff === 'all') ? (
         <ReservationCreateCalendarForAllSection />
       ) : (
-        <ReservationCreateCalendarSection selectedStaff={selectedStaff} />
+        <ReservationCreateCalendarSection selectedStaff={allStaffs.find((staff) => staff.id === selectedStaff)!} />
       )}
   </Container>
   );

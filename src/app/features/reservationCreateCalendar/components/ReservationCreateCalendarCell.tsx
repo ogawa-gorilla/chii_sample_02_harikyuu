@@ -35,7 +35,11 @@ export default function ReservationCreateCalendarCell({ day, hour, allReservatio
   const hasReservations = getReservations(allReservations, day, hour).length > 0;
   const hasShifts = getShifts(allShifts, day, hour).length > 0;
 
-  const handleClick = () => {}
+  const handleClick = () => {
+    if (onCellClick) {
+      onCellClick(day.format('YYYY-MM-DD'), hour, getReservations(allReservations, day, hour));
+    }
+  }
 
   return (
     <td 
