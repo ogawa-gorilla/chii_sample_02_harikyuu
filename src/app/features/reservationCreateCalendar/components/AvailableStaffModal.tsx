@@ -1,4 +1,5 @@
 import ReservationDetail from '@/app/components/common/ReservationDetail';
+import StaffButton from '@/app/components/common/StaffButton';
 import { Reservation } from '@/app/types/reservation';
 import { User } from '@/app/types/user';
 import dayjs from 'dayjs';
@@ -22,6 +23,7 @@ export default function AvailableStaffModal({
   hour,
   availableStaffs,
   reservations,
+  onStaffSelect,
 }: AvailableStaffModalProps) {
   
   const formatDateTime = () => {
@@ -54,29 +56,11 @@ export default function AvailableStaffModal({
           <div className="d-grid gap-2">
             {availableStaffs.length > 0 ? (
               availableStaffs.map((staff) => (
-                <Button
+                <StaffButton
                   key={staff.id}
-                  variant="outline-primary"
-                  size="lg"
-                  className="py-3"
-                  style={{
-                    fontSize: '18px',
-                    fontWeight: 'bold',
-                    borderColor: staff.themeColor,
-                    color: staff.themeColor,
-                    minHeight: '60px'
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = staff.themeColor;
-                    e.currentTarget.style.color = 'white';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = 'transparent';
-                    e.currentTarget.style.color = staff.themeColor;
-                  }}
-                >
-                  {staff.name}の予約を作成する
-                </Button>
+                  staff={staff}
+                  onClick={onStaffSelect}
+                />
               ))
             ) : (
               <div className="text-center py-4 text-muted">
