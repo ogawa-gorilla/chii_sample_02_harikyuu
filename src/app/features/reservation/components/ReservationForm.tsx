@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Button, Form, InputGroup } from 'react-bootstrap';
 import { User } from '../../../types/user';
 
 interface ReservationFormData {
@@ -65,15 +66,16 @@ export default function ReservationForm({
       <div className="max-w-md mx-auto bg-white rounded-lg shadow-md overflow-hidden">
 
         {/* フォーム */}
-        <form onSubmit={handleSubmit} className="p-6 space-y-6">
+        <Form onSubmit={handleSubmit} className="p-6 space-y-6">
           {/* 予約日時（編集不能） */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-gray-700 mb-2">
               予約日時
             </label>
-            <div className="bg-gray-100 border border-gray-300 rounded-lg px-4 py-3 text-gray-700">
-              {scheduledDate} {scheduledTime}
-            </div>
+          <InputGroup>
+            <Form.Control disabled className="bg-gray-100 border border-gray-300 rounded-lg px-4 py-3 text-gray-700" value={`${scheduledDate} ${scheduledTime}`} />
+            <Button variant="secondary" onClick={() => {}}>編集</Button>
+          </InputGroup>
           </div>
 
           {/* 担当スタッフ */}
@@ -150,7 +152,7 @@ export default function ReservationForm({
               決定
             </button>
           </div>
-        </form>
+        </Form>
       </div>
     </div>
   );
