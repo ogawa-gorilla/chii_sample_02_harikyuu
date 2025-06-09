@@ -15,6 +15,8 @@ interface ReservationFormData {
 interface ReservationFormProps {
   scheduledDate: string; // 予約日時（編集不能）
   scheduledTime: string;// 予約時間(編集不能)
+  clientName: string;
+  notes: string;
   staff: User;
   availableStaffs: User[]; // 選択可能なスタッフリスト
   onSubmit: (formData: ReservationFormData) => void; // 決定ボタン押下時のイベント
@@ -24,6 +26,8 @@ interface ReservationFormProps {
 export default function ReservationForm({ 
   scheduledDate,
   scheduledTime, 
+  clientName,
+  notes,
   staff,
   availableStaffs, 
   onSubmit, 
@@ -31,8 +35,8 @@ export default function ReservationForm({
 }: ReservationFormProps) {
   const [formData, setFormData] = useState<ReservationFormData>({
     staffId: staff.id,
-    clientName: '',
-    notes: '',
+    clientName: clientName,
+    notes: notes,
     date: scheduledDate,
     hour: scheduledTime
   });

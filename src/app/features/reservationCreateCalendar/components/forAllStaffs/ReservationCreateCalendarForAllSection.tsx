@@ -1,11 +1,11 @@
 import Calendar from "@/app/components/calendar";
-import AvailableStaffModal from "@/app/features/reservationCreateCalendar/components/AvailableStaffModal";
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { Reservation } from "@/app/types/reservation";
 import { User } from "@/app/types/user";
 import { filterReservedAt, isReservedAt } from "@/app/utils/reservationUtils";
 import { filterShiftsAtHour } from "@/app/utils/shiftUtils";
 import { useState } from "react";
+import AvailableStaffModal from "./AvailableStaffModal";
 import ReservationCreateCalendarCellForAll from "./ReservationCreateCalendarCellForAll";
 
 interface ReservationCreateCalendarForAllSectionProps {

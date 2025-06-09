@@ -1,10 +1,10 @@
-import { Reservation, ReservationDraft } from "@/app/types/reservation";
+import { Reservation, ReservationCreateContext } from "@/app/types/reservation";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RESERVATION_TESTDATA } from "../components/testdata/reservationTestData";
 
 interface ReservationState {
   reservations: Reservation[];
-  reservationDraft: ReservationDraft | null;
+  reservationDraft: ReservationCreateContext | null;
   selectedReservation: Reservation | null;
 }
 
@@ -18,7 +18,7 @@ export const reservationSlice = createSlice({
   name: 'reservation',
   initialState,
   reducers: {
-    setDraft: (state, action: PayloadAction<ReservationDraft>) => {
+    setDraft: (state, action: PayloadAction<ReservationCreateContext>) => {
       state.reservationDraft = action.payload;
     },
     createReservation: (state, action: PayloadAction<Reservation>) => {

@@ -7,8 +7,8 @@ import { Reservation } from "@/app/types/reservation";
 import { User } from "@/app/types/user";
 import { useState } from "react";
 import { Container } from "react-bootstrap";
-import ReservationCreateCalendarForAllSection from "./components/ReservationCreateCalendarForAllSection";
-import ReservationCreateCalendarSection from "./components/ReservationCreateCalendarSection";
+import ReservationCreateCalendarForAllSection from "./components/forAllStaffs/ReservationCreateCalendarForAllSection";
+import ReservationCreateCalendarSection from "./components/forAStaff/ReservationCreateCalendarSection";
 import StaffSelector from "./components/StaffSelector";
 
 export default function ReservationCreateCalendarPage() {
@@ -23,12 +23,6 @@ export default function ReservationCreateCalendarPage() {
 
   const handleEditClick = (reservation: Reservation) => {
     dispatch(setSelectedReservation(reservation));
-    dispatch(setDraft({
-      date: reservation.date,
-      time: reservation.time,
-      staff: reservation.staff,
-      availableStaffs: allStaffs
-    }));
     dispatch(pushPage(Page.RESERVE_EDIT));
   }
 

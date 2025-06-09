@@ -5,7 +5,7 @@ import { User } from "@/app/types/user";
 import { filterReservedAt } from "@/app/utils/reservationUtils";
 import { filterShiftsAtHour } from "@/app/utils/shiftUtils";
 import { Button, Modal } from "react-bootstrap";
-import ReservationCreateCalendarCell from "../../reservationCreateCalendar/components/ReservationCreateCalendarCell";
+import ReservationCreateCalendarCell from "../../reservationCreateCalendar/components/forAStaff/ReservationCreateCalendarCell";
 
 interface DatePickerModalProps {
   show: boolean;

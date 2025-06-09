@@ -19,8 +19,8 @@ export interface ReservationFormData {
   hour: string;
 }
 
-// 作成・編集画面に渡すプロパティ。一時的に使う値であって編集とかはしない
-export interface ReservationDraft {
+// 作成画面に渡すプロパティ。一時的に使う値であって編集とかはしない
+export interface ReservationCreateContext {
   date: string;
   time: string;
   staff: User;

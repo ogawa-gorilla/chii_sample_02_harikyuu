@@ -1,20 +1,20 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { popPage, setCurrentPage } from "@/app/store/navigationSlice";
-import { updateReservation } from "@/app/store/reservationSlice";
+import { setSelectedReservation, updateReservation } from "@/app/store/reservationSlice";
 import { Page } from "@/app/types/Page";
 import { Reservation, ReservationFormData } from "@/app/types/reservation";
-import { v4 } from "uuid";
 import ReservationForm from "./components/ReservationForm";
+
 
 export default function ReservationEditPage() {
 
   const dispatch = useAppDispatch();
-  const reservationDraft = useAppSelector((state) => state.reservation.reservationDraft);
+  const selectedReservation = useAppSelector((state) => state.reservation.selectedReservation)!;
   const allStaffs = useAppSelector((state) => state.user.users);
 
   const handleSubmit = (formData: ReservationFormData) => {
     const reservation: Reservation = {
-      id: v4(),
+      id: selectedReservation.id,
       staff: allStaffs.find(staff => staff.id === formData.staffId)!,
       client: formData.clientName,
       date: formData.date,
@@ -24,6 +24,7 @@ export default function ReservationEditPage() {
       notes: formData.notes
     }
     dispatch(updateReservation(reservation));
+    dispatch(setSelectedReservation(reservation));
     dispatch(setCurrentPage(Page.RESERVE_DETAIL));
   }
 
@@ -34,9 +35,7 @@ export default function ReservationEditPage() {
   return (
     <div>
       <h5 className="text-center mb-3">予約作成</h5>
-      { reservationDraft && (
-      <ReservationForm scheduledDate={reservationDraft.date} scheduledTime={reservationDraft.time} staff={reservationDraft.staff} availableStaffs={reservationDraft.availableStaffs} onSubmit={handleSubmit} onCancel={handleCancel} />
-      )}
+      <ReservationForm scheduledDate={selectedReservation.date} scheduledTime={selectedReservation.time} clientName={selectedReservation.client} notes={selectedReservation.notes} staff={selectedReservation.staff} availableStaffs={allStaffs} onSubmit={handleSubmit} onCancel={handleCancel} />
     </div>
   )
 }
