@@ -1,3 +1,4 @@
+import ReservationDetail from '@/app/components/common/ReservationDetail';
 import { Reservation } from '@/app/types/reservation';
 import { User } from '@/app/types/user';
 import dayjs from 'dayjs';
@@ -46,7 +47,7 @@ export default function AvailableStaffModal({
       
       <Modal.Body className="pt-2">
         {/* 空いているスタッフのヘッダー */}
-        <div className="mb-3">
+        <div className="mb-3 text-center">
           <h6 className="text-muted fw-bold mb-3">空いているスタッフ</h6>
           
           {/* スタッフボタン一覧 */}
@@ -94,15 +95,15 @@ export default function AvailableStaffModal({
             </div>
             <div className="d-grid gap-2">
               {reservations.map((reservation) => (
-                <div key={reservation.id}>{reservation.staff.name}</div>
+                <ReservationDetail key={reservation.id} reservation={reservation} />
               ))}
             </div>
           </div>
         ) : null
         }
 
-        {/* 区切り線 */}
-        <hr className="my-4" />
+  {/* 区切り線 */}
+<hr className="my-4" />
 
         {/* スタッフ指定なしボタン */}
         <div className="d-grid">

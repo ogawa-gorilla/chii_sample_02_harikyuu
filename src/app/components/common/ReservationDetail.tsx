@@ -32,7 +32,6 @@ export default function ReservationDetail({ reservation }: ReservationDetailProp
       <div className="ms-5">
         <div><strong>お客様:</strong> {reservation.client}</div>
         <div><strong>時間:</strong> {reservation.time} ({reservation.duration}時間)</div>
-        <div><strong>ステータス:</strong> {reservation.status}</div>
       </div>
     </div>
   );
