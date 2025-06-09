@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { setCurrentPage } from "@/app/store/navigationSlice";
-import { createReservation } from "@/app/store/reservationSlice";
+import { createReservation, setSelectedReservation } from "@/app/store/reservationSlice";
 import { Page } from "@/app/types/Page";
 import { Reservation, ReservationFormData } from "@/app/types/reservation";
 import { v4 } from "uuid";
@@ -24,14 +24,13 @@ export default function ReservationFormPage() {
       notes: formData.notes
     }
     dispatch(createReservation(reservation));
-    // TODO: 予約詳細ページへ遷移
+    dispatch(setSelectedReservation(reservation));
+    dispatch(setCurrentPage(Page.RESERVE_DETAIL));
   }
 
   return (
     <div>
-      <div className="bg-blue-600 text-white px-6 py-4">
-        <h1 className="text-xl font-bold text-center">予約作成</h1>
-      </div>
+      <h5 className="text-center mb-3">予約作成</h5>
       { reservationDraft && (
       <ReservationForm scheduledDate={reservationDraft.date} scheduledTime={reservationDraft.time} staff={reservationDraft.staff} availableStaffs={reservationDraft.availableStaffs} onSubmit={handleSubmit} onCancel={() => {
         dispatch(setCurrentPage(Page.RESERVATION_CALENDAR))

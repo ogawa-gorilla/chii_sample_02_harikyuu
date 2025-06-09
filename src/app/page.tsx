@@ -2,6 +2,7 @@
 
 import AppNavbar from "./components/AppNavbar";
 import Footer from "./components/Footer";
+import ReservationDetailPage from "./features/reservation/ReservationDetailPage";
 import ReservationFormPage from "./features/reservation/ReservationFormPage";
 import ReservationCalendarPage from "./features/reservationCalendar/ReservationCalendarPage";
 import ReservationCreateCalendarPage from "./features/reservationCreateCalendar/ReservationCreateCalendarPage";
@@ -20,6 +21,8 @@ const showPage = (page: Page) => {
       return <ReservationCreateCalendarPage />
     case Page.RESERVE_CREATE:
       return <ReservationFormPage />
+    case Page.RESERVE_DETAIL:
+      return <ReservationDetailPage />
     default:
       return <NotImplementedPage />
   }

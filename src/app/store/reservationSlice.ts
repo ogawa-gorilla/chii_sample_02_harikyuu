@@ -5,11 +5,13 @@ import { RESERVATION_TESTDATA } from "../components/testdata/reservationTestData
 interface ReservationState {
   reservations: Reservation[];
   reservationDraft: ReservationDraft | null;
+  selectedReservation: Reservation | null;
 }
 
 const initialState: ReservationState = {
   reservations: RESERVATION_TESTDATA,
-  reservationDraft: null
+  reservationDraft: null,
+  selectedReservation: null
 }
 
 export const reservationSlice = createSlice({
@@ -21,13 +23,17 @@ export const reservationSlice = createSlice({
     },
     createReservation: (state, action: PayloadAction<Reservation>) => {
       state.reservations.push(action.payload);
+    },
+    setSelectedReservation: (state, action: PayloadAction<Reservation>) => {
+      state.selectedReservation = action.payload;
     }
   }
 })
 
 export const { 
   setDraft,
-  createReservation
+  createReservation,
+  setSelectedReservation
  } = reservationSlice.actions;
 
 export default reservationSlice.reducer;
