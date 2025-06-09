@@ -9,7 +9,7 @@ interface ReservationCreateCalendarCellForAllProps {
   hour: number;
   allReservations: Reservation[];
   allShifts: Shift[];
-  onCellClick?: (date: string, hour: number, reservations: Reservation[]) => void;
+  onCellClick?: (date: string, hour: number) => void;
 }
 
 const countAvailableStaffs = (reservationsAtTime: Reservation[], shiftsAtTime: Shift[]): number => {
@@ -37,7 +37,11 @@ export default function ReservationCreateCalendarCellForAll({ day, hour, allRese
   
   const availableStaffs = getAvailableStaffs(allReservations, allShifts, day, hour);
 
-  const handleClick = () => {}
+  const handleClick = () => {
+    if (onCellClick) {
+      onCellClick(day.format('YYYY-MM-DD'), hour);
+    }
+  }
 
   return (
     <td 

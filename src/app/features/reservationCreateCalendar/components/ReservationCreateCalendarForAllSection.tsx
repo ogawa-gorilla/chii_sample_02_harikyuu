@@ -2,6 +2,7 @@ import AvailableStaffModal from "@/app/components/AvailableStaffModal";
 import Calendar from "@/app/components/calendar";
 import { useAppSelector } from "@/app/hooks";
 import { User } from "@/app/types/user";
+import { filterReservedAt } from "@/app/utils/reservationUtils";
 import { filterShiftsAtHour } from "@/app/utils/shiftUtils";
 import { useState } from "react";
 import ReservationCreateCalendarCellForAll from "./ReservationCreateCalendarCellForAll";
@@ -17,8 +18,9 @@ export default function ReservationCreateCalendarForAllSection() {
   const [availableStaffs, setAvailableStaffs] = useState<User[]>([]);
 
 const filterAvailableStaffs = (date: string, hour: number): User[] => {
-  return filterShiftsAtHour(allShifts, date, hour)
-  .map((shift) => allStaffs.find((staff) => staff.id === shift.staffId)!);
+  const availableShifts = filterShiftsAtHour(allShifts, date, hour)
+  const reservations = filterReservedAt(allReservations, date, hour);
+  return availableShifts.filter((shift) => !reservations.some((reservation) => reservation.staff.id === shift.staffId)).map((shift) => allStaffs.find((staff) => staff.id === shift.staffId)!);
 }
 
   const handleCellClick = (date: string, hour: number) => {
