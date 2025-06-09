@@ -6,7 +6,7 @@ import { Reservation, ReservationFormData } from "@/app/types/reservation";
 import { v4 } from "uuid";
 import ReservationForm from "./components/ReservationForm";
 
-export default function ReservationFormPage() {
+export default function ReservationCreatePage() {
 
   const dispatch = useAppDispatch();
   const reservationDraft = useAppSelector((state) => state.reservation.reservationDraft);
