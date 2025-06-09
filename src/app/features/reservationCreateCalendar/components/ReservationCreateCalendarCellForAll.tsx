@@ -1,5 +1,7 @@
 import { Reservation } from "@/app/types/reservation";
 import { Shift } from "@/app/types/shift";
+import { filterReservedAt } from "@/app/utils/reservationUtils";
+import { filterShiftsAtHour } from "@/app/utils/shiftUtils";
 import dayjs from "dayjs";
 
 interface ReservationCreateCalendarCellForAllProps {
@@ -25,8 +27,8 @@ const countAvailableStaffs = (reservationsAtTime: Reservation[], shiftsAtTime: S
 }
 
 const getAvailableStaffs = (reservations: Reservation[], shifts: Shift[], day: dayjs.Dayjs, hour: number) => {
-  const reservationsAtHour = reservations.filter(reservation => reservation.date === day.format('YYYY-MM-DD') && reservation.time === hour.toString().padStart(2, '0') + ":00");
-  const shiftsAtHour = shifts.filter(shift => shift.date === day.format('YYYY-MM-DD') && shift.startTime <= hour.toString().padStart(2, '0') + ":00" && shift.endTime >= hour.toString().padStart(2, '0') + ":00");
+  const reservationsAtHour = filterReservedAt(reservations, day.format('YYYY-MM-DD'), hour);
+  const shiftsAtHour = filterShiftsAtHour(shifts, day.format('YYYY-MM-DD'), hour);
   return countAvailableStaffs(reservationsAtHour, shiftsAtHour);
 }
 
