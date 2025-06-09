@@ -35,7 +35,7 @@ export default function ReservationEditPage() {
   return (
     <div>
       <h5 className="text-center mb-3">予約作成</h5>
-      <ReservationForm scheduledDate={selectedReservation.date} scheduledTime={selectedReservation.time} clientName={selectedReservation.client} notes={selectedReservation.notes} staff={selectedReservation.staff} availableStaffs={allStaffs} onSubmit={handleSubmit} onCancel={handleCancel} />
+      <ReservationForm scheduledDate={selectedReservation.date} scheduledTime={selectedReservation.time} clientName={selectedReservation.client} notes={selectedReservation.notes} staff={selectedReservation.staff} availableStaffs={allStaffs} reservationId={selectedReservation.id} onSubmit={handleSubmit} onCancel={handleCancel} />
     </div>
   )
 }

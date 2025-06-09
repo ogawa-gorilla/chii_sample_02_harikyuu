@@ -12,20 +12,21 @@ interface DatePickerCellProps {
     day: dayjs.Dayjs;
     hour: number;
   }
+  reservationId: string;
   onCellClick?: (date: string, hour: number, reservations: Reservation[]) => void;
-}
-
-const getReservations = (reservations: Reservation[], day: dayjs.Dayjs, hour: number) => {
-  return reservations.filter(reservation => reservation.date === day.format('YYYY-MM-DD') && reservation.time === hour.toString() + ":00");
 }
 
 const getShifts = (allShifts: Shift[], day: dayjs.Dayjs, hour: number) => {
   return filterShiftsAtHour(allShifts, day.format('YYYY-MM-DD'), hour);
 }
 
-export default function DatePickerCell({ day, hour, allReservations, allShifts, currentSelection, onCellClick }: DatePickerCellProps) {
+export default function DatePickerCell({ day, hour, allReservations, allShifts, currentSelection, reservationId, onCellClick }: DatePickerCellProps) {
 
   
+  const getReservations = (reservations: Reservation[], day: dayjs.Dayjs, hour: number) => {
+    return reservations.filter(reservation => reservation.date === day.format('YYYY-MM-DD') && reservation.time === hour.toString() + ":00" && reservation.id !== reservationId);
+  }
+
   const hasReservations = getReservations(allReservations, day, hour).length > 0;
   const hasShifts = getShifts(allShifts, day, hour).length > 0;
 

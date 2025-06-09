@@ -36,7 +36,7 @@ export default function ReservationCreatePage() {
     <div>
       <h5 className="text-center mb-3">予約作成</h5>
       { reservationDraft && (
-      <ReservationForm scheduledDate={reservationDraft.date} scheduledTime={reservationDraft.time} clientName={""} notes={""} staff={reservationDraft.staff} availableStaffs={reservationDraft.availableStaffs} onSubmit={handleSubmit} onCancel={handleCancel} />
+      <ReservationForm scheduledDate={reservationDraft.date} scheduledTime={reservationDraft.time} clientName={""} notes={""} staff={reservationDraft.staff} availableStaffs={reservationDraft.availableStaffs} reservationId={null} onSubmit={handleSubmit} onCancel={handleCancel} />
       )}
     </div>
   )

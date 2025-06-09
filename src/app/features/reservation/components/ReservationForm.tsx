@@ -20,6 +20,7 @@ interface ReservationFormProps {
   notes: string;
   staff: User;
   availableStaffs: User[]; // 選択可能なスタッフリスト
+  reservationId: string | null;
   onSubmit: (formData: ReservationFormData) => void; // 決定ボタン押下時のイベント
   onCancel?: () => void; // キャンセル時のイベント（オプション）
 }
@@ -31,6 +32,7 @@ export default function ReservationForm({
   notes,
   staff,
   availableStaffs, 
+  reservationId,
   onSubmit, 
   onCancel 
 }: ReservationFormProps) {
@@ -85,7 +87,7 @@ export default function ReservationForm({
 
   return (
     <div className="min-h-screen bg-gray-50 px-4 py-6">
-      <DatePickerModal show={showDatePickerModal} onHide={() => setShowDatePickerModal(false)} staff={targetStaff!} currentSelection={{ day: dayjs(formData.date), hour: parseInt(formData.hour.split(':')[0]) }} onDateSelected={handleDateSelected} />
+      <DatePickerModal show={showDatePickerModal} onHide={() => setShowDatePickerModal(false)} staff={targetStaff!} currentSelection={{ day: dayjs(formData.date), hour: parseInt(formData.hour.split(':')[0]) }} reservationId={reservationId ? reservationId : ''} onDateSelected={handleDateSelected} />
       <div className="max-w-md mx-auto bg-white rounded-lg shadow-md overflow-hidden">
 
         {/* フォーム */}

@@ -16,10 +16,11 @@ interface DatePickerModalProps {
     day: dayjs.Dayjs;
     hour: number;
   }
+  reservationId: string | null;
   onDateSelected: (date: string, hour: number) => void;
 }
 
-export default function DatePickerModal({ show, onHide, staff, currentSelection, onDateSelected }: DatePickerModalProps) {
+export default function DatePickerModal({ show, onHide, staff, currentSelection, reservationId, onDateSelected }: DatePickerModalProps) {
 
   const allReservations = useAppSelector((state) => state.reservation.reservations).filter(reservation => reservation.staff.id === staff.id);
   const allShifts = useAppSelector((state) => state.shift.shifts).filter(shift => shift.staffId === staff.id);
@@ -46,7 +47,7 @@ export default function DatePickerModal({ show, onHide, staff, currentSelection,
           <Modal.Title>予約日時選択({staff.name})</Modal.Title>
         </Modal.Header>
         <Modal.Body className="p-2">
-          <Calendar cellComponent={DatePickerCell} cellProps={{ allReservations, allShifts, currentSelection: { day: dayjs(currentSelection.day), hour: currentSelection.hour }, onCellClick: handleCellClick }} />
+          <Calendar cellComponent={DatePickerCell} cellProps={{ allReservations, allShifts, currentSelection: { day: dayjs(currentSelection.day), hour: currentSelection.hour }, reservationId: reservationId, onCellClick: handleCellClick }} />
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={onHide}>閉じる</Button>
