@@ -1,5 +1,7 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
+import { setCurrentPage } from "@/app/store/navigationSlice";
 import { createReservation } from "@/app/store/reservationSlice";
+import { Page } from "@/app/types/Page";
 import { Reservation, ReservationFormData } from "@/app/types/reservation";
 import { v4 } from "uuid";
 import ReservationForm from "./components/ReservationForm";
@@ -31,7 +33,10 @@ export default function ReservationFormPage() {
         <h1 className="text-xl font-bold text-center">予約作成</h1>
       </div>
       { reservationDraft && (
-      <ReservationForm scheduledDate={reservationDraft.date} scheduledTime={reservationDraft.time} staff={reservationDraft.staff} availableStaffs={reservationDraft.availableStaffs} onSubmit={handleSubmit} />
+      <ReservationForm scheduledDate={reservationDraft.date} scheduledTime={reservationDraft.time} staff={reservationDraft.staff} availableStaffs={reservationDraft.availableStaffs} onSubmit={handleSubmit} onCancel={() => {
+        dispatch(setCurrentPage(Page.RESERVATION_CALENDAR))
+        // TODO: 遷移先を工夫
+      }} />
       )}
     </div>
   )
