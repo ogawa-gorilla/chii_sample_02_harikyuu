@@ -1,10 +1,12 @@
 import { Reservation } from "@/app/types/reservation";
+import { Shift } from "@/app/types/shift";
 import dayjs from "dayjs";
 
 interface ReservationCreateCalendarCellProps {
   day: dayjs.Dayjs;
   hour: number;
   allReservations: Reservation[];
+  allShifts: Shift[];
   onCellClick?: (date: string, hour: number, reservations: Reservation[]) => void;
 }
 
@@ -12,7 +14,7 @@ const getReservations = (reservations: Reservation[], day: dayjs.Dayjs, hour: nu
   return reservations.filter(reservation => reservation.date === day.format('YYYY-MM-DD') && reservation.time === hour.toString() + ":00");
 }
 
-export default function ReservationCreateCalendarCell({ day, hour, allReservations, onCellClick }: ReservationCreateCalendarCellProps) {
+export default function ReservationCreateCalendarCell({ day, hour, allReservations, allShifts, onCellClick }: ReservationCreateCalendarCellProps) {
 
   
   const hasReservations = getReservations(allReservations, day, hour).length > 0;

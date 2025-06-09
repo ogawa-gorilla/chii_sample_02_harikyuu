@@ -167,6 +167,22 @@ const initialState: ReservationState = {
         password: 'yamada',
         themeColor: '#4B000F',
       }
+    },
+    {
+      id: 11,
+      date: '2025-06-18',
+      client: '佐竹 一郎',
+      time: '17:00',
+      duration: 1,
+      status: '予約済',
+      staff: {
+        id: '1',
+        name: '鈴木',
+        email: 'suzuki@example.com',
+        role: Role.MANAGER,
+        password: 'suzuki',
+        themeColor: '#0A192F',
+      }
     }
   ]  
 }

@@ -12,6 +12,7 @@ export default function ReservationCreateCalendarPage() {
   const [selectedStaff, setSelectedStaff] = useState<string>('all');
 
   const allReservations = useAppSelector((state) => state.reservation.reservations).filter((reservation) => selectedStaff === 'all' || reservation.staff.id === selectedStaff);
+  const allShifts = useAppSelector((state) => state.shift.shifts).filter((shift) => selectedStaff === 'all' || shift.staffId === selectedStaff);
 
   const handleStaffChange = (staff: string) => {
     setSelectedStaff(staff);
@@ -28,9 +29,9 @@ export default function ReservationCreateCalendarPage() {
       <StaffSelector selectedStaff={selectedStaff} onStaffChange={handleStaffChange} />
       {
         selectedStaff === 'all' ? (
-          <Calendar cellComponent={ReservationCreateCalendarCellForAll} cellProps={{ allReservations, onCellClick: handleCellClick }} />
+          <Calendar cellComponent={ReservationCreateCalendarCellForAll} cellProps={{ allReservations, allShifts, onCellClick: handleCellClick }} />
         ) : (
-          <Calendar cellComponent={ReservationCreateCalendarCell} cellProps={{ allReservations, onCellClick: handleCellClick }} />
+          <Calendar cellComponent={ReservationCreateCalendarCell} cellProps={{ allReservations, allShifts, onCellClick: handleCellClick }} />
         )
       }
   </Container>

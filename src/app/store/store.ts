@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import loginReducer from './loginSlice';
 import navigationReducer from './navigationSlice';
 import reservationReducer from './reservationSlice';
+import shiftReducer from './shiftSlice';
 import userReducer from './userSlice';
 
 export const store = configureStore({
@@ -10,6 +11,7 @@ export const store = configureStore({
         login: loginReducer,
         user: userReducer,
         reservation: reservationReducer,
+        shift: shiftReducer,
     },
 });
 
