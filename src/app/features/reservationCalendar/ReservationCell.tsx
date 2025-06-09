@@ -1,5 +1,6 @@
 import { Reservation } from '@/app/types/reservation';
 import { isToday } from '@/app/utils/calendarUtils';
+import { filterReservedAt } from '@/app/utils/reservationUtils';
 import dayjs from 'dayjs';
 
 interface CalendarCellProps {
@@ -20,7 +21,7 @@ const getClassName = (day: dayjs.Dayjs, hour: number, hasReservations: boolean) 
 }
 
 const getReservations = (reservations: Reservation[], day: dayjs.Dayjs, hour: number) => {
-  return reservations.filter(reservation => reservation.date === day.format('YYYY-MM-DD') && reservation.time === hour.toString() + ":00");
+  return filterReservedAt(reservations, day.format('YYYY-MM-DD'), hour);
 }
 
 const renderReservations = (reservations: Reservation[]) => {
