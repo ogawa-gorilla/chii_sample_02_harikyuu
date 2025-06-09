@@ -10,10 +10,24 @@ interface ReservationCreateCalendarCellForAllProps {
   onCellClick?: (date: string, hour: number, reservations: Reservation[]) => void;
 }
 
+const countAvailableStaffs = (reservationsAtTime: Reservation[], shiftsAtTime: Shift[]): number => {
+  if (reservationsAtTime.length === 0) {
+    return shiftsAtTime.length;
+  }
+
+  let count = shiftsAtTime.length;
+  for (const shift of shiftsAtTime) {
+    if (reservationsAtTime.find(reservation => reservation.staff.id === shift.staffId)) {
+      count--;
+    }
+  }
+  return count;
+}
+
 const getAvailableStaffs = (reservations: Reservation[], shifts: Shift[], day: dayjs.Dayjs, hour: number) => {
-  const reservationsAtHour = reservations.filter(reservation => reservation.date === day.format('YYYY-MM-DD') && reservation.time === hour.toString() + ":00");
+  const reservationsAtHour = reservations.filter(reservation => reservation.date === day.format('YYYY-MM-DD') && reservation.time === hour.toString().padStart(2, '0') + ":00");
   const shiftsAtHour = shifts.filter(shift => shift.date === day.format('YYYY-MM-DD') && shift.startTime <= hour.toString().padStart(2, '0') + ":00" && shift.endTime >= hour.toString().padStart(2, '0') + ":00");
-  return shiftsAtHour.length - reservationsAtHour.length;
+  return countAvailableStaffs(reservationsAtHour, shiftsAtHour);
 }
 
 export default function ReservationCreateCalendarCellForAll({ day, hour, allReservations, allShifts, onCellClick }: ReservationCreateCalendarCellForAllProps) {
