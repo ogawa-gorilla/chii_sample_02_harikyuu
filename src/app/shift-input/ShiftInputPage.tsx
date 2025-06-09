@@ -22,6 +22,15 @@ const ShiftInputPage: React.FC = () => {
   const [endTime, setEndTime] = useState<string>('18:00');
   const [shifts, setShifts] = useState<Shift[]>([]);
   const [showSuccess, setShowSuccess] = useState<boolean>(false);
+  
+  // 基本シフト設定用の状態（月・火以外の曜日）
+  const [basicShifts, setBasicShifts] = useState<{[key: string]: {startTime: string, endTime: string}}>({
+    'wed': { startTime: '09:00', endTime: '18:00' },
+    'thu': { startTime: '09:00', endTime: '18:00' },
+    'fri': { startTime: '09:00', endTime: '18:00' },
+    'sat': { startTime: '09:00', endTime: '18:00' },
+    'sun': { startTime: '09:00', endTime: '18:00' },
+  });
 
   const generateShiftId = (staffId: string, date: string): string => {
     return `s${staffId}-${date.replace(/-/g, '')}`;
@@ -93,6 +102,38 @@ const ShiftInputPage: React.FC = () => {
   const getMinDate = (): string => {
     const today = new Date();
     return today.toISOString().split('T')[0];
+  };
+
+  // 基本シフト設定用のヘルパー関数
+  const weekdayNames = {
+    'wed': '水曜日',
+    'thu': '木曜日', 
+    'fri': '金曜日',
+    'sat': '土曜日',
+    'sun': '日曜日'
+  };
+
+  const updateBasicShift = (dayKey: string, field: 'startTime' | 'endTime', value: string) => {
+    setBasicShifts(prev => ({
+      ...prev,
+      [dayKey]: {
+        ...prev[dayKey],
+        [field]: value
+      }
+    }));
+  };
+
+  const setPresetTime = (dayKey: string, preset: 'morning' | 'afternoon' | 'allday') => {
+    const presets = {
+      morning: { startTime: '09:00', endTime: '13:00' },
+      afternoon: { startTime: '13:00', endTime: '18:00' },
+      allday: { startTime: '09:00', endTime: '18:00' }
+    };
+    
+    setBasicShifts(prev => ({
+      ...prev,
+      [dayKey]: presets[preset]
+    }));
   };
 
   return (
@@ -209,11 +250,86 @@ const ShiftInputPage: React.FC = () => {
           <Card.Header className="bg-light">
             <h5 className="mb-0 text-dark">
               <i className="bi bi-calendar-plus me-2"></i>
-              一括入力
+              基本シフト設定
             </h5>
           </Card.Header>
           <Card.Body className="p-3">
+            <div className="text-muted small mb-3">
+              <i className="bi bi-info-circle me-1"></i>
+              月・火以外の曜日の基本シフト時間を設定できます
+            </div>
             
+            {Object.entries(weekdayNames).map(([dayKey, dayName]) => (
+              <Card key={dayKey} className="mb-3 border-0 bg-light">
+                <Card.Body className="p-3">
+                  <div className="d-flex align-items-center justify-content-between mb-3">
+                    <h6 className="mb-0 text-primary fw-semibold">
+                      <i className="bi bi-calendar2-week me-2"></i>
+                      {dayName}
+                    </h6>
+                    <div className="btn-group btn-group-sm" role="group">
+                      <Button
+                        variant="outline-secondary"
+                        size="sm"
+                        onClick={() => setPresetTime(dayKey, 'morning')}
+                      >
+                        午前
+                      </Button>
+                      <Button
+                        variant="outline-secondary"
+                        size="sm"
+                        onClick={() => setPresetTime(dayKey, 'afternoon')}
+                      >
+                        午後
+                      </Button>
+                      <Button
+                        variant="outline-secondary"
+                        size="sm"
+                        onClick={() => setPresetTime(dayKey, 'allday')}
+                      >
+                        全日
+                      </Button>
+                    </div>
+                  </div>
+                  
+                  <Row>
+                    <Col xs={6}>
+                      <Form.Group>
+                        <Form.Label className="fw-semibold text-secondary small">
+                          <i className="bi bi-clock me-1"></i>開始時間
+                        </Form.Label>
+                        <Form.Control
+                          type="time"
+                          value={basicShifts[dayKey].startTime}
+                          onChange={(e) => updateBasicShift(dayKey, 'startTime', e.target.value)}
+                          size="sm"
+                        />
+                      </Form.Group>
+                    </Col>
+                    <Col xs={6}>
+                      <Form.Group>
+                        <Form.Label className="fw-semibold text-secondary small">
+                          <i className="bi bi-clock-fill me-1"></i>終了時間
+                        </Form.Label>
+                        <Form.Control
+                          type="time"
+                          value={basicShifts[dayKey].endTime}
+                          onChange={(e) => updateBasicShift(dayKey, 'endTime', e.target.value)}
+                          size="sm"
+                        />
+                      </Form.Group>
+                    </Col>
+                  </Row>
+                </Card.Body>
+              </Card>
+            ))}
+            
+            <div className="d-grid mt-3">
+              <Button variant="success" size="sm">
+                <i className="bi bi-check-circle me-2"></i>
+                基本シフト設定を保存
+              </Button>
+            </div>
           </Card.Body>
         </Card>
       )}
