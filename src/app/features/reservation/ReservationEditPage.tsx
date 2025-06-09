@@ -1,0 +1,42 @@
+import { useAppDispatch, useAppSelector } from "@/app/hooks";
+import { setCurrentPage } from "@/app/store/navigationSlice";
+import { updateReservation } from "@/app/store/reservationSlice";
+import { Page } from "@/app/types/Page";
+import { Reservation, ReservationFormData } from "@/app/types/reservation";
+import { v4 } from "uuid";
+import ReservationForm from "./components/ReservationForm";
+
+export default function ReservationEditPage() {
+
+  const dispatch = useAppDispatch();
+  const reservationDraft = useAppSelector((state) => state.reservation.reservationDraft);
+  const allStaffs = useAppSelector((state) => state.user.users);
+
+  const handleSubmit = (formData: ReservationFormData) => {
+    const reservation: Reservation = {
+      id: v4(),
+      staff: allStaffs.find(staff => staff.id === formData.staffId)!,
+      client: formData.clientName,
+      date: formData.date,
+      time: formData.hour,
+      duration: 1,
+      status: 'pending',
+      notes: formData.notes
+    }
+    dispatch(updateReservation(reservation));
+    dispatch(setCurrentPage(Page.RESERVE_DETAIL));
+  }
+
+  return (
+    <div>
+      <h5 className="text-center mb-3">予約作成</h5>
+      { reservationDraft && (
+      <ReservationForm scheduledDate={reservationDraft.date} scheduledTime={reservationDraft.time} staff={reservationDraft.staff} availableStaffs={reservationDraft.availableStaffs} onSubmit={handleSubmit} onCancel={() => {
+        dispatch(setCurrentPage(Page.RESERVATION_CALENDAR))
+        // TODO: 遷移先を工夫
+      }} />
+      )}
+    </div>
+  )
+}
+

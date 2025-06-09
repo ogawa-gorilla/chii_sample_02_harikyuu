@@ -10,7 +10,7 @@ import ReservationCell from "./ReservationCell";
 import ReservationModal from "./ReservationModal";
 import StaffSelector from "./StaffSelector";
 
-export default function ReservationCalendarPage() {
+export default function ReservationViewCalendarPage() {
 
   const dispatch = useAppDispatch();
   const [selectedStaff, setSelectedStaff] = useState<string>('all');

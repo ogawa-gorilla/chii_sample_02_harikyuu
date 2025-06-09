@@ -24,6 +24,12 @@ export const reservationSlice = createSlice({
     createReservation: (state, action: PayloadAction<Reservation>) => {
       state.reservations.push(action.payload);
     },
+    updateReservation: (state, action: PayloadAction<Reservation>) => {
+      const targetIndex = state.reservations.findIndex(reservation => reservation.id === action.payload.id);
+      if (targetIndex !== -1) {
+        state.reservations[targetIndex] = action.payload;
+      }
+    },
     setSelectedReservation: (state, action: PayloadAction<Reservation>) => {
       state.selectedReservation = action.payload;
     }
@@ -33,11 +39,10 @@ export const reservationSlice = createSlice({
 export const { 
   setDraft,
   createReservation,
+  updateReservation,
   setSelectedReservation
  } = reservationSlice.actions;
 
 export default reservationSlice.reducer;
-function uuidv4(): number {
-  throw new Error("Function not implemented.");
-}
+
 

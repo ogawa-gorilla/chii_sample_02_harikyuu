@@ -4,8 +4,9 @@ import AppNavbar from "./components/AppNavbar";
 import Footer from "./components/Footer";
 import ReservationCreatePage from "./features/reservation/ReservationCreatePage";
 import ReservationDetailPage from "./features/reservation/ReservationDetailPage";
-import ReservationCalendarPage from "./features/reservationCalendar/ReservationCalendarPage";
+import ReservationEditPage from "./features/reservation/ReservationEditPage";
 import ReservationCreateCalendarPage from "./features/reservationCreateCalendar/ReservationCreateCalendarPage";
+import ReservationCalendarPage from "./features/reservationViewCalendar/ReservationViewCalendarPage";
 import HomePage from "./HomePage";
 import { useAppSelector } from "./hooks";
 import NotImplementedPage from "./NotImplementedPage";
@@ -23,6 +24,8 @@ const showPage = (page: Page) => {
       return <ReservationCreatePage />
     case Page.RESERVE_DETAIL:
       return <ReservationDetailPage />
+    case Page.RESERVE_EDIT:
+      return <ReservationEditPage />
     default:
       return <NotImplementedPage />
   }
