@@ -26,7 +26,7 @@ export default function ReservationDetail({ reservation }: ReservationDetailProp
         </span>
         <div>
           <div className="fw-bold">{reservation.staff.name}</div>
-          <div className="text-muted small">スタッフ</div>
+          <div className="text-muted small">{reservation.staff.role}</div>
         </div>
       </div>
       <div className="ms-5">
