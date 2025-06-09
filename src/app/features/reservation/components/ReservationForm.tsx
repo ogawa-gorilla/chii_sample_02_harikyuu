@@ -1,5 +1,6 @@
 import { useAppSelector } from '@/app/hooks';
 import { isReservedAt } from '@/app/utils/reservationUtils';
+import { isAvailableAt } from '@/app/utils/shiftUtils';
 import dayjs from 'dayjs';
 import React, { useState } from 'react';
 import { Button, Form, InputGroup } from 'react-bootstrap';
@@ -89,6 +90,8 @@ export default function ReservationForm({
 
   const hasDuplicatedReservation = useAppSelector((state) => state.reservation.reservations).some(reservation => isReservedAt(reservation, formData.date, parseInt(formData.hour.split(':')[0])) && reservation.staff.id === formData.staffId && reservation.id !== reservationId);
 
+  const isNotOnAShift = !useAppSelector((state) => state.shift.shifts).some(shift => isAvailableAt(shift, formData.date, parseInt(formData.hour.split(':')[0])) && shift.staffId === formData.staffId);
+
   return (
     <div className="min-h-screen bg-gray-50 px-4 py-6">
       <DatePickerModal show={showDatePickerModal} onHide={() => setShowDatePickerModal(false)} staff={targetStaff!} currentSelection={{ day: dayjs(formData.date), hour: parseInt(formData.hour.split(':')[0]) }} reservationId={reservationId ? reservationId : ''} onDateSelected={handleDateSelected} />
@@ -105,7 +108,7 @@ export default function ReservationForm({
             <Form.Control 
               disabled 
               className={`px-4 py-3 ${
-                hasDuplicatedReservation ? 'bg-danger' : 'bg-gray-100 border-gray-300'
+                hasDuplicatedReservation || isNotOnAShift ? 'bg-danger' : 'bg-gray-100 border-gray-300'
               }`} 
               value={`${formData.date} ${formData.hour}`} 
             />
@@ -113,6 +116,9 @@ export default function ReservationForm({
           </InputGroup>
           {hasDuplicatedReservation && (
             <p className="mt-1 text-sm text-red-500">警告：その時間には別の予約があります</p>
+          )}
+          {isNotOnAShift && (
+            <p className="mt-1 text-sm text-red-500">警告：出勤時間外です</p>
           )}
           </div>
 
