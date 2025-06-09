@@ -24,6 +24,12 @@ export default function CalendarStyles() {
       table td.today {
         background-color: #e6f0e6 !important;
       }
+
+      td.not-available {
+        text-align: center;
+        background-color: #f0f0f0;
+        color: #6c757d;
+      }
       `}
     </style>
   );

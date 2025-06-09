@@ -1,11 +1,15 @@
+import { useAppSelector } from '@/app/hooks';
 import React, { useState } from 'react';
 import { Button, Form, InputGroup } from 'react-bootstrap';
 import { User } from '../../../types/user';
+import DatePickerModal from './DatePickerModal';
 
 interface ReservationFormData {
   staffId: string;
   clientName: string;
   notes: string;
+  date: string;
+  hour: string;
 }
 
 interface ReservationFormProps {
@@ -28,10 +32,15 @@ export default function ReservationForm({
   const [formData, setFormData] = useState<ReservationFormData>({
     staffId: staff.id,
     clientName: '',
-    notes: ''
+    notes: '',
+    date: scheduledDate,
+    hour: scheduledTime
   });
 
   const [errors, setErrors] = useState<Partial<ReservationFormData>>({});
+  const [showDatePickerModal, setShowDatePickerModal] = useState(false);
+
+  const targetStaff = useAppSelector((state) => state.user.users).find((user) => user.id === formData.staffId);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -61,8 +70,18 @@ export default function ReservationForm({
     }
   };
 
+  const handleDateEdit = () => {
+    setShowDatePickerModal(true);
+  }
+
+  const handleDateSelected = (date: string, hour: number) => {
+    setShowDatePickerModal(false);
+    setFormData(prev => ({ ...prev, date, hour: hour.toString().padStart(2, '0') + ':00' }));
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 px-4 py-6">
+      <DatePickerModal show={showDatePickerModal} onHide={() => setShowDatePickerModal(false)} staff={targetStaff!} onDateSelected={handleDateSelected} />
       <div className="max-w-md mx-auto bg-white rounded-lg shadow-md overflow-hidden">
 
         {/* フォーム */}
@@ -73,8 +92,8 @@ export default function ReservationForm({
               予約日時
             </label>
           <InputGroup>
-            <Form.Control disabled className="bg-gray-100 border border-gray-300 rounded-lg px-4 py-3 text-gray-700" value={`${scheduledDate} ${scheduledTime}`} />
-            <Button variant="secondary" onClick={() => {}}>編集</Button>
+            <Form.Control disabled className="bg-gray-100 border border-gray-300 rounded-lg px-4 py-3 text-gray-700" value={`${formData.date} ${formData.hour}`} />
+            <Button variant="secondary" onClick={handleDateEdit}>編集</Button>
           </InputGroup>
           </div>
 

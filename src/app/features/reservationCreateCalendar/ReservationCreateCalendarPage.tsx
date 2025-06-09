@@ -18,16 +18,6 @@ export default function ReservationCreateCalendarPage() {
 
   return (
     <Container fluid className="py-3">
-      <style>
-        {`
-          td.not-available {
-            text-align: center;
-            background-color: #f0f0f0;
-            color: #6c757d;
-          }
-        `}
-      </style>
-
       <h5 className="text-center mb-3">予約作成</h5>
       <StaffSelector selectedStaff={selectedStaff} onStaffChange={handleStaffChange} />
       { (selectedStaff === 'all') ? (
