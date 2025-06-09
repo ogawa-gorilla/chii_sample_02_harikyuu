@@ -2,7 +2,7 @@ import Calendar from "@/app/components/calendar";
 import AvailableStaffModal from "@/app/features/reservationCreateCalendar/components/AvailableStaffModal";
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { setCurrentPage } from "@/app/store/navigationSlice";
-import { setDraft } from "@/app/store/reservationSlice";
+import { setDraft, setSelectedReservation } from "@/app/store/reservationSlice";
 import { Page } from "@/app/types/Page";
 import { Reservation } from "@/app/types/reservation";
 import { User } from "@/app/types/user";
@@ -49,9 +49,19 @@ export default function ReservationCreateCalendarForAllSection() {
     dispatch(setCurrentPage(Page.RESERVE_CREATE));
   }
 
+  const handleEditClick = (reservation: Reservation) => {
+    dispatch(setSelectedReservation(reservation));
+    dispatch(setCurrentPage(Page.RESERVE_EDIT));
+  }
+
+  const handleDetailClick = (reservation: Reservation) => {
+    dispatch(setSelectedReservation(reservation));
+    dispatch(setCurrentPage(Page.RESERVE_DETAIL));
+  }
+
   return (
     <div>
-      <AvailableStaffModal show={showAvailableStaffModal} onHide={() => setShowAvailableStaffModal(false)} date={date} hour={hour} availableStaffs={availableStaffs} reservations={bookedReservations} onStaffSelect={handleStaffSelect} />
+      <AvailableStaffModal show={showAvailableStaffModal} onHide={() => setShowAvailableStaffModal(false)} date={date} hour={hour} availableStaffs={availableStaffs} reservations={bookedReservations} onStaffSelect={handleStaffSelect} onEditClick={handleEditClick} onDetailClick={handleDetailClick} />
     <Calendar cellComponent={ReservationCreateCalendarCellForAll} cellProps={{ allReservations, allShifts, onCellClick: handleCellClick }} />
     </div>
   )

@@ -13,6 +13,8 @@ interface AvailableStaffModalProps {
   availableStaffs: User[];
   reservations: Reservation[];
   onStaffSelect?: (staffId: string) => void;
+  onEditClick: (reservation: Reservation) => void;
+  onDetailClick: (reservation: Reservation) => void;
   onCreateWithoutStaff?: () => void;
 }
 
@@ -23,6 +25,8 @@ export default function AvailableStaffModal({
   hour,
   availableStaffs,
   reservations,
+  onEditClick,
+  onDetailClick,
   onStaffSelect,
 }: AvailableStaffModalProps) {
   
@@ -79,7 +83,7 @@ export default function AvailableStaffModal({
             </div>
             <div className="d-grid gap-2">
               {reservations.map((reservation) => (
-                <ReservationSimpleView key={reservation.id} reservation={reservation} />
+                <ReservationSimpleView key={reservation.id} reservation={reservation} onEditClick={() => onEditClick(reservation)} onDetailClick={() => onDetailClick(reservation)} />
               ))}
             </div>
           </div>
