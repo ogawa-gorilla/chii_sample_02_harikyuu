@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
-import { setCurrentPage } from "@/app/store/navigationSlice";
+import { popPage, setCurrentPage } from "@/app/store/navigationSlice";
 import { createReservation, setSelectedReservation } from "@/app/store/reservationSlice";
 import { Page } from "@/app/types/Page";
 import { Reservation, ReservationFormData } from "@/app/types/reservation";
@@ -28,14 +28,15 @@ export default function ReservationCreatePage() {
     dispatch(setCurrentPage(Page.RESERVE_DETAIL));
   }
 
+  const handleCancel = () => {
+    dispatch(popPage())
+  }
+
   return (
     <div>
       <h5 className="text-center mb-3">予約作成</h5>
       { reservationDraft && (
-      <ReservationForm scheduledDate={reservationDraft.date} scheduledTime={reservationDraft.time} staff={reservationDraft.staff} availableStaffs={reservationDraft.availableStaffs} onSubmit={handleSubmit} onCancel={() => {
-        dispatch(setCurrentPage(Page.RESERVATION_CALENDAR))
-        // TODO: 遷移先を工夫
-      }} />
+      <ReservationForm scheduledDate={reservationDraft.date} scheduledTime={reservationDraft.time} staff={reservationDraft.staff} availableStaffs={reservationDraft.availableStaffs} onSubmit={handleSubmit} onCancel={handleCancel} />
       )}
     </div>
   )

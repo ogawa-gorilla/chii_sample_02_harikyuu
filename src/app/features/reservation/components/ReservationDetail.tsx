@@ -1,3 +1,4 @@
+import { useAppSelector } from '@/app/hooks';
 import { Reservation } from '@/app/types/reservation';
 
 interface ReservationDetailProps {
@@ -23,6 +24,8 @@ export default function ReservationDetail({
       onDelete(reservation.id);
     }
   };
+
+  const pageStack = useAppSelector((state) => state.navigation.pageStack).length;
 
   return (
     <div className="min-h-screen bg-gray-50 px-4 py-6">
@@ -72,7 +75,7 @@ export default function ReservationDetail({
 
           {/* ボタン */}
           <div className="flex gap-3 pt-4">
-            {onBack && (
+            {(onBack && pageStack > 1) && (
               <button
                 type="button"
                 onClick={onBack}
