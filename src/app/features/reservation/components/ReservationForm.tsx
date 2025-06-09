@@ -87,7 +87,7 @@ export default function ReservationForm({
     setFormData(prev => ({ ...prev, date, hour: hour.toString().padStart(2, '0') + ':00' }));
   }
 
-  const hasDuplicatedReservation = useAppSelector((state) => state.reservation.reservations).some(reservation => isReservedAt(reservation, formData.date, parseInt(formData.hour.split(':')[0])) && reservation.staff.id === formData.staffId);
+  const hasDuplicatedReservation = useAppSelector((state) => state.reservation.reservations).some(reservation => isReservedAt(reservation, formData.date, parseInt(formData.hour.split(':')[0])) && reservation.staff.id === formData.staffId && reservation.id !== reservationId);
 
   return (
     <div className="min-h-screen bg-gray-50 px-4 py-6">
@@ -102,9 +102,18 @@ export default function ReservationForm({
               予約日時
             </label>
           <InputGroup>
-            <Form.Control disabled className="bg-gray-100 border border-gray-300 rounded-lg px-4 py-3 text-gray-700" value={`${formData.date} ${formData.hour}`} />
+            <Form.Control 
+              disabled 
+              className={`px-4 py-3 ${
+                hasDuplicatedReservation ? 'bg-danger' : 'bg-gray-100 border-gray-300'
+              }`} 
+              value={`${formData.date} ${formData.hour}`} 
+            />
             <Button variant="secondary" onClick={handleDateEdit}>編集</Button>
           </InputGroup>
+          {hasDuplicatedReservation && (
+            <p className="mt-1 text-sm text-red-500">警告：その時間には別の予約があります</p>
+          )}
           </div>
 
           {/* 担当スタッフ */}
