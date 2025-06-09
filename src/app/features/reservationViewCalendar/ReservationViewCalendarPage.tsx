@@ -1,7 +1,8 @@
 import Calendar from "@/app/components/calendar/Calendar";
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { setCurrentPage } from "@/app/store/navigationSlice";
-import { setSelectedReservation } from "@/app/store/reservationSlice";
+import { setDraft, setSelectedReservation } from "@/app/store/reservationSlice";
+import { getStaffs } from "@/app/store/userSlice";
 import { Page } from "@/app/types/Page";
 import { Reservation } from "@/app/types/reservation";
 import { useState } from "react";
@@ -16,6 +17,7 @@ export default function ReservationViewCalendarPage() {
   const [selectedStaff, setSelectedStaff] = useState<string>('all');
 
   const allReservations = useAppSelector((state) => state.reservation.reservations).filter((reservation) => selectedStaff === 'all' || reservation.staff.id === selectedStaff);
+  const allStaffs = useAppSelector(getStaffs);
   const [showReservationModal, setShowReservationModal] = useState(false);
   const [reservationsShown, setReservationsShown] = useState<Reservation[]>([]);
   const [selectedDate, setSelectedDate] = useState<string>('');
@@ -34,6 +36,12 @@ export default function ReservationViewCalendarPage() {
 
   const handleEditClick = (reservation: Reservation) => {
     dispatch(setSelectedReservation(reservation));
+    dispatch(setDraft({
+      date: reservation.date,
+      time: reservation.time,
+      staff: reservation.staff,
+      availableStaffs: allStaffs
+    }));
     dispatch(setCurrentPage(Page.RESERVE_EDIT));
   }
 

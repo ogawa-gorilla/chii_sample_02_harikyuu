@@ -1,8 +1,5 @@
 import Calendar from "@/app/components/calendar";
-import { useAppDispatch, useAppSelector } from "@/app/hooks";
-import { setCurrentPage } from "@/app/store/navigationSlice";
-import { setSelectedReservation } from "@/app/store/reservationSlice";
-import { Page } from "@/app/types/Page";
+import { useAppSelector } from "@/app/hooks";
 import { Reservation } from "@/app/types/reservation";
 import { User } from "@/app/types/user";
 import { filterShiftsAtHour } from "@/app/utils/shiftUtils";
@@ -12,11 +9,11 @@ import ReservationCreationModal from "./ReservationCreationModal";
 
 interface ReservationCreateCalendarSectionProps {
   selectedStaff: User;
+  onEditClick: (reservation: Reservation) => void;
+  onDetailClick: (reservation: Reservation) => void;
 }
 
-export default function ReservationCreateCalendarSection({ selectedStaff }: ReservationCreateCalendarSectionProps) {
-
-  const dispatch = useAppDispatch();
+export default function ReservationCreateCalendarSection({ selectedStaff, onEditClick, onDetailClick }: ReservationCreateCalendarSectionProps) {
 
   const allReservations = useAppSelector((state) => state.reservation.reservations).filter((reservation) => reservation.staff.id === selectedStaff.id);
   const allShifts = useAppSelector((state) => state.shift.shifts).filter((shift) => shift.staffId === selectedStaff.id);
@@ -38,13 +35,11 @@ export default function ReservationCreateCalendarSection({ selectedStaff }: Rese
   }
 
   const handleEditClick = (reservation: Reservation) => {
-    dispatch(setSelectedReservation(reservation));
-    dispatch(setCurrentPage(Page.RESERVE_EDIT));
+    onEditClick(reservation);
   }
 
   const handleDetailClick = (reservation: Reservation) => {
-    dispatch(setSelectedReservation(reservation));
-    dispatch(setCurrentPage(Page.RESERVE_DETAIL));
+    onDetailClick(reservation);
   }
 
   return (
