@@ -2,7 +2,7 @@ import Calendar from "@/app/components/calendar";
 import AvailableStaffModal from "@/app/features/reservationCreateCalendar/components/AvailableStaffModal";
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { setCurrentPage } from "@/app/store/navigationSlice";
-import { createDraft } from "@/app/store/reservationSlice";
+import { setDraft } from "@/app/store/reservationSlice";
 import { Page } from "@/app/types/Page";
 import { Reservation } from "@/app/types/reservation";
 import { User } from "@/app/types/user";
@@ -40,7 +40,7 @@ export default function ReservationCreateCalendarForAllSection() {
   }
 
   const handleStaffSelect = (staffId: string) => {
-    dispatch(createDraft({
+    dispatch(setDraft({
       date: date,
       time: hour.toString().padStart(2, '0') + ':00',
       staff: allStaffs.find((staff) => staff.id === staffId)!,

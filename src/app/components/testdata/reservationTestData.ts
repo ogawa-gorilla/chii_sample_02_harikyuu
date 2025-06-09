@@ -3,7 +3,7 @@ import { Role } from "@/app/types/role";
 
 export const RESERVATION_TESTDATA: Reservation[] = [
   {
-    id: 1,
+    id: '1',
     date: '2025-06-02',
     client: '大野 次郎',
     time: '11:00',
@@ -20,7 +20,7 @@ export const RESERVATION_TESTDATA: Reservation[] = [
     notes: ''
   },
   {
-    id: 2,
+    id: '2',
     date: '2025-06-01',
     client: '赤井 一郎',
     time: '15:00',
@@ -37,7 +37,7 @@ export const RESERVATION_TESTDATA: Reservation[] = [
     notes: ''
   },
   {
-    id: 3,
+    id: '3',
     date: '2025-05-31',
     client: '田中 花子',
     time: '10:00',
@@ -54,7 +54,7 @@ export const RESERVATION_TESTDATA: Reservation[] = [
     notes: ''
   },
   {
-    id: 4,
+    id: '4',
     date: '2025-06-07',
     client: '松本 健太',
     time: '14:00',
@@ -71,7 +71,7 @@ export const RESERVATION_TESTDATA: Reservation[] = [
     notes: ''
   },
   {
-    id: 5,
+    id: '5',
     date: '2025-06-08',
     client: '中村 美咲',
     time: '16:00',
@@ -88,7 +88,7 @@ export const RESERVATION_TESTDATA: Reservation[] = [
     notes: ''
   },
   {
-    id: 6,
+    id: '6',
     date: '2025-06-14',
     client: '佐々木 正人',
     time: '09:00',
@@ -105,7 +105,7 @@ export const RESERVATION_TESTDATA: Reservation[] = [
     notes: '紹介 高橋さん'
   },
   {
-    id: 7,
+    id: '7',
     date: '2025-06-16',
     client: '吉田 雅子',
     time: '13:00',
@@ -122,7 +122,7 @@ export const RESERVATION_TESTDATA: Reservation[] = [
     notes: ''
   },
   {
-    id: 8,
+    id: '8',
     date: '2025-06-15',
     client: '高橋 昭彦',
     time: '15:00',
@@ -139,7 +139,7 @@ export const RESERVATION_TESTDATA: Reservation[] = [
     notes: '針灸は初めてとのこと'
   },
   {
-    id: 9,
+    id: '9',
     date: '2025-06-22',
     client: '小林 千代',
     time: '11:00',
@@ -156,7 +156,7 @@ export const RESERVATION_TESTDATA: Reservation[] = [
     notes: ''
   },
   {
-    id: 10,
+    id: '10',
     date: '2025-06-18',
     client: '伊藤 慎一',
     time: '17:00',
@@ -173,7 +173,7 @@ export const RESERVATION_TESTDATA: Reservation[] = [
     notes: ''
   },
   {
-    id: 11,
+    id: '11',
     date: '2025-06-18',
     client: '佐竹 一郎',
     time: '17:00',
@@ -190,7 +190,7 @@ export const RESERVATION_TESTDATA: Reservation[] = [
     notes: ''
   },
   {
-    id: 12,
+    id: '12',
     date: '2025-06-11',
     client: '堂本 紘一',
     time: '14:00',

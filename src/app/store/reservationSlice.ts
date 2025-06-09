@@ -16,14 +16,22 @@ export const reservationSlice = createSlice({
   name: 'reservation',
   initialState,
   reducers: {
-    createDraft: (state, action: PayloadAction<ReservationDraft>) => {
+    setDraft: (state, action: PayloadAction<ReservationDraft>) => {
       state.reservationDraft = action.payload;
+    },
+    createReservation: (state, action: PayloadAction<Reservation>) => {
+      state.reservations.push(action.payload);
     }
   }
 })
 
 export const { 
-  createDraft
+  setDraft,
+  createReservation
  } = reservationSlice.actions;
 
 export default reservationSlice.reducer;
+function uuidv4(): number {
+  throw new Error("Function not implemented.");
+}
+
