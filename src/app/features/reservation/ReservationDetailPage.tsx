@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
-import { popPage, setCurrentPage } from "@/app/store/navigationSlice";
+import { popPage, pushPage } from "@/app/store/navigationSlice";
 import { Page } from "@/app/types/Page";
 import ReservationDetail from "./components/ReservationDetail";
 
@@ -9,7 +9,7 @@ export default function ReservationDetailPage() {
   const reservation = useAppSelector((state) => state.reservation.selectedReservation);
 
   const handleEdit = () => {
-    dispatch(setCurrentPage(Page.RESERVE_EDIT));
+    dispatch(pushPage(Page.RESERVE_EDIT));
   }
 
   const handleDelete = () => {

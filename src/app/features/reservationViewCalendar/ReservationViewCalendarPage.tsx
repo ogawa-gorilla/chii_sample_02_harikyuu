@@ -1,6 +1,6 @@
 import Calendar from "@/app/components/calendar/Calendar";
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
-import { setCurrentPage } from "@/app/store/navigationSlice";
+import { pushPage } from "@/app/store/navigationSlice";
 import { setDraft, setSelectedReservation } from "@/app/store/reservationSlice";
 import { getStaffs } from "@/app/store/userSlice";
 import { Page } from "@/app/types/Page";
@@ -42,12 +42,12 @@ export default function ReservationViewCalendarPage() {
       staff: reservation.staff,
       availableStaffs: allStaffs
     }));
-    dispatch(setCurrentPage(Page.RESERVE_EDIT));
+    dispatch(pushPage(Page.RESERVE_EDIT));
   }
 
   const handleDetailClick = (reservation: Reservation) => {
     dispatch(setSelectedReservation(reservation));
-    dispatch(setCurrentPage(Page.RESERVE_DETAIL));
+    dispatch(pushPage(Page.RESERVE_DETAIL));
   }
 
   return (
