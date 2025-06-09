@@ -11,7 +11,7 @@ export default function ReservationCalendarPage() {
 
   const [selectedStaff, setSelectedStaff] = useState<string>('all');
 
-  const allReservations = useAppSelector((state) => state.reservation.reservations).filter((reservation) => selectedStaff === 'none' || reservation.staff.id === selectedStaff);
+  const allReservations = useAppSelector((state) => state.reservation.reservations).filter((reservation) => selectedStaff === 'all' || reservation.staff.id === selectedStaff);
   const [showReservationModal, setShowReservationModal] = useState(false);
   const [reservationsShown, setReservationsShown] = useState<Reservation[]>([]);
   const [selectedDate, setSelectedDate] = useState<string>('');

@@ -19,7 +19,7 @@ export default function StaffSelector({ selectedStaff, onStaffChange, labelForNo
   const staffs = useAppSelector(getStaffs);
   
   const staffOptions: StaffOption[] = [{
-    value: 'none',
+    value: 'all',
     label: labelForNone,
     themeColor: '#000000',
   }, ...staffs.map((staff) => ({
