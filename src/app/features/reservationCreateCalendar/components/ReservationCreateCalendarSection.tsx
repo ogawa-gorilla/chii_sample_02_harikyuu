@@ -2,6 +2,7 @@ import Calendar from "@/app/components/calendar";
 import { useAppSelector } from "@/app/hooks";
 import { Reservation } from "@/app/types/reservation";
 import { User } from "@/app/types/user";
+import { filterShiftsAtHour } from "@/app/utils/shiftUtils";
 import { useState } from "react";
 import ReservationCreateCalendarCell from "./ReservationCreateCalendarCell";
 import ReservationCreationModal from "./ReservationCreationModal";
@@ -21,6 +22,10 @@ export default function ReservationCreateCalendarSection({ selectedStaff }: Rese
   const [reservations, setReservations] = useState<Reservation[]>([]);
 
   const handleCellClick = (date: string, hour: number, reservations: Reservation[]) => {
+
+    if (filterShiftsAtHour(allShifts, date, hour).length === 0) {
+      return
+    }
     setShowReservationCreationModal(true);
     setDate(date);
     setHour(hour);
