@@ -36,7 +36,7 @@ export default function StaffSelector({ selectedStaff, onStaffChange, labelForNo
       </div>
       <div className="d-flex flex-wrap gap-3 p-1">
         {staffOptions.map((option) => (
-          <div className="p-1" style={{ backgroundColor: option.themeColor, color: 'white' }}>
+          <div className="p-1" style={{ backgroundColor: option.themeColor, color: 'white' }} key={"div_" + option.value}>
           <Form.Check
             key={option.value}
             type="radio"
