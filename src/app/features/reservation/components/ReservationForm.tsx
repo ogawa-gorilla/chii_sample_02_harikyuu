@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { Button, Form, InputGroup } from 'react-bootstrap';
 import { User } from '../../../types/user';
 import DatePickerModal from './DatePickerModal';
+import StaffSelector from './StaffSelector';
 
 interface ReservationFormData {
   staffId: string;
@@ -104,27 +105,7 @@ export default function ReservationForm({
           </div>
 
           {/* 担当スタッフ */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              担当スタッフ <span className="text-red-500">*</span>
-            </label>
-            <select
-              value={formData.staffId}
-              onChange={(e) => handleInputChange('staffId', e.target.value)}
-              className={`w-full border rounded-lg px-4 py-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                errors.staffId ? 'border-red-500' : 'border-gray-300'
-              }`}
-            >
-              {availableStaffs.map((staff) => (
-                <option key={staff.id} value={staff.id}>
-                  {staff.name}
-                </option>
-              ))}
-            </select>
-            {errors.staffId && (
-              <p className="mt-1 text-sm text-red-500">{errors.staffId}</p>
-            )}
-          </div>
+          <StaffSelector availableStaffs={availableStaffs} value={formData.staffId} errors={errors} onChange={(value) => handleInputChange('staffId', value)} />
 
           {/* 顧客名 */}
           <div>

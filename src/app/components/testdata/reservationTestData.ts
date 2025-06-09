@@ -4,9 +4,9 @@ import { Role } from "@/app/types/role";
 export const RESERVATION_TESTDATA: Reservation[] = [
   {
     id: '1',
-    date: '2025-06-02',
+    date: '2025-06-04',
     client: '大野 次郎',
-    time: '11:00',
+    time: '09:00',
     duration: 1,
     status: '予約済',
     staff: {
