@@ -12,7 +12,7 @@ export default function LoginButtonList() {
 
   const handleLogin = (user: User) => {
     dispatch(setUser(user));
-    dispatch(setCurrentPage(Page.RESERVATION_CALENDAR));
+    dispatch(setCurrentPage(Page.SHIFT));
   }
 
   return (

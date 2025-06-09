@@ -10,6 +10,7 @@ import ReservationCalendarPage from "./features/reservationViewCalendar/Reservat
 import HomePage from "./HomePage";
 import { useAppSelector } from "./hooks";
 import NotImplementedPage from "./NotImplementedPage";
+import ShiftInputPage from "./shift-input/ShiftInputPage";
 import { Page } from "./types/Page";
 
 const showPage = (page: Page) => {
@@ -26,6 +27,8 @@ const showPage = (page: Page) => {
       return <ReservationDetailPage />
     case Page.RESERVE_EDIT:
       return <ReservationEditPage />
+    case Page.SHIFT:
+      return <ShiftInputPage />
     default:
       return <NotImplementedPage />
   }
