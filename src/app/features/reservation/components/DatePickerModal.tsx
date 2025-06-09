@@ -4,17 +4,22 @@ import { Reservation } from "@/app/types/reservation";
 import { User } from "@/app/types/user";
 import { filterReservedAt } from "@/app/utils/reservationUtils";
 import { filterShiftsAtHour } from "@/app/utils/shiftUtils";
+import dayjs from "dayjs";
 import { Button, Modal } from "react-bootstrap";
-import ReservationCreateCalendarCell from "../../reservationCreateCalendar/components/forAStaff/ReservationCreateCalendarCell";
+import DatePickerCell from "./DatePickerCell";
 
 interface DatePickerModalProps {
   show: boolean;
   onHide: () => void;
   staff: User;
+  currentSelection: {
+    day: dayjs.Dayjs;
+    hour: number;
+  }
   onDateSelected: (date: string, hour: number) => void;
 }
 
-export default function DatePickerModal({ show, onHide, staff, onDateSelected }: DatePickerModalProps) {
+export default function DatePickerModal({ show, onHide, staff, currentSelection, onDateSelected }: DatePickerModalProps) {
 
   const allReservations = useAppSelector((state) => state.reservation.reservations).filter(reservation => reservation.staff.id === staff.id);
   const allShifts = useAppSelector((state) => state.shift.shifts).filter(shift => shift.staffId === staff.id);
@@ -29,11 +34,19 @@ export default function DatePickerModal({ show, onHide, staff, onDateSelected }:
 
   return (
       <Modal show={show} onHide={onHide} size="lg" centered>
+        <style>
+          {`
+            .current-selection {
+              background-color: #007bff;
+              color: white;
+            }
+          `}
+        </style>
         <Modal.Header closeButton>
           <Modal.Title>予約日時選択({staff.name})</Modal.Title>
         </Modal.Header>
         <Modal.Body className="p-2">
-          <Calendar cellComponent={ReservationCreateCalendarCell} cellProps={{ allReservations, allShifts, onCellClick: handleCellClick }} />
+          <Calendar cellComponent={DatePickerCell} cellProps={{ allReservations, allShifts, currentSelection: { day: dayjs(currentSelection.day), hour: currentSelection.hour }, onCellClick: handleCellClick }} />
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={onHide}>閉じる</Button>

@@ -1,4 +1,5 @@
 import { useAppSelector } from '@/app/hooks';
+import dayjs from 'dayjs';
 import React, { useState } from 'react';
 import { Button, Form, InputGroup } from 'react-bootstrap';
 import { User } from '../../../types/user';
@@ -79,13 +80,12 @@ export default function ReservationForm({
   }
 
   const handleDateSelected = (date: string, hour: number) => {
-    setShowDatePickerModal(false);
     setFormData(prev => ({ ...prev, date, hour: hour.toString().padStart(2, '0') + ':00' }));
   }
 
   return (
     <div className="min-h-screen bg-gray-50 px-4 py-6">
-      <DatePickerModal show={showDatePickerModal} onHide={() => setShowDatePickerModal(false)} staff={targetStaff!} onDateSelected={handleDateSelected} />
+      <DatePickerModal show={showDatePickerModal} onHide={() => setShowDatePickerModal(false)} staff={targetStaff!} currentSelection={{ day: dayjs(formData.date), hour: parseInt(formData.hour.split(':')[0]) }} onDateSelected={handleDateSelected} />
       <div className="max-w-md mx-auto bg-white rounded-lg shadow-md overflow-hidden">
 
         {/* フォーム */}
