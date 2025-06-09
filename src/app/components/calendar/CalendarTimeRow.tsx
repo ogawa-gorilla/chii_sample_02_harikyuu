@@ -1,5 +1,6 @@
 import { HOURS } from '@/app/constants/hours';
-import { isClosedDay } from '@/app/utils/calendarUtils';
+import { useAppSelector } from '@/app/hooks';
+import { isClosedDay as isRegularClosedDay } from '@/app/utils/calendarUtils';
 import dayjs from 'dayjs';
 import { CalendarCellProps } from './types';
 
@@ -11,9 +12,9 @@ interface CalendarTimeRowProps<TCellProps extends CalendarCellProps = CalendarCe
   cellProps?: Omit<TCellProps, keyof CalendarCellProps>;
 }
 
-const firstRowForClosedDays = (day: dayjs.Dayjs) => (
+const firstRowForClosedDays = (day: dayjs.Dayjs, reason: string) => (
 <td key={day.format()} rowSpan={HOURS}>
-                  <span className="text-muted" >定<br />休<br />日</span>
+                  <span className="text-muted" style={{ writingMode: 'vertical-rl', letterSpacing: '0.5em' }}>{reason}</span>
                 </td>
 )
 
@@ -31,6 +32,7 @@ export default function CalendarTimeRow<TCellProps extends CalendarCellProps = C
   cellProps = {} as Omit<TCellProps, keyof CalendarCellProps>
 }: CalendarTimeRowProps<TCellProps>) {
   const CellToRender = CellComponent || DefaultCell;
+  const temporalHolidays = useAppSelector((state) => state.shift.temporalHolidays);
 
   return (
     <tr key={hour}>
@@ -38,9 +40,19 @@ export default function CalendarTimeRow<TCellProps extends CalendarCellProps = C
       </style>
       <td className="fw-bold">{hour}:00</td>
       {days.map((day) => {
-        if (isClosedDay(day)) {
+        let closed = false
+        let closedReason = ''
+        if (isRegularClosedDay(day)) {
+          closed = true
+          closedReason = '定休日'
+        }
+        if (temporalHolidays.find(holiday => holiday.date === day.format('YYYY-MM-DD'))) {
+          closed = true
+          closedReason = '臨時休業'
+        }
+        if (closed) {
             if (isFirstRow) {
-              return firstRowForClosedDays(day);
+              return firstRowForClosedDays(day, closedReason);
             } else {
               return null
             }
