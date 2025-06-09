@@ -1,4 +1,5 @@
 import { useAppSelector } from '@/app/hooks';
+import { isReservedAt } from '@/app/utils/reservationUtils';
 import dayjs from 'dayjs';
 import React, { useState } from 'react';
 import { Button, Form, InputGroup } from 'react-bootstrap';
@@ -85,6 +86,8 @@ export default function ReservationForm({
   const handleDateSelected = (date: string, hour: number) => {
     setFormData(prev => ({ ...prev, date, hour: hour.toString().padStart(2, '0') + ':00' }));
   }
+
+  const hasDuplicatedReservation = useAppSelector((state) => state.reservation.reservations).some(reservation => isReservedAt(reservation, formData.date, parseInt(formData.hour.split(':')[0])) && reservation.staff.id === formData.staffId);
 
   return (
     <div className="min-h-screen bg-gray-50 px-4 py-6">

@@ -20,6 +20,23 @@ export const RESERVATION_TESTDATA: Reservation[] = [
     notes: ''
   },
   {
+    id: '1a',
+    date: '2025-06-04',
+    client: '山下 健一',
+    time: '09:00',
+    duration: 1,
+    status: '予約済',
+    staff: {
+      id: '1',
+      name: '鈴木',
+      email: 'manager@example.com',
+      role: Role.MANAGER,
+      password: 'suzuki',
+      themeColor: '#0A192F',
+    },
+    notes: ''
+  },
+  {
     id: '2',
     date: '2025-06-01',
     client: '赤井 一郎',
