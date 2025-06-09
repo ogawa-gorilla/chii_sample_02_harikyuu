@@ -1,5 +1,6 @@
 import { Reservation } from "@/app/types/reservation";
 import { Shift } from "@/app/types/shift";
+import { isReservedAt } from "@/app/utils/reservationUtils";
 import { filterShiftsAtHour } from "@/app/utils/shiftUtils";
 import dayjs from "dayjs";
 
@@ -24,7 +25,7 @@ export default function DatePickerCell({ day, hour, allReservations, allShifts, 
 
   
   const getReservations = (reservations: Reservation[], day: dayjs.Dayjs, hour: number) => {
-    return reservations.filter(reservation => reservation.date === day.format('YYYY-MM-DD') && reservation.time === hour.toString() + ":00" && reservation.id !== reservationId);
+    return reservations.filter(reservation => isReservedAt(reservation, day.format('YYYY-MM-DD'), hour));
   }
 
   const hasReservations = getReservations(allReservations, day, hour).length > 0;

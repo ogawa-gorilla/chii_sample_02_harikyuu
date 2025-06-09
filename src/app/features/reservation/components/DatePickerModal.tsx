@@ -47,7 +47,7 @@ export default function DatePickerModal({ show, onHide, staff, currentSelection,
           <Modal.Title>予約日時選択({staff.name})</Modal.Title>
         </Modal.Header>
         <Modal.Body className="p-2">
-          <Calendar cellComponent={DatePickerCell} cellProps={{ allReservations, allShifts, currentSelection: { day: dayjs(currentSelection.day), hour: currentSelection.hour }, reservationId: reservationId, onCellClick: handleCellClick }} />
+          <Calendar cellComponent={DatePickerCell} cellProps={{ allReservations, allShifts, currentSelection: { day: dayjs(currentSelection.day), hour: currentSelection.hour }, reservationId: reservationId ?? '', onCellClick: handleCellClick }} />
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={onHide}>閉じる</Button>
