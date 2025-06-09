@@ -4,6 +4,7 @@ import { setDraft, setSelectedReservation } from "@/app/store/reservationSlice";
 import { getStaffs } from "@/app/store/userSlice";
 import { Page } from "@/app/types/Page";
 import { Reservation } from "@/app/types/reservation";
+import { User } from "@/app/types/user";
 import { useState } from "react";
 import { Container } from "react-bootstrap";
 import ReservationCreateCalendarForAllSection from "./components/ReservationCreateCalendarForAllSection";
@@ -36,13 +37,23 @@ export default function ReservationCreateCalendarPage() {
     dispatch(pushPage(Page.RESERVE_DETAIL));
   }
 
+  const handleCreateByStaff = (date: string, hour: number, availableStaffs: User[], staffId: string) => {
+    dispatch(setDraft({
+      date: date,
+      time: hour.toString().padStart(2, '0') + ':00',
+      staff: allStaffs.find((staff) => staff.id === staffId)!,
+      availableStaffs: availableStaffs
+    }));
+    dispatch(pushPage(Page.RESERVE_CREATE));
+  }
+
 
   return (
     <Container fluid className="py-3">
       <h5 className="text-center mb-3">予約作成</h5>
       <StaffSelector selectedStaff={selectedStaff} onStaffChange={handleStaffChange} />
       { (selectedStaff === 'all') ? (
-        <ReservationCreateCalendarForAllSection onEditClick={handleEditClick} onDetailClick={handleDetailClick} />
+        <ReservationCreateCalendarForAllSection onEditClick={handleEditClick} onDetailClick={handleDetailClick} onCreateByStaff={handleCreateByStaff} />
       ) : (
         <ReservationCreateCalendarSection selectedStaff={allStaffs.find((staff) => staff.id === selectedStaff)!} onEditClick={handleEditClick} onDetailClick={handleDetailClick} />
       )}

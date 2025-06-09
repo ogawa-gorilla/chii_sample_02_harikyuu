@@ -1,9 +1,6 @@
 import Calendar from "@/app/components/calendar";
 import AvailableStaffModal from "@/app/features/reservationCreateCalendar/components/AvailableStaffModal";
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
-import { setCurrentPage } from "@/app/store/navigationSlice";
-import { setDraft } from "@/app/store/reservationSlice";
-import { Page } from "@/app/types/Page";
 import { Reservation } from "@/app/types/reservation";
 import { User } from "@/app/types/user";
 import { filterReservedAt, isReservedAt } from "@/app/utils/reservationUtils";
@@ -14,9 +11,10 @@ import ReservationCreateCalendarCellForAll from "./ReservationCreateCalendarCell
 interface ReservationCreateCalendarForAllSectionProps {
   onEditClick: (reservation: Reservation) => void;
   onDetailClick: (reservation: Reservation) => void;
+  onCreateByStaff: (date: string, hour: number, availableStaffs: User[], staffId: string) => void;
 }
 
-export default function ReservationCreateCalendarForAllSection({ onEditClick, onDetailClick }: ReservationCreateCalendarForAllSectionProps) {
+export default function ReservationCreateCalendarForAllSection({ onEditClick, onDetailClick, onCreateByStaff }: ReservationCreateCalendarForAllSectionProps) {
 
   const dispatch = useAppDispatch();
 
@@ -45,13 +43,7 @@ export default function ReservationCreateCalendarForAllSection({ onEditClick, on
   }
 
   const handleStaffSelect = (staffId: string) => {
-    dispatch(setDraft({
-      date: date,
-      time: hour.toString().padStart(2, '0') + ':00',
-      staff: allStaffs.find((staff) => staff.id === staffId)!,
-      availableStaffs: availableStaffs
-    }));
-    dispatch(setCurrentPage(Page.RESERVE_CREATE));
+    onCreateByStaff(date, hour, availableStaffs, staffId);
   }
 
   return (
