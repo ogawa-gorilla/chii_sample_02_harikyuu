@@ -5,14 +5,18 @@ import ShiftCalendarCell from './ShiftCalendarCell'
 
 interface ShiftCalendarProps {
     staffId: string
+    onCellClick: (date: string, shifts: Shift[]) => void
 }
 
-export default function ShiftCalendar({ staffId }: ShiftCalendarProps) {
+export default function ShiftCalendar({
+    staffId,
+    onCellClick,
+}: ShiftCalendarProps) {
     const allShifts = useAppSelector((state) => state.shift.shifts).filter(
         (shift) => shift.staffId === staffId
     )
     const handleCellClick = (date: string, shifts: Shift[]) => {
-        console.log(date, shifts)
+        onCellClick(date, shifts)
     }
 
     return (
