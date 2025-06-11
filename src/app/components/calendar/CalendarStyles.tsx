@@ -1,7 +1,7 @@
 export default function CalendarStyles() {
-  return (
-    <style>
-      {`
+    return (
+        <style>
+            {`
       th {
           font-weight: normal;
         }
@@ -30,7 +30,13 @@ export default function CalendarStyles() {
         background-color: #f0f0f0;
         color: #6c757d;
       }
+
+      td.closed {
+        text-align: center;
+        background-color: #f0f0f0 !important;
+        color: #6c757d !important;
+      }
       `}
-    </style>
-  );
-} 
+        </style>
+    )
+}
