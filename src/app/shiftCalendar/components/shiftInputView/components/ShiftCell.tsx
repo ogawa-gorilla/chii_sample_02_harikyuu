@@ -1,6 +1,5 @@
 import { weeklyClosedDays } from '@/app/constants/weeklyClosedDays'
 import { useAppSelector } from '@/app/hooks'
-import { Shift } from '@/app/types/shift'
 import dayjs from 'dayjs'
 import { useEffect, useState } from 'react'
 import { Button } from 'react-bootstrap'
@@ -8,7 +7,12 @@ import ClosedDaysCard from './ClosedDaysCard'
 import ShiftCard from './ShiftCard'
 
 interface ShiftCellProps {
-    shiftsAtDay: Shift[]
+    shiftsAtDay: {
+        date: string
+        startTime: string
+        endTime: string
+        id: string
+    }[]
     today: string
     isHoliday?: boolean
     holidayReason?: string

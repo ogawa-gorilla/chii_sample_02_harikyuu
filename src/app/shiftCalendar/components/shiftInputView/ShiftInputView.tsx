@@ -1,14 +1,9 @@
 import { useAppDispatch, useAppSelector } from '@/app/hooks'
 import { useCalendar } from '@/app/hooks/useCalendar'
-import {
-    deleteShift,
-    editShift,
-    selectShiftsByStaffId,
-} from '@/app/store/shiftSlice'
+import { editShift, selectShiftsByStaffId } from '@/app/store/shiftSlice'
 import dayjs from 'dayjs'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Table } from 'react-bootstrap'
-import DeleteConfirmModal from './components/DeleteConfirmModal'
 import ShiftCell from './components/ShiftCell'
 
 interface ShiftInputViewProps {
@@ -19,18 +14,44 @@ interface ShiftInputViewProps {
 
 export default function ShiftInputView({
     today,
+    startDate,
     staffId,
 }: ShiftInputViewProps) {
     dayjs.locale('ja')
 
     const { days } = useCalendar()
-    const [showDeleteConfirmModal, setShowDeleteConfirmModal] = useState(false)
-    const [deleteShiftId, setDeleteShiftId] = useState('')
 
     const shiftData = useAppSelector((state) =>
         selectShiftsByStaffId(state, staffId)
     )
     const dispatch = useAppDispatch()
+
+    const [shiftDraft, setShiftDraft] = useState<
+        {
+            date: string
+            startTime: string
+            endTime: string
+            id: string
+        }[]
+    >([])
+
+    useEffect(() => {
+        setShiftDraft(
+            shiftData
+                .filter(
+                    (shift) =>
+                        shift.date >= startDate &&
+                        shift.date <=
+                            dayjs(startDate).add(6, 'day').format('YYYY-MM-DD')
+                )
+                .map((shift) => ({
+                    date: shift.date,
+                    startTime: shift.startTime,
+                    endTime: shift.endTime,
+                    id: shift.id,
+                }))
+        )
+    }, [shiftData])
 
     const handleUpdate = (
         temporalValues: {
@@ -39,19 +60,31 @@ export default function ShiftInputView({
             id: string
         }[]
     ) => {
-        temporalValues.forEach((value) => {
-            dispatch(editShift(value))
+        const updatedDraft = shiftDraft.map((shift) => {
+            const targetIndex = temporalValues.findIndex(
+                (value) => value.id === shift.id
+            )
+            if (targetIndex !== -1) {
+                return {
+                    ...shift,
+                    startTime: temporalValues[targetIndex].startTime,
+                    endTime: temporalValues[targetIndex].endTime,
+                }
+            }
+            return shift
+        })
+        setShiftDraft(updatedDraft)
+    }
+
+    const handleSave = () => {
+        shiftDraft.forEach((shift) => {
+            dispatch(editShift(shift))
         })
     }
 
     const handleDelete = (shiftId: string) => {
-        setShowDeleteConfirmModal(true)
-        setDeleteShiftId(shiftId)
-    }
-
-    const handleDeleteConfirm = () => {
-        dispatch(deleteShift(deleteShiftId))
-        setShowDeleteConfirmModal(false)
+        const updatedDraft = shiftDraft.filter((shift) => shift.id !== shiftId)
+        setShiftDraft(updatedDraft)
     }
 
     return (
@@ -103,7 +136,7 @@ export default function ShiftInputView({
                             <td className="p-0">
                                 <ShiftCell
                                     shiftsAtDay={
-                                        shiftData.filter(
+                                        shiftDraft.filter(
                                             (shift) =>
                                                 shift.date ===
                                                 day.format('YYYY-MM-DD')
@@ -118,11 +151,6 @@ export default function ShiftInputView({
                     ))}
                 </tbody>
             </Table>
-            <DeleteConfirmModal
-                show={showDeleteConfirmModal}
-                onHide={() => setShowDeleteConfirmModal(false)}
-                onConfirm={handleDeleteConfirm}
-            />
         </div>
     )
 }
