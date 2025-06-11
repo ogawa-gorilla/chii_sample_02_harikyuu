@@ -2,15 +2,19 @@ import { Button, Card, Col, Form, Row } from 'react-bootstrap'
 
 interface ShiftCardProps {
     shiftNumber: number
-    isWorking: boolean
     startTime: string
     endTime: string
+    errors?: string[]
+    onStartTimeChange: (startTime: string) => void
+    onEndTimeChange: (endTime: string) => void
 }
 export default function ShiftCard({
     shiftNumber,
-    isWorking,
     startTime,
     endTime,
+    onStartTimeChange,
+    onEndTimeChange,
+    errors = [],
 }: ShiftCardProps) {
     return (
         <Card className="mb-2" style={{ fontSize: '0.75rem' }}>
@@ -19,14 +23,6 @@ export default function ShiftCard({
             </Card.Header>
             <Card.Body className="p-2">
                 <Row className="mb-2 align-items-center">
-                    <Col xs={6} className="text-start">
-                        <Form.Check
-                            type="checkbox"
-                            label="出勤"
-                            checked={isWorking}
-                            style={{ fontSize: '0.7rem' }}
-                        />
-                    </Col>
                     <Col xs={6}>
                         <div className="d-flex gap-1">
                             <Button
@@ -61,6 +57,11 @@ export default function ShiftCard({
                             </Button>
                         </div>
                     </Col>
+                    <Col xs={6} className="text-end">
+                        <Button variant="outline-danger" size="sm">
+                            削除
+                        </Button>
+                    </Col>
                 </Row>
                 <Row className="align-items-center">
                     <Col xs={5}>
@@ -68,8 +69,8 @@ export default function ShiftCard({
                             type="time"
                             size="sm"
                             value={startTime}
-                            disabled={!isWorking}
                             style={{ fontSize: '0.7rem' }}
+                            onChange={(e) => onStartTimeChange(e.target.value)}
                         />
                     </Col>
                     <Col
@@ -84,11 +85,18 @@ export default function ShiftCard({
                             type="time"
                             size="sm"
                             value={endTime}
-                            disabled={!isWorking}
                             style={{ fontSize: '0.7rem' }}
+                            onChange={(e) => onEndTimeChange(e.target.value)}
                         />
                     </Col>
                 </Row>
+                {errors.map((error) => (
+                    <Row>
+                        <Col xs={12} className="text-danger">
+                            {error}
+                        </Col>
+                    </Row>
+                ))}
             </Card.Body>
         </Card>
     )

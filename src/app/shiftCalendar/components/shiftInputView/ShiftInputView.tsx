@@ -1,46 +1,78 @@
+import { useCalendar } from '@/app/hooks/useCalendar'
+import { Shift } from '@/app/types/shift'
+import dayjs from 'dayjs'
 import { Table } from 'react-bootstrap'
-import ClosedDaysCard from './components/ClosedDaysCard'
-import ShiftCard from './components/ShiftCard'
+import ShiftCell from './components/ShiftCell'
 
-export default function ShiftInputView() {
+interface ShiftInputViewProps {
+    startDate: string
+    today: string
+}
+
+export default function ShiftInputView({ today }: ShiftInputViewProps) {
+    dayjs.locale('ja')
+
+    const {
+        startOfWeek,
+        days,
+        hours,
+        handlePrevWeek,
+        handleNextWeek,
+        handleToday,
+    } = useCalendar()
+
     // データ範囲: 2025/6/2～2025/6/8
-    const shiftData = [
-        { date: '2025-06-02', dayOfWeek: '月', type: 'holiday' },
-        { date: '2025-06-03', dayOfWeek: '火', type: 'holiday' },
-        { date: '2025-06-04', dayOfWeek: '水', type: 'normal' },
-        { date: '2025-06-05', dayOfWeek: '木', type: 'normal' },
-        { date: '2025-06-06', dayOfWeek: '金', type: 'normal' },
-        { date: '2025-06-07', dayOfWeek: '土', type: 'temporary_closure' },
-        { date: '2025-06-08', dayOfWeek: '日', type: 'normal' },
+    const shiftData: Shift[] = [
+        {
+            id: '2025-06-03',
+            date: '2025-06-03',
+            staffId: '1',
+            startTime: '13:00',
+            endTime: '18:00',
+        },
+        {
+            id: '2025-06-04',
+            date: '2025-06-04',
+            staffId: '1',
+            startTime: '09:00',
+            endTime: '11:00',
+        },
+        {
+            id: '2025-06-04-2',
+            date: '2025-06-04',
+            staffId: '1',
+            startTime: '10:00',
+            endTime: '18:00',
+        },
+        {
+            id: '2025-06-05',
+            date: '2025-06-05',
+            staffId: '1',
+            startTime: '09:00',
+            endTime: '18:00',
+        },
+        {
+            id: '2025-06-06',
+            date: '2025-06-06',
+            staffId: '1',
+            startTime: '09:00',
+            endTime: '18:00',
+        },
+        {
+            id: '2025-06-07',
+            date: '2025-06-07',
+            staffId: '1',
+            startTime: '09:00',
+            endTime: '18:00',
+        },
+        {
+            id: '2025-06-08',
+            date: '2025-06-08',
+            staffId: '1',
+            startTime: '09:00',
+            endTime: '18:00',
+        },
     ]
-
-    const renderShiftCell = (item: (typeof shiftData)[0]) => {
-        if (item.type === 'holiday') {
-            return <ClosedDaysCard reason="定休日" />
-        }
-
-        if (item.type === 'temporary_closure') {
-            return <ClosedDaysCard reason="臨時休業" />
-        }
-
-        // 通常の日
-        return (
-            <div className="p-1">
-                <ShiftCard
-                    shiftNumber={1}
-                    isWorking={true}
-                    startTime="09:00"
-                    endTime="18:00"
-                />
-                <ShiftCard
-                    shiftNumber={2}
-                    isWorking={false}
-                    startTime=""
-                    endTime=""
-                />
-            </div>
-        )
-    }
 
     return (
         <div>
@@ -61,8 +93,8 @@ export default function ShiftInputView() {
                     </tr>
                 </thead>
                 <tbody>
-                    {shiftData.map((item, index) => (
-                        <tr key={item.date}>
+                    {days.map((day, index) => (
+                        <tr key={day.format('YYYY-MM-DD')}>
                             <td
                                 style={{
                                     fontSize: '0.7rem',
@@ -73,7 +105,7 @@ export default function ShiftInputView() {
                                     <>
                                         25
                                         <br />
-                                        6月
+                                        /06
                                     </>
                                 ) : (
                                     ''
@@ -85,10 +117,21 @@ export default function ShiftInputView() {
                                     lineHeight: '1.2',
                                 }}
                             >
-                                {new Date(item.date).getDate()}
-                                <br />({item.dayOfWeek})
+                                {dayjs(day).format('D')}
+                                <br />({dayjs(day).format('ddd')})
                             </td>
-                            <td className="p-0">{renderShiftCell(item)}</td>
+                            <td className="p-0">
+                                <ShiftCell
+                                    shiftsAtDay={
+                                        shiftData.filter(
+                                            (shift) =>
+                                                shift.date ===
+                                                day.format('YYYY-MM-DD')
+                                        ) || []
+                                    }
+                                    today={today}
+                                />
+                            </td>
                         </tr>
                     ))}
                 </tbody>
