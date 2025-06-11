@@ -6,7 +6,7 @@ import StaffSelector from '../components/common/StaffSelector'
 import { Shift } from '../types/shift'
 import DailyShiftListModal from './components/DailyShiftListModal'
 import ShiftCalendar from './components/ShiftCalendar'
-import ShiftInputView from './components/ShiftInputView'
+import ShiftInputView from './components/shiftInputView/ShiftInputView'
 
 export default function ShiftCalendarPage() {
     const [selectedStaff, setSelectedStaff] = useState('')
