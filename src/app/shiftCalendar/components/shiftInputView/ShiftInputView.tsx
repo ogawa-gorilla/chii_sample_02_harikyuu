@@ -28,7 +28,7 @@ export default function ShiftInputView({
         temporalValues: {
             startTime: string
             endTime: string
-            shiftId: string
+            id: string
         }[]
     ) => {
         temporalValues.forEach((value) => {

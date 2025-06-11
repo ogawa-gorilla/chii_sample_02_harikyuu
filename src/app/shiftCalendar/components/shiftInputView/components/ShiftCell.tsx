@@ -16,7 +16,7 @@ interface ShiftCellProps {
         temporalValues: {
             startTime: string
             endTime: string
-            shiftId: string
+            id: string
         }[]
     ) => void
 }
@@ -30,27 +30,50 @@ export default function ShiftCell({
         {
             startTime: string
             endTime: string
-            shiftId: string
+            id: string
         }[]
     >([])
 
     useEffect(() => {
         setTemporalValues(
-            shiftsAtDay
-                .map((shift) => {
-                    return {
-                        startTime: shift.startTime,
-                        endTime: shift.endTime,
-                        shiftId: shift.id,
-                    }
-                })
-                .sort((a, b) => a.shiftId.localeCompare(b.shiftId))
+            shiftsAtDay.map((shift) => {
+                return {
+                    startTime: shift.startTime,
+                    endTime: shift.endTime,
+                    id: shift.id,
+                }
+            })
         )
     }, [shiftsAtDay])
+
+    useEffect(() => {
+        const errors: string[] = []
+        const warnings: string[] = []
+
+        if (temporalValues.length === 2) {
+            if (temporalValues[0].endTime > temporalValues[1].startTime) {
+                errors.push('時間に重複があります。直してください')
+            }
+        }
+
+        if (isHoliday) {
+            warnings.push(holidayReason + 'です。')
+        }
+        temporalValues.forEach((value) => {
+            if (value.startTime > value.endTime) {
+                errors.push('開始時間が終了時間より後です。直してください')
+            }
+        })
+        setErrors(errors)
+        setWarnings(warnings)
+    }, [temporalValues])
 
     const temporalHoliday = useAppSelector((state) =>
         state.shift.temporalHolidays.find((holiday) => holiday.date === today)
     )
+
+    const [errors, setErrors] = useState<string[]>([])
+    const [warnings, setWarnings] = useState<string[]>([])
 
     let isHoliday = false
     let holidayReason = ''
@@ -74,53 +97,44 @@ export default function ShiftCell({
         )
     }
 
-    const errors: string[] = []
-    if (shiftsAtDay.length === 2) {
-        if (shiftsAtDay[0].endTime > shiftsAtDay[1].startTime) {
-            errors.push('時間に重複があります。直してください')
-        }
-    }
-
-    const warnings: string[] = []
-    if (isHoliday) {
-        warnings.push(holidayReason + 'です。')
-    }
-
-    const commitEditing = () => {
+    const commitEditing = (updatedEntry: {
+        startTime: string
+        endTime: string
+        id: string
+    }) => {
         // dispatch update
-        onUpdate(temporalValues)
+        onUpdate([updatedEntry])
     }
 
     const handleStartTimeChange = (shiftNumber: number, startTime: string) => {
-        setTemporalValues(
-            temporalValues.map((value, index) => {
-                if (index === shiftNumber) {
-                    return {
-                        ...value,
-                        startTime: startTime,
-                    }
+        console.log('handleStartTimeChange', shiftNumber, startTime)
+        const newTemporalValues = temporalValues.map((value, index) => {
+            if (index === shiftNumber) {
+                return {
+                    ...value,
+                    startTime: startTime,
                 }
-                return value
-            })
-        )
-        if (errors.length > 0) {
-            commitEditing()
+            }
+            return value
+        })
+        setTemporalValues(newTemporalValues)
+        if (errors.length === 0) {
+            commitEditing(newTemporalValues[shiftNumber])
         }
     }
     const handleEndTimeChange = (shiftNumber: number, endTime: string) => {
-        setTemporalValues(
-            temporalValues.map((value, index) => {
-                if (index === shiftNumber) {
-                    return {
-                        ...value,
-                        endTime: endTime,
-                    }
+        const newTemporalValues = temporalValues.map((value, index) => {
+            if (index === shiftNumber) {
+                return {
+                    ...value,
+                    endTime: endTime,
                 }
-                return value
-            })
-        )
-        if (errors.length > 0) {
-            commitEditing()
+            }
+            return value
+        })
+        setTemporalValues(newTemporalValues)
+        if (errors.length === 0) {
+            commitEditing(newTemporalValues[shiftNumber])
         }
     }
 
@@ -130,12 +144,12 @@ export default function ShiftCell({
                 return <div>{renderAddButton()}</div>
             case 1:
                 return (
-                    <div key={temporalValues[0].shiftId}>
+                    <div key={temporalValues[0].id}>
                         <ShiftCard
                             shiftNumber={0}
                             startTime={temporalValues[0].startTime}
                             endTime={temporalValues[0].endTime}
-                            shiftId={temporalValues[0].shiftId}
+                            shiftId={temporalValues[0].id}
                             onStartTimeChange={handleStartTimeChange}
                             onEndTimeChange={handleEndTimeChange}
                             errors={errors}
@@ -146,12 +160,12 @@ export default function ShiftCell({
                 )
             case 2:
                 return (
-                    <div key={temporalValues[0].shiftId}>
+                    <div key={temporalValues[0].id}>
                         <ShiftCard
                             shiftNumber={0}
                             startTime={temporalValues[0].startTime}
                             endTime={temporalValues[0].endTime}
-                            shiftId={temporalValues[0].shiftId}
+                            shiftId={temporalValues[0].id}
                             onStartTimeChange={handleStartTimeChange}
                             onEndTimeChange={handleEndTimeChange}
                             errors={errors}
@@ -161,7 +175,7 @@ export default function ShiftCell({
                             shiftNumber={1}
                             startTime={temporalValues[1].startTime}
                             endTime={temporalValues[1].endTime}
-                            shiftId={temporalValues[1].shiftId}
+                            shiftId={temporalValues[1].id}
                             onStartTimeChange={handleStartTimeChange}
                             onEndTimeChange={handleEndTimeChange}
                             errors={errors}
