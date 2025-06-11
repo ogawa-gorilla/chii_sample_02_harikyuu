@@ -65,6 +65,14 @@ export default function ShiftCell({
             if (value.startTime > value.endTime) {
                 errors.push('開始時間が終了時間より後です。直してください')
             }
+
+            if (value.startTime < '09:00' || value.startTime > '18:00') {
+                warnings.push('開始時間が時間外です')
+            }
+
+            if (value.endTime < '09:00' || value.endTime > '18:00') {
+                warnings.push('終了時間が時間外です')
+            }
         })
         setErrors(errors)
         setWarnings(warnings)
