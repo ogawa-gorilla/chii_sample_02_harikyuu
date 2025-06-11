@@ -6,12 +6,14 @@ import StaffSelector from '../components/common/StaffSelector'
 import { Shift } from '../types/shift'
 import DailyShiftListModal from './components/DailyShiftListModal'
 import ShiftCalendar from './components/ShiftCalendar'
+import ShiftInputView from './components/ShiftInputView'
 
 export default function ShiftCalendarPage() {
     const [selectedStaff, setSelectedStaff] = useState('')
     const [showDailyShiftListModal, setShowDailyShiftListModal] =
         useState(false)
     const [selectedDate, setSelectedDate] = useState('')
+    const [showShiftInputView, setShowShiftInputView] = useState(false)
 
     const handleCellClick = (date: string, shifts: Shift[]) => {
         setShowDailyShiftListModal(true)
@@ -20,6 +22,7 @@ export default function ShiftCalendarPage() {
 
     return (
         <Container fluid className="py-3">
+            <ShiftInputView />
             <DailyShiftListModal
                 show={showDailyShiftListModal}
                 date={selectedDate}
