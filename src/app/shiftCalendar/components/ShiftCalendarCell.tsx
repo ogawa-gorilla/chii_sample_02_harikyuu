@@ -23,22 +23,24 @@ export default function ShiftCalendarCell({
     allShifts,
     onCellClick,
 }: ShiftCalendarCellProps) {
-    const shifts = getShifts(allShifts, day, hour)
-    const hasShifts = shifts.length > 0
+    const todaysShifts = getShifts(allShifts, day, hour)
+    const hasTodaysShifts = todaysShifts.length > 0
 
     const handleClick = () => {
-        if (hasShifts && onCellClick) {
-            onCellClick(day.format('YYYY-MM-DD'), hour, shifts)
+        if (hasTodaysShifts && onCellClick) {
+            onCellClick(day.format('YYYY-MM-DD'), hour, todaysShifts)
         }
     }
 
     return (
         <td
             key={`${day.format()}-${hour}`}
-            className={getClassName(hasShifts)}
+            className={getClassName(hasTodaysShifts)}
             onClick={handleClick}
         >
-            {hasShifts ? <div className="align-items-center">出勤</div> : null}
+            {hasTodaysShifts ? (
+                <div className="align-items-center">出勤</div>
+            ) : null}
             <style jsx>{`
                 td.work {
                     color: white !important;
