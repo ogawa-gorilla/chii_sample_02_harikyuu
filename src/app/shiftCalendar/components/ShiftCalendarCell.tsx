@@ -6,7 +6,7 @@ interface ShiftCalendarCellProps {
     day: dayjs.Dayjs
     hour: number
     allShifts: Shift[]
-    onCellClick: (date: string, hour: number, shifts: Shift[]) => void
+    onCellClick: (date: string, shifts: Shift[]) => void
 }
 
 const getShifts = (allShifts: Shift[], day: dayjs.Dayjs, hour: number) => {
@@ -28,7 +28,7 @@ export default function ShiftCalendarCell({
 
     const handleClick = () => {
         if (hasTodaysShifts && onCellClick) {
-            onCellClick(day.format('YYYY-MM-DD'), hour, todaysShifts)
+            onCellClick(day.format('YYYY-MM-DD'), todaysShifts)
         }
     }
 

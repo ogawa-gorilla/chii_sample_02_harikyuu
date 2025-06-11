@@ -11,8 +11,8 @@ export default function ShiftCalendar({ staffId }: ShiftCalendarProps) {
     const allShifts = useAppSelector((state) => state.shift.shifts).filter(
         (shift) => shift.staffId === staffId
     )
-    const handleCellClick = (date: string, hour: number, shifts: Shift[]) => {
-        console.log(date, hour, shifts)
+    const handleCellClick = (date: string, shifts: Shift[]) => {
+        console.log(date, shifts)
     }
 
     return (
