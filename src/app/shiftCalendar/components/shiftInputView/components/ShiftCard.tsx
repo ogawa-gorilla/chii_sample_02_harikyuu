@@ -9,6 +9,7 @@ interface ShiftCardProps {
     errors: string[]
     onStartTimeChange: (shiftNumber: number, startTime: string) => void
     onEndTimeChange: (shiftNumber: number, endTime: string) => void
+    onDelete: (shiftNumber: number) => void
 }
 export default function ShiftCard({
     shiftNumber,
@@ -17,6 +18,7 @@ export default function ShiftCard({
     shiftId,
     onStartTimeChange,
     onEndTimeChange,
+    onDelete,
     warnings,
     errors,
 }: ShiftCardProps) {
@@ -75,7 +77,11 @@ export default function ShiftCard({
                         />
                     </Col>
                     <Col xs={3} className="text-end">
-                        <Button variant="outline-danger" size="sm">
+                        <Button
+                            variant="outline-danger"
+                            size="sm"
+                            onClick={() => onDelete(shiftNumber)}
+                        >
                             削除
                         </Button>
                     </Col>

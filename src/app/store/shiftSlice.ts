@@ -29,6 +29,11 @@ const shiftSlice = createSlice({
                 }
             }
         },
+        deleteShift: (state, action: PayloadAction<string>) => {
+            state.shifts = state.shifts.filter(
+                (shift) => shift.id !== action.payload
+            )
+        },
     },
 })
 
@@ -41,6 +46,6 @@ export const selectShiftsByStaffId = createSelector(
         shifts.filter((shift: Shift) => shift.staffId === staffId)
 )
 
-export const { editShift } = shiftSlice.actions
+export const { editShift, deleteShift } = shiftSlice.actions
 
 export default shiftSlice.reducer

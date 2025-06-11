@@ -1,8 +1,14 @@
 import { useAppDispatch, useAppSelector } from '@/app/hooks'
 import { useCalendar } from '@/app/hooks/useCalendar'
-import { editShift, selectShiftsByStaffId } from '@/app/store/shiftSlice'
+import {
+    deleteShift,
+    editShift,
+    selectShiftsByStaffId,
+} from '@/app/store/shiftSlice'
 import dayjs from 'dayjs'
+import { useState } from 'react'
 import { Table } from 'react-bootstrap'
+import DeleteConfirmModal from './components/DeleteConfirmModal'
 import ShiftCell from './components/ShiftCell'
 
 interface ShiftInputViewProps {
@@ -18,6 +24,8 @@ export default function ShiftInputView({
     dayjs.locale('ja')
 
     const { days } = useCalendar()
+    const [showDeleteConfirmModal, setShowDeleteConfirmModal] = useState(false)
+    const [deleteShiftId, setDeleteShiftId] = useState('')
 
     const shiftData = useAppSelector((state) =>
         selectShiftsByStaffId(state, staffId)
@@ -34,6 +42,16 @@ export default function ShiftInputView({
         temporalValues.forEach((value) => {
             dispatch(editShift(value))
         })
+    }
+
+    const handleDelete = (shiftId: string) => {
+        setShowDeleteConfirmModal(true)
+        setDeleteShiftId(shiftId)
+    }
+
+    const handleDeleteConfirm = () => {
+        dispatch(deleteShift(deleteShiftId))
+        setShowDeleteConfirmModal(false)
     }
 
     return (
@@ -93,12 +111,18 @@ export default function ShiftInputView({
                                     }
                                     today={day.format('YYYY-MM-DD')}
                                     onUpdate={handleUpdate}
+                                    onDelete={handleDelete}
                                 />
                             </td>
                         </tr>
                     ))}
                 </tbody>
             </Table>
+            <DeleteConfirmModal
+                show={showDeleteConfirmModal}
+                onHide={() => setShowDeleteConfirmModal(false)}
+                onConfirm={handleDeleteConfirm}
+            />
         </div>
     )
 }

@@ -19,12 +19,14 @@ interface ShiftCellProps {
             id: string
         }[]
     ) => void
+    onDelete: (shiftId: string) => void
 }
 
 export default function ShiftCell({
     shiftsAtDay,
     today,
     onUpdate,
+    onDelete,
 }: ShiftCellProps) {
     const [temporalValues, setTemporalValues] = useState<
         {
@@ -138,6 +140,9 @@ export default function ShiftCell({
         }
     }
 
+    const handleDelete = (shiftNumber: number) => {
+        onDelete(temporalValues[shiftNumber].id)
+    }
     const renderShiftCards = () => {
         switch (temporalValues.length) {
             case 0:
@@ -152,6 +157,7 @@ export default function ShiftCell({
                             shiftId={temporalValues[0].id}
                             onStartTimeChange={handleStartTimeChange}
                             onEndTimeChange={handleEndTimeChange}
+                            onDelete={handleDelete}
                             errors={errors}
                             warnings={warnings}
                         />
@@ -168,6 +174,7 @@ export default function ShiftCell({
                             shiftId={temporalValues[0].id}
                             onStartTimeChange={handleStartTimeChange}
                             onEndTimeChange={handleEndTimeChange}
+                            onDelete={handleDelete}
                             errors={errors}
                             warnings={warnings}
                         />
@@ -178,6 +185,7 @@ export default function ShiftCell({
                             shiftId={temporalValues[1].id}
                             onStartTimeChange={handleStartTimeChange}
                             onEndTimeChange={handleEndTimeChange}
+                            onDelete={handleDelete}
                             errors={errors}
                             warnings={warnings}
                         />
