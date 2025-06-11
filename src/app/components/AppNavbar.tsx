@@ -36,7 +36,7 @@ export default function AppNavbar() {
             <Nav.Link href="#" onClick={() => handleNavLinkClick(Page.RESERVATION_CREATE_CALENDAR)}>新規予約</Nav.Link>
             <Nav.Link href="#" onClick={() => handleNavLinkClick(Page.RESERVATION_CALENDAR)}>予約カレンダー</Nav.Link>
             <Nav.Link href="#">施術記録</Nav.Link>
-            <Nav.Link href="#">シフト管理</Nav.Link>
+            <Nav.Link href="#" onClick={() => handleNavLinkClick(Page.SHIFT)}>シフト管理</Nav.Link>
             <Nav.Link href="#">ダッシュボード</Nav.Link>
           </Nav>
           <Nav>
