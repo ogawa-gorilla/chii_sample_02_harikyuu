@@ -4,24 +4,26 @@ interface ShiftCardProps {
     shiftNumber: number
     startTime: string
     endTime: string
+    shiftId: string
     warnings: string[]
     errors: string[]
-    onStartTimeChange: (startTime: string) => void
-    onEndTimeChange: (endTime: string) => void
+    onStartTimeChange: (shiftNumber: number, startTime: string) => void
+    onEndTimeChange: (shiftNumber: number, endTime: string) => void
 }
 export default function ShiftCard({
     shiftNumber,
     startTime,
     endTime,
+    shiftId,
     onStartTimeChange,
     onEndTimeChange,
     warnings,
     errors,
 }: ShiftCardProps) {
     return (
-        <Card className="mb-2" style={{ fontSize: '0.75rem' }}>
+        <Card className="mb-2" style={{ fontSize: '0.75rem' }} key={shiftId}>
             <Card.Header className="py-1 px-2" style={{ fontSize: '0.7rem' }}>
-                シフト{shiftNumber}
+                シフト{shiftNumber + 1}
             </Card.Header>
             <Card.Body
                 className="p-2"
@@ -78,11 +80,17 @@ export default function ShiftCard({
                 <Row className="align-items-center">
                     <Col xs={5}>
                         <Form.Control
+                            as="input"
                             type="time"
+                            min="09:00"
+                            max="18:00"
+                            step="1800"
                             size="sm"
                             value={startTime}
                             style={{ fontSize: '0.7rem' }}
-                            onChange={(e) => onStartTimeChange(e.target.value)}
+                            onChange={(e) =>
+                                onStartTimeChange(shiftNumber, e.target.value)
+                            }
                         />
                     </Col>
                     <Col
@@ -94,11 +102,17 @@ export default function ShiftCard({
                     </Col>
                     <Col xs={5}>
                         <Form.Control
+                            as="input"
                             type="time"
+                            min="09:00"
+                            max="18:00"
+                            step="1800"
                             size="sm"
                             value={endTime}
                             style={{ fontSize: '0.7rem' }}
-                            onChange={(e) => onEndTimeChange(e.target.value)}
+                            onChange={(e) =>
+                                onEndTimeChange(shiftNumber, e.target.value)
+                            }
                         />
                     </Col>
                 </Row>

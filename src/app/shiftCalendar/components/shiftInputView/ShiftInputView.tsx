@@ -1,5 +1,6 @@
+import { useAppDispatch, useAppSelector } from '@/app/hooks'
 import { useCalendar } from '@/app/hooks/useCalendar'
-import { Shift } from '@/app/types/shift'
+import { editShift, selectShiftsByStaffId } from '@/app/store/shiftSlice'
 import dayjs from 'dayjs'
 import { Table } from 'react-bootstrap'
 import ShiftCell from './components/ShiftCell'
@@ -7,72 +8,33 @@ import ShiftCell from './components/ShiftCell'
 interface ShiftInputViewProps {
     startDate: string
     today: string
+    staffId: string
 }
 
-export default function ShiftInputView({ today }: ShiftInputViewProps) {
+export default function ShiftInputView({
+    today,
+    staffId,
+}: ShiftInputViewProps) {
     dayjs.locale('ja')
 
-    const {
-        startOfWeek,
-        days,
-        hours,
-        handlePrevWeek,
-        handleNextWeek,
-        handleToday,
-    } = useCalendar()
+    const { days } = useCalendar()
 
-    // データ範囲: 2025/6/2～2025/6/8
-    const shiftData: Shift[] = [
-        {
-            id: '2025-06-03',
-            date: '2025-06-03',
-            staffId: '1',
-            startTime: '13:00',
-            endTime: '18:00',
-        },
-        {
-            id: '2025-06-04',
-            date: '2025-06-04',
-            staffId: '1',
-            startTime: '09:00',
-            endTime: '11:00',
-        },
-        {
-            id: '2025-06-04-2',
-            date: '2025-06-04',
-            staffId: '1',
-            startTime: '10:00',
-            endTime: '18:00',
-        },
-        {
-            id: '2025-06-05',
-            date: '2025-06-05',
-            staffId: '1',
-            startTime: '09:00',
-            endTime: '18:00',
-        },
-        {
-            id: '2025-06-06',
-            date: '2025-06-06',
-            staffId: '1',
-            startTime: '09:00',
-            endTime: '18:00',
-        },
-        {
-            id: '2025-06-07',
-            date: '2025-06-07',
-            staffId: '1',
-            startTime: '09:00',
-            endTime: '18:00',
-        },
-        {
-            id: '2025-06-08',
-            date: '2025-06-08',
-            staffId: '1',
-            startTime: '09:00',
-            endTime: '18:00',
-        },
-    ]
+    const shiftData = useAppSelector((state) =>
+        selectShiftsByStaffId(state, staffId)
+    )
+    const dispatch = useAppDispatch()
+
+    const handleUpdate = (
+        temporalValues: {
+            startTime: string
+            endTime: string
+            shiftId: string
+        }[]
+    ) => {
+        temporalValues.forEach((value) => {
+            dispatch(editShift(value))
+        })
+    }
 
     return (
         <div>
@@ -130,6 +92,7 @@ export default function ShiftInputView({ today }: ShiftInputViewProps) {
                                         ) || []
                                     }
                                     today={day.format('YYYY-MM-DD')}
+                                    onUpdate={handleUpdate}
                                 />
                             </td>
                         </tr>

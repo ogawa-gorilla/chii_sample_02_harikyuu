@@ -22,7 +22,11 @@ export default function ShiftCalendarPage() {
 
     return (
         <Container fluid className="py-3">
-            <ShiftInputView startDate="2025-06-02" today="2025-06-02" />
+            <ShiftInputView
+                staffId={selectedStaff}
+                startDate="2025-06-02"
+                today="2025-06-02"
+            />
             <DailyShiftListModal
                 show={showDailyShiftListModal}
                 date={selectedDate}
