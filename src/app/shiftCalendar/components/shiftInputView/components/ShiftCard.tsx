@@ -36,49 +36,8 @@ export default function ShiftCard({
                             : 'none',
                 }}
             >
-                <Row className="mb-2 align-items-center">
-                    <Col xs={6}>
-                        <div className="d-flex gap-1">
-                            <Button
-                                variant="outline-secondary"
-                                size="sm"
-                                style={{
-                                    fontSize: '0.55rem',
-                                    padding: '1px 4px',
-                                }}
-                            >
-                                全日
-                            </Button>
-                            <Button
-                                variant="outline-secondary"
-                                size="sm"
-                                style={{
-                                    fontSize: '0.55rem',
-                                    padding: '1px 4px',
-                                }}
-                            >
-                                午前
-                            </Button>
-                            <Button
-                                variant="outline-secondary"
-                                size="sm"
-                                style={{
-                                    fontSize: '0.55rem',
-                                    padding: '1px 4px',
-                                }}
-                            >
-                                午後
-                            </Button>
-                        </div>
-                    </Col>
-                    <Col xs={6} className="text-end">
-                        <Button variant="outline-danger" size="sm">
-                            削除
-                        </Button>
-                    </Col>
-                </Row>
                 <Row className="align-items-center">
-                    <Col xs={5}>
+                    <Col xs={4}>
                         <Form.Control
                             as="input"
                             type="time"
@@ -94,13 +53,13 @@ export default function ShiftCard({
                         />
                     </Col>
                     <Col
-                        xs={2}
+                        xs={1}
                         className="text-center p-0"
                         style={{ fontSize: '0.7rem' }}
                     >
                         ～
                     </Col>
-                    <Col xs={5}>
+                    <Col xs={4}>
                         <Form.Control
                             as="input"
                             type="time"
@@ -114,6 +73,11 @@ export default function ShiftCard({
                                 onEndTimeChange(shiftNumber, e.target.value)
                             }
                         />
+                    </Col>
+                    <Col xs={3} className="text-end">
+                        <Button variant="outline-danger" size="sm">
+                            削除
+                        </Button>
                     </Col>
                 </Row>
                 <div className="mt-2">
