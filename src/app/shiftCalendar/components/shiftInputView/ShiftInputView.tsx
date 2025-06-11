@@ -1,9 +1,13 @@
 import { useAppDispatch, useAppSelector } from '@/app/hooks'
 import { useCalendar } from '@/app/hooks/useCalendar'
-import { editShift, selectShiftsByStaffId } from '@/app/store/shiftSlice'
+import {
+    deleteShift,
+    editShift,
+    selectShiftsByStaffId,
+} from '@/app/store/shiftSlice'
 import dayjs from 'dayjs'
 import { useEffect, useState } from 'react'
-import { Table } from 'react-bootstrap'
+import { Button, Col, Container, Row, Table } from 'react-bootstrap'
 import ShiftCell from './components/ShiftCell'
 
 interface ShiftInputViewProps {
@@ -26,6 +30,15 @@ export default function ShiftInputView({
     )
     const dispatch = useAppDispatch()
 
+    const [originalShiftData, setOriginalShiftData] = useState<
+        {
+            date: string
+            startTime: string
+            endTime: string
+            id: string
+        }[]
+    >([])
+
     const [shiftDraft, setShiftDraft] = useState<
         {
             date: string
@@ -36,21 +49,22 @@ export default function ShiftInputView({
     >([])
 
     useEffect(() => {
-        setShiftDraft(
-            shiftData
-                .filter(
-                    (shift) =>
-                        shift.date >= startDate &&
-                        shift.date <=
-                            dayjs(startDate).add(6, 'day').format('YYYY-MM-DD')
-                )
-                .map((shift) => ({
-                    date: shift.date,
-                    startTime: shift.startTime,
-                    endTime: shift.endTime,
-                    id: shift.id,
-                }))
-        )
+        const filteredShifts = shiftData
+            .filter(
+                (shift) =>
+                    shift.date >= startDate &&
+                    shift.date <=
+                        dayjs(startDate).add(6, 'day').format('YYYY-MM-DD')
+            )
+            .map((shift) => ({
+                date: shift.date,
+                startTime: shift.startTime,
+                endTime: shift.endTime,
+                id: shift.id,
+            }))
+
+        setShiftDraft(filteredShifts)
+        setOriginalShiftData(filteredShifts)
     }, [shiftData])
 
     const handleUpdate = (
@@ -77,9 +91,22 @@ export default function ShiftInputView({
     }
 
     const handleSave = () => {
+        // 編集・作成したシフトの保存
         shiftDraft.forEach((shift) => {
             dispatch(editShift(shift))
         })
+        // 削除されたものの削除
+        const deletedShifts = originalShiftData.filter(
+            (shift) => !shiftDraft.some((draft) => draft.id === shift.id)
+        )
+        deletedShifts.forEach((shift) => {
+            dispatch(deleteShift(shift.id))
+        })
+        setOriginalShiftData([...shiftDraft])
+    }
+
+    const handleUndo = () => {
+        setShiftDraft([...originalShiftData])
     }
 
     const handleDelete = (shiftId: string) => {
@@ -87,8 +114,11 @@ export default function ShiftInputView({
         setShiftDraft(updatedDraft)
     }
 
+    const hasChanges =
+        JSON.stringify(shiftDraft) !== JSON.stringify(originalShiftData)
+
     return (
-        <div>
+        <div style={{ paddingBottom: '80px' }}>
             <Table
                 bordered
                 responsive
@@ -151,6 +181,43 @@ export default function ShiftInputView({
                     ))}
                 </tbody>
             </Table>
+
+            <div
+                style={{
+                    position: 'fixed',
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    backgroundColor: '#fff',
+                    borderTop: '1px solid #dee2e6',
+                    padding: '10px 0',
+                    zIndex: 1000,
+                    boxShadow: '0 -2px 4px rgba(0,0,0,0.1)',
+                }}
+            >
+                <Container>
+                    <Row>
+                        <Col>
+                            <div className="d-flex justify-content-center gap-3">
+                                <Button
+                                    variant="outline-secondary"
+                                    onClick={handleUndo}
+                                    disabled={!hasChanges}
+                                >
+                                    最初の状態に戻す
+                                </Button>
+                                <Button
+                                    variant="primary"
+                                    onClick={handleSave}
+                                    disabled={!hasChanges}
+                                >
+                                    保存
+                                </Button>
+                            </div>
+                        </Col>
+                    </Row>
+                </Container>
+            </div>
         </div>
     )
 }
