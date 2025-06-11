@@ -4,7 +4,8 @@ interface ShiftCardProps {
     shiftNumber: number
     startTime: string
     endTime: string
-    errors?: string[]
+    warnings: string[]
+    errors: string[]
     onStartTimeChange: (startTime: string) => void
     onEndTimeChange: (endTime: string) => void
 }
@@ -14,14 +15,25 @@ export default function ShiftCard({
     endTime,
     onStartTimeChange,
     onEndTimeChange,
-    errors = [],
+    warnings,
+    errors,
 }: ShiftCardProps) {
     return (
         <Card className="mb-2" style={{ fontSize: '0.75rem' }}>
             <Card.Header className="py-1 px-2" style={{ fontSize: '0.7rem' }}>
                 シフト{shiftNumber}
             </Card.Header>
-            <Card.Body className="p-2">
+            <Card.Body
+                className="p-2"
+                style={{
+                    border:
+                        errors.length > 0
+                            ? '1px solid red'
+                            : warnings.length > 0
+                            ? '1px solid yellow'
+                            : 'none',
+                }}
+            >
                 <Row className="mb-2 align-items-center">
                     <Col xs={6}>
                         <div className="d-flex gap-1">
@@ -90,13 +102,22 @@ export default function ShiftCard({
                         />
                     </Col>
                 </Row>
-                {errors.map((error) => (
-                    <Row>
-                        <Col xs={12} className="text-danger">
-                            {error}
-                        </Col>
-                    </Row>
-                ))}
+                <div className="mt-2">
+                    {errors.map((error) => (
+                        <Row key={error}>
+                            <Col xs={12} className="text-danger">
+                                ❌ {error}
+                            </Col>
+                        </Row>
+                    ))}
+                    {warnings.map((warning) => (
+                        <Row key={warning}>
+                            <Col xs={12} className="text-warning">
+                                ⚠️ {warning}
+                            </Col>
+                        </Row>
+                    ))}
+                </div>
             </Card.Body>
         </Card>
     )

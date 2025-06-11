@@ -25,7 +25,7 @@ export default function ShiftCell({ shiftsAtDay, today }: ShiftCellProps) {
         holidayReason = '定休日'
     } else if (temporalHoliday) {
         isHoliday = true
-        holidayReason = temporalHoliday.name
+        holidayReason = '臨時休業日'
     }
 
     if (isHoliday && shiftsAtDay.length === 0) {
@@ -54,6 +54,11 @@ export default function ShiftCell({ shiftsAtDay, today }: ShiftCellProps) {
         }
     }
 
+    const warnings: string[] = []
+    if (isHoliday) {
+        warnings.push(holidayReason + 'です。')
+    }
+
     const renderShiftCards = () => {
         switch (shiftsAtDay.length) {
             case 0:
@@ -68,6 +73,7 @@ export default function ShiftCell({ shiftsAtDay, today }: ShiftCellProps) {
                             onStartTimeChange={handleStartTimeChange}
                             onEndTimeChange={handleEndTimeChange}
                             errors={errors}
+                            warnings={warnings}
                         />
                         {renderAddButton()}
                     </div>
@@ -82,6 +88,7 @@ export default function ShiftCell({ shiftsAtDay, today }: ShiftCellProps) {
                             onStartTimeChange={handleStartTimeChange}
                             onEndTimeChange={handleEndTimeChange}
                             errors={errors}
+                            warnings={warnings}
                         />
                         <ShiftCard
                             shiftNumber={2}
@@ -90,6 +97,7 @@ export default function ShiftCell({ shiftsAtDay, today }: ShiftCellProps) {
                             onStartTimeChange={handleStartTimeChange}
                             onEndTimeChange={handleEndTimeChange}
                             errors={errors}
+                            warnings={warnings}
                         />
                     </div>
                 )

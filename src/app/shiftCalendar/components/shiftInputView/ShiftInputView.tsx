@@ -129,7 +129,7 @@ export default function ShiftInputView({ today }: ShiftInputViewProps) {
                                                 day.format('YYYY-MM-DD')
                                         ) || []
                                     }
-                                    today={today}
+                                    today={day.format('YYYY-MM-DD')}
                                 />
                             </td>
                         </tr>
