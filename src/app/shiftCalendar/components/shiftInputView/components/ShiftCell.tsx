@@ -74,21 +74,22 @@ export default function ShiftCell({ date }: ShiftCellProps) {
         dispatch(deleteShiftDraft(shiftId))
     }
 
+    const { errors, warnings } = validateShiftDraftGroup(
+        shiftDraftsAtDay,
+        isHoliday,
+        holidayReason
+    )
+    if (errors.length > 0) {
+        shiftDraftsAtDay.forEach((shift) => {
+            dispatch(markDraftError(shift.id))
+        })
+    } else {
+        shiftDraftsAtDay.forEach((shift) => {
+            dispatch(unmarkDraftError(shift.id))
+        })
+    }
+
     const renderShiftCards = () => {
-        const { errors, warnings } = validateShiftDraftGroup(
-            shiftDraftsAtDay,
-            isHoliday,
-            holidayReason
-        )
-        if (errors.length > 0) {
-            shiftDraftsAtDay.forEach((shift) => {
-                dispatch(markDraftError(shift.id))
-            })
-        } else {
-            shiftDraftsAtDay.forEach((shift) => {
-                dispatch(unmarkDraftError(shift.id))
-            })
-        }
         switch (shiftDraftsAtDay.length) {
             case 0:
                 return (
