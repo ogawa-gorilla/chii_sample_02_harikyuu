@@ -3,6 +3,7 @@ import { useAppSelector } from '@/app/hooks'
 import dayjs from 'dayjs'
 import { useEffect, useState } from 'react'
 import { Button } from 'react-bootstrap'
+import { v4 } from 'uuid'
 import ClosedDaysCard from './ClosedDaysCard'
 import ShiftCard from './ShiftCard'
 
@@ -52,12 +53,19 @@ export default function ShiftCell({
         )
     }, [shiftsAtDay])
 
-    useEffect(() => {
+    // バリデーションロジックを関数として抽出
+    const validateTemporalValues = (
+        values: {
+            startTime: string
+            endTime: string
+            id: string
+        }[]
+    ) => {
         const errors: string[] = []
         const warnings: string[] = []
 
-        if (temporalValues.length === 2) {
-            if (temporalValues[0].endTime > temporalValues[1].startTime) {
+        if (values.length === 2) {
+            if (values[0].endTime > values[1].startTime) {
                 errors.push('時間に重複があります。直してください')
             }
         }
@@ -65,7 +73,7 @@ export default function ShiftCell({
         if (isHoliday) {
             warnings.push(holidayReason + 'です。')
         }
-        temporalValues.forEach((value) => {
+        values.forEach((value) => {
             if (value.startTime > value.endTime) {
                 errors.push('開始時間が終了時間より後です。直してください')
             }
@@ -78,6 +86,12 @@ export default function ShiftCell({
                 warnings.push('終了時間が時間外です')
             }
         })
+
+        return { errors, warnings }
+    }
+
+    useEffect(() => {
+        const { errors, warnings } = validateTemporalValues(temporalValues)
         setErrors(errors)
         setWarnings(warnings)
     }, [temporalValues])
@@ -105,19 +119,26 @@ export default function ShiftCell({
 
     const renderAddButton = () => {
         return (
-            <Button variant="outline-primary" size="sm">
+            <Button
+                variant="outline-primary"
+                size="sm"
+                onClick={handleAddShift}
+            >
                 シフト追加
             </Button>
         )
     }
 
-    const commitEditing = (updatedEntry: {
-        startTime: string
-        endTime: string
-        id: string
-    }) => {
+    const commitEditing = (
+        updatedEntries: {
+            startTime: string
+            endTime: string
+            id: string
+        }[]
+    ) => {
+        console.log('commitEditing', updatedEntries)
         // dispatch update
-        onUpdate([updatedEntry])
+        onUpdate(updatedEntries)
     }
 
     const handleStartTimeChange = (shiftNumber: number, startTime: string) => {
@@ -132,8 +153,12 @@ export default function ShiftCell({
             return value
         })
         setTemporalValues(newTemporalValues)
-        if (errors.length === 0) {
-            commitEditing(newTemporalValues[shiftNumber])
+
+        const { errors: validationErrors } =
+            validateTemporalValues(newTemporalValues)
+
+        if (validationErrors.length === 0) {
+            commitEditing(newTemporalValues)
         }
     }
     const handleEndTimeChange = (shiftNumber: number, endTime: string) => {
@@ -147,8 +172,29 @@ export default function ShiftCell({
             return value
         })
         setTemporalValues(newTemporalValues)
-        if (errors.length === 0) {
-            commitEditing(newTemporalValues[shiftNumber])
+
+        const { errors: validationErrors } =
+            validateTemporalValues(newTemporalValues)
+
+        if (validationErrors.length === 0) {
+            commitEditing(newTemporalValues)
+        }
+    }
+
+    const handleAddShift = () => {
+        const newTemporalValues = [
+            ...temporalValues,
+            {
+                startTime: '09:00',
+                endTime: '18:00',
+                id: v4(),
+            },
+        ]
+        setTemporalValues(newTemporalValues)
+        const { errors: validationErrors } =
+            validateTemporalValues(newTemporalValues)
+        if (validationErrors.length === 0) {
+            commitEditing(newTemporalValues)
         }
     }
 
