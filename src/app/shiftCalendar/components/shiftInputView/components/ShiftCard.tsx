@@ -1,3 +1,5 @@
+import { useAppDispatch } from '@/app/hooks'
+import { deleteShiftDraft, updateShiftDraft } from '@/app/store/shiftSlice'
 import { ShiftDraft } from '@/app/types/shift'
 import { useState } from 'react'
 import { Button, Card, Col, Form, Row } from 'react-bootstrap'
@@ -5,8 +7,6 @@ import { Button, Card, Col, Form, Row } from 'react-bootstrap'
 interface ShiftCardProps {
     shiftNumber: number
     initialShift: ShiftDraft
-    onShiftChange: (shiftNumber: number, newShift: ShiftDraft) => void
-    onDelete: (shiftId: string) => void
     errors: string[]
     warnings: string[]
 }
@@ -14,26 +14,27 @@ interface ShiftCardProps {
 export default function ShiftCard({
     shiftNumber,
     initialShift,
-    onShiftChange,
-    onDelete,
     errors,
     warnings,
 }: ShiftCardProps) {
     // 個別のtemporalValue状態
     const [temporalValue, setTemporalValue] = useState<ShiftDraft>(initialShift)
+    const dispatch = useAppDispatch()
 
     const handleStartTimeChange = (startTime: string) => {
         const newValue = { ...temporalValue, startTime }
         setTemporalValue(newValue)
-        // 即座にShiftCellに通知
-        onShiftChange(shiftNumber, newValue)
+        dispatch(updateShiftDraft(newValue))
     }
 
     const handleEndTimeChange = (endTime: string) => {
         const newValue = { ...temporalValue, endTime }
         setTemporalValue(newValue)
-        // 即座にShiftCellに通知
-        onShiftChange(shiftNumber, newValue)
+        dispatch(updateShiftDraft(newValue))
+    }
+
+    const handleDelete = () => {
+        dispatch(deleteShiftDraft(temporalValue.id))
     }
 
     return (
@@ -98,7 +99,7 @@ export default function ShiftCard({
                         <Button
                             variant="outline-danger"
                             size="sm"
-                            onClick={() => onDelete(temporalValue.id)}
+                            onClick={handleDelete}
                         >
                             削除
                         </Button>

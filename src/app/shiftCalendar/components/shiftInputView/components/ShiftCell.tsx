@@ -1,13 +1,11 @@
 import { weeklyClosedDays } from '@/app/constants/weeklyClosedDays'
 import { useAppDispatch, useAppSelector } from '@/app/hooks'
 import {
-    deleteShiftDraft,
     markDraftError,
     selectShiftDraftsForDay,
     unmarkDraftError,
     updateShiftDraft,
 } from '@/app/store/shiftSlice'
-import { ShiftDraft } from '@/app/types/shift'
 import { validateShiftDraftGroup } from '@/utils/validation/shiftValidation'
 import dayjs from 'dayjs'
 import { useMemo } from 'react'
@@ -54,11 +52,6 @@ export default function ShiftCell({ date }: ShiftCellProps) {
         return <ClosedDaysCard reason={holidayReason} />
     }
 
-    // ShiftCardからの変更通知を受け取る
-    const handleShiftChange = (shiftNumber: number, newShift: ShiftDraft) => {
-        dispatch(updateShiftDraft(newShift))
-    }
-
     const handleAddShift = (date: string) => {
         dispatch(
             updateShiftDraft({
@@ -68,10 +61,6 @@ export default function ShiftCell({ date }: ShiftCellProps) {
                 date: date,
             })
         )
-    }
-
-    const handleDelete = (shiftId: string) => {
-        dispatch(deleteShiftDraft(shiftId))
     }
 
     const { errors, warnings } = validateShiftDraftGroup(
@@ -103,8 +92,6 @@ export default function ShiftCell({ date }: ShiftCellProps) {
                         <ShiftCard
                             shiftNumber={0}
                             initialShift={shiftDraftsAtDay[0]}
-                            onShiftChange={handleShiftChange}
-                            onDelete={handleDelete}
                             errors={errors}
                             warnings={warnings}
                         />
@@ -117,16 +104,12 @@ export default function ShiftCell({ date }: ShiftCellProps) {
                         <ShiftCard
                             shiftNumber={0}
                             initialShift={shiftDraftsAtDay[0]}
-                            onShiftChange={handleShiftChange}
-                            onDelete={handleDelete}
                             errors={errors}
                             warnings={warnings}
                         />
                         <ShiftCard
                             shiftNumber={1}
                             initialShift={shiftDraftsAtDay[1]}
-                            onShiftChange={handleShiftChange}
-                            onDelete={handleDelete}
                             errors={errors}
                             warnings={warnings}
                         />
