@@ -1,4 +1,4 @@
-import { VIRUTAL_TODAY } from '@/app/constants/virtualToday'
+import { VIRTUAL_TODAY } from '@/app/constants/virtualToday'
 import { weeklyClosedDays } from '@/app/constants/weeklyClosedDays'
 import dayjs from 'dayjs'
 
@@ -27,7 +27,7 @@ export function isSunday(day: dayjs.Dayjs): boolean {
  * 指定日が今日（仮想的な今日）かどうかを判定
  */
 export function isToday(day: dayjs.Dayjs): boolean {
-    return day.format('YYYY-MM-DD') === VIRUTAL_TODAY
+    return day.format('YYYY-MM-DD') === VIRTUAL_TODAY
 }
 
 /**

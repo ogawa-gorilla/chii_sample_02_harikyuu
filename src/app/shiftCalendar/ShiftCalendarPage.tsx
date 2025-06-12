@@ -1,5 +1,5 @@
 'use client'
-
+import { VIRTUAL_TODAY } from '@/app/constants/virtualToday'
 import { useState } from 'react'
 import { Button, Container } from 'react-bootstrap'
 import StaffSelector from '../components/common/StaffSelector'
@@ -8,7 +8,7 @@ import ShiftInputView from './components/shiftInputView/ShiftInputView'
 
 export default function ShiftCalendarPage() {
     const [selectedStaff, setSelectedStaff] = useState('all')
-    const [startDate, setStartDate] = useState('')
+    const [startDate, setStartDate] = useState(VIRTUAL_TODAY)
     const [showShiftInputView, setShowShiftInputView] = useState(false)
 
     const handleInputShift = () => {

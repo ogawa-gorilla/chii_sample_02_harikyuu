@@ -1,11 +1,11 @@
 import { HOURS } from '@/app/constants/hours'
-import { VIRUTAL_TODAY } from '@/app/constants/virtualToday'
+import { VIRTUAL_TODAY } from '@/app/constants/virtualToday'
 import dayjs from 'dayjs'
 import { useState } from 'react'
 
 export function useCalendar() {
     const [startOfWeek, setStartOfWeek] = useState(
-        dayjs(VIRUTAL_TODAY).startOf('week').add(1, 'day')
+        dayjs(VIRTUAL_TODAY).startOf('week').add(1, 'day')
     )
 
     // 7日間の日付配列を生成
@@ -32,7 +32,7 @@ export function useCalendar() {
     }
 
     const handleToday = (onWeekChange?: (startDate: string) => void) => {
-        const newStartOfWeek = dayjs(VIRUTAL_TODAY)
+        const newStartOfWeek = dayjs(VIRTUAL_TODAY)
             .startOf('week')
             .add(1, 'day')
         setStartOfWeek(newStartOfWeek)
