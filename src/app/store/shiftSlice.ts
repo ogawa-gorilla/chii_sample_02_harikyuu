@@ -1,5 +1,6 @@
 import { Shift, ShiftDraft, ShiftTemplate } from '@/app/types/shift'
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import dayjs from 'dayjs'
 import { SHIFT_TESTDATA } from '../components/testdata/shiftTestData'
 import { TemporalHoliday } from '../types/temporalHoliday'
 import { RootState } from './store'
@@ -165,22 +166,6 @@ const shiftSlice = createSlice({
         clearShiftDrafts: (state) => {
             state.shiftDrafts = []
         },
-        markDraftError: (state, action: PayloadAction<string>) => {
-            const targetIndex = state.shiftDrafts.findIndex(
-                (draft) => draft.id === action.payload
-            )
-            if (targetIndex !== -1) {
-                state.shiftDrafts[targetIndex].hasError = true
-            }
-        },
-        unmarkDraftError: (state, action: PayloadAction<string>) => {
-            const targetIndex = state.shiftDrafts.findIndex(
-                (draft) => draft.id === action.payload
-            )
-            if (targetIndex !== -1) {
-                state.shiftDrafts[targetIndex].hasError = false
-            }
-        },
     },
 })
 
@@ -202,6 +187,19 @@ export const selectShiftDraftsForDay = createSelector(
         shiftDrafts.filter((draft: ShiftDraft) => draft.date === date)
 )
 
+export const getMonthlyShifts = createSelector(
+    [
+        (state: RootState) => state.shift.shifts,
+        (_: RootState, month: number) => month,
+        (_: RootState, month: number, staffId: string) => staffId,
+    ],
+    (shifts, month, staffId) =>
+        shifts.filter(
+            (shift: Shift) =>
+                dayjs(shift.date).month() === month && shift.staffId === staffId
+        )
+)
+
 export const selectAllShiftDrafts = (state: RootState) =>
     state.shift.shiftDrafts
 
@@ -212,8 +210,6 @@ export const {
     updateShiftDraft,
     deleteShiftDraft,
     clearShiftDrafts,
-    markDraftError,
-    unmarkDraftError,
 } = shiftSlice.actions
 
 export default shiftSlice.reducer

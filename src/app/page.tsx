@@ -11,6 +11,7 @@ import HomePage from './HomePage'
 import { useAppSelector } from './hooks'
 import NotImplementedPage from './NotImplementedPage'
 import ShiftCalendarPage from './shiftCalendar/ShiftCalendarPage'
+import ShiftInputPage from './shiftCalendar/ShiftInputPage'
 import { Page } from './types/Page'
 
 const showPage = (page: Page) => {
@@ -29,6 +30,8 @@ const showPage = (page: Page) => {
             return <ReservationEditPage />
         case Page.SHIFT:
             return <ShiftCalendarPage />
+        case Page.SHIFT_EDIT:
+            return <ShiftInputPage />
         default:
             return <NotImplementedPage />
     }
