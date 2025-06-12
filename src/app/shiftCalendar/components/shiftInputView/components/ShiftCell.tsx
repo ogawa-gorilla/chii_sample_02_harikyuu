@@ -1,7 +1,9 @@
 import { weeklyClosedDays } from '@/app/constants/weeklyClosedDays'
 import { useAppSelector } from '@/app/hooks'
+import { ShiftDraft } from '@/app/types/shift'
+import { validateShiftDraft } from '@/utils/validation/shiftValidation'
 import dayjs from 'dayjs'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Button } from 'react-bootstrap'
 import { v4 } from 'uuid'
 import ClosedDaysCard from './ClosedDaysCard'
@@ -33,13 +35,7 @@ export default function ShiftCell({
     onUpdate,
     onDelete,
 }: ShiftCellProps) {
-    const [temporalValues, setTemporalValues] = useState<
-        {
-            startTime: string
-            endTime: string
-            id: string
-        }[]
-    >([])
+    const [temporalValues, setTemporalValues] = useState<ShiftDraft[]>([])
 
     useEffect(() => {
         setTemporalValues(
@@ -53,49 +49,6 @@ export default function ShiftCell({
         )
     }, [shiftsAtDay])
 
-    // バリデーションロジックを関数として抽出
-    const validateTemporalValues = (
-        values: {
-            startTime: string
-            endTime: string
-            id: string
-        }[]
-    ) => {
-        const errors: string[] = []
-        const warnings: string[] = []
-
-        if (values.length === 2) {
-            if (values[0].endTime > values[1].startTime) {
-                errors.push('時間に重複があります。直してください')
-            }
-        }
-
-        if (isHoliday) {
-            warnings.push(holidayReason + 'です。')
-        }
-        values.forEach((value) => {
-            if (value.startTime > value.endTime) {
-                errors.push('開始時間が終了時間より後です。直してください')
-            }
-
-            if (value.startTime < '09:00' || value.startTime > '18:00') {
-                warnings.push('開始時間が時間外です')
-            }
-
-            if (value.endTime < '09:00' || value.endTime > '18:00') {
-                warnings.push('終了時間が時間外です')
-            }
-        })
-
-        return { errors, warnings }
-    }
-
-    useEffect(() => {
-        const { errors, warnings } = validateTemporalValues(temporalValues)
-        setErrors(errors)
-        setWarnings(warnings)
-    }, [temporalValues])
-
     const temporalHoliday = useAppSelector((state) =>
         state.shift.temporalHolidays.find((holiday) => holiday.date === today)
     )
@@ -103,15 +56,33 @@ export default function ShiftCell({
     const [errors, setErrors] = useState<string[]>([])
     const [warnings, setWarnings] = useState<string[]>([])
 
-    let isHoliday = false
-    let holidayReason = ''
-    if (weeklyClosedDays.includes(dayjs(today).format('d'))) {
-        isHoliday = true
-        holidayReason = '定休日'
-    } else if (temporalHoliday) {
-        isHoliday = true
-        holidayReason = '臨時休業日'
-    }
+    const { isHoliday, holidayReason } = useMemo(() => {
+        if (weeklyClosedDays.includes(dayjs(today).format('d'))) {
+            return {
+                isHoliday: true,
+                holidayReason: '定休日',
+            }
+        } else if (temporalHoliday) {
+            return {
+                isHoliday: true,
+                holidayReason: '臨時休業日',
+            }
+        }
+        return {
+            isHoliday: false,
+            holidayReason: '',
+        }
+    }, [today, temporalHoliday])
+
+    useEffect(() => {
+        const { errors, warnings } = validateShiftDraft(
+            temporalValues,
+            isHoliday,
+            holidayReason
+        )
+        setErrors(errors)
+        setWarnings(warnings)
+    }, [temporalValues, isHoliday, holidayReason])
 
     if (isHoliday && shiftsAtDay.length === 0) {
         return <ClosedDaysCard reason={holidayReason} />
@@ -129,13 +100,7 @@ export default function ShiftCell({
         )
     }
 
-    const commitEditing = (
-        updatedEntries: {
-            startTime: string
-            endTime: string
-            id: string
-        }[]
-    ) => {
+    const commitEditing = (updatedEntries: ShiftDraft[]) => {
         console.log('commitEditing', updatedEntries)
         // dispatch update
         onUpdate(updatedEntries)
@@ -154,8 +119,11 @@ export default function ShiftCell({
         })
         setTemporalValues(newTemporalValues)
 
-        const { errors: validationErrors } =
-            validateTemporalValues(newTemporalValues)
+        const { errors: validationErrors } = validateShiftDraft(
+            newTemporalValues,
+            isHoliday,
+            holidayReason
+        )
 
         if (validationErrors.length === 0) {
             commitEditing(newTemporalValues)
@@ -173,8 +141,11 @@ export default function ShiftCell({
         })
         setTemporalValues(newTemporalValues)
 
-        const { errors: validationErrors } =
-            validateTemporalValues(newTemporalValues)
+        const { errors: validationErrors } = validateShiftDraft(
+            newTemporalValues,
+            isHoliday,
+            holidayReason
+        )
 
         if (validationErrors.length === 0) {
             commitEditing(newTemporalValues)
@@ -191,8 +162,11 @@ export default function ShiftCell({
             },
         ]
         setTemporalValues(newTemporalValues)
-        const { errors: validationErrors } =
-            validateTemporalValues(newTemporalValues)
+        const { errors: validationErrors } = validateShiftDraft(
+            newTemporalValues,
+            isHoliday,
+            holidayReason
+        )
         if (validationErrors.length === 0) {
             commitEditing(newTemporalValues)
         }

@@ -6,6 +6,15 @@ export interface Shift {
     endTime: string
 }
 
+/**
+ * シフトの下書きデータを表す型
+ */
+export interface ShiftDraft {
+    startTime: string
+    endTime: string
+    id: string
+}
+
 export interface ShiftTemplateDay {
     day: string
     times: ShiftTemplateTime[]

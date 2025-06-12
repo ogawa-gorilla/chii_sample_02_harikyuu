@@ -1,5 +1,6 @@
 'use client'
 import { VIRTUAL_TODAY } from '@/app/constants/virtualToday'
+import dayjs from 'dayjs'
 import { useState } from 'react'
 import { Button, Container } from 'react-bootstrap'
 import StaffSelector from '../components/common/StaffSelector'
@@ -24,7 +25,10 @@ export default function ShiftCalendarPage() {
             {showShiftInputView ? (
                 <ShiftInputView
                     staffId={selectedStaff}
-                    startDate={startDate}
+                    startDate={dayjs(startDate)
+                        .startOf('week')
+                        .add(1, 'day')
+                        .format('YYYY-MM-DD')}
                     onClose={() => setShowShiftInputView(false)}
                 />
             ) : (

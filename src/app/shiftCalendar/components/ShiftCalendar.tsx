@@ -1,5 +1,6 @@
 import Calendar from '@/app/components/calendar'
 import { useAppSelector } from '@/app/hooks'
+import dayjs from 'dayjs'
 import ShiftCalendarCell from './ShiftCalendarCell'
 
 interface ShiftCalendarProps {
@@ -26,7 +27,12 @@ export default function ShiftCalendar({
                     onCellClick: () => {},
                 }}
                 onWeekChange={onWeekChange}
-                startDate={startDate}
+                startDate={
+                    (startDate = dayjs(startDate)
+                        .startOf('week')
+                        .add(1, 'day')
+                        .format('YYYY-MM-DD'))
+                }
             />
         </div>
     )
