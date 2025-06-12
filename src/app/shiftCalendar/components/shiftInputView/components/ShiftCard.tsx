@@ -1,8 +1,14 @@
 import { useAppDispatch } from '@/app/hooks'
 import { useHolidayCheck } from '@/app/hooks/useHolidayCheck'
-import { deleteShiftDraft, updateShiftDraft } from '@/app/store/shiftSlice'
+import {
+    deleteShiftDraft,
+    markDraftError,
+    unmarkDraftError,
+    updateShiftDraft,
+} from '@/app/store/shiftSlice'
 import { ShiftDraft } from '@/app/types/shift'
 import { validateShiftDraft } from '@/utils/validation/shiftValidation'
+import { useEffect } from 'react'
 import { Button, Card, Col, Form, Row } from 'react-bootstrap'
 
 interface ShiftCardProps {
@@ -39,6 +45,14 @@ export default function ShiftCard({
         shiftsInGroup,
         isHoliday
     )
+
+    useEffect(() => {
+        if (errors.length > 0) {
+            dispatch(markDraftError(shiftDraft.id))
+        } else {
+            dispatch(unmarkDraftError(shiftDraft.id))
+        }
+    }, [errors])
 
     return (
         <Card
