@@ -1,29 +1,47 @@
+import { ShiftDraft } from '@/app/types/shift'
+import { useState } from 'react'
 import { Button, Card, Col, Form, Row } from 'react-bootstrap'
 
 interface ShiftCardProps {
     shiftNumber: number
-    startTime: string
-    endTime: string
-    shiftId: string
-    warnings: string[]
+    initialShift: ShiftDraft
+    onShiftChange: (shiftNumber: number, newShift: ShiftDraft) => void
+    onDelete: (shiftId: string) => void
     errors: string[]
-    onStartTimeChange: (shiftNumber: number, startTime: string) => void
-    onEndTimeChange: (shiftNumber: number, endTime: string) => void
-    onDelete: (shiftNumber: number) => void
+    warnings: string[]
 }
+
 export default function ShiftCard({
     shiftNumber,
-    startTime,
-    endTime,
-    shiftId,
-    onStartTimeChange,
-    onEndTimeChange,
+    initialShift,
+    onShiftChange,
     onDelete,
-    warnings,
     errors,
+    warnings,
 }: ShiftCardProps) {
+    // 個別のtemporalValue状態
+    const [temporalValue, setTemporalValue] = useState<ShiftDraft>(initialShift)
+
+    const handleStartTimeChange = (startTime: string) => {
+        const newValue = { ...temporalValue, startTime }
+        setTemporalValue(newValue)
+        // 即座にShiftCellに通知
+        onShiftChange(shiftNumber, newValue)
+    }
+
+    const handleEndTimeChange = (endTime: string) => {
+        const newValue = { ...temporalValue, endTime }
+        setTemporalValue(newValue)
+        // 即座にShiftCellに通知
+        onShiftChange(shiftNumber, newValue)
+    }
+
     return (
-        <Card className="mb-2" style={{ fontSize: '0.75rem' }} key={shiftId}>
+        <Card
+            className="mb-2"
+            style={{ fontSize: '0.75rem' }}
+            key={temporalValue.id}
+        >
             <Card.Header className="py-1 px-2" style={{ fontSize: '0.7rem' }}>
                 シフト{shiftNumber + 1}
             </Card.Header>
@@ -47,10 +65,10 @@ export default function ShiftCard({
                             max="18:00"
                             step="1800"
                             size="sm"
-                            value={startTime}
+                            value={temporalValue.startTime}
                             style={{ fontSize: '0.7rem' }}
                             onChange={(e) =>
-                                onStartTimeChange(shiftNumber, e.target.value)
+                                handleStartTimeChange(e.target.value)
                             }
                         />
                     </Col>
@@ -69,10 +87,10 @@ export default function ShiftCard({
                             max="18:00"
                             step="1800"
                             size="sm"
-                            value={endTime}
+                            value={temporalValue.endTime}
                             style={{ fontSize: '0.7rem' }}
                             onChange={(e) =>
-                                onEndTimeChange(shiftNumber, e.target.value)
+                                handleEndTimeChange(e.target.value)
                             }
                         />
                     </Col>
@@ -80,7 +98,7 @@ export default function ShiftCard({
                         <Button
                             variant="outline-danger"
                             size="sm"
-                            onClick={() => onDelete(shiftNumber)}
+                            onClick={() => onDelete(temporalValue.id)}
                         >
                             削除
                         </Button>

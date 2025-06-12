@@ -1,10 +1,14 @@
 import { useAppDispatch, useAppSelector } from '@/app/hooks'
 import { useCalendar } from '@/app/hooks/useCalendar'
 import {
+    clearShiftDrafts,
     deleteShift,
     editShift,
+    selectAllShiftDrafts,
     selectShiftsByStaffId,
+    setShiftDrafts,
 } from '@/app/store/shiftSlice'
+import { ShiftDraft } from '@/app/types/shift'
 import dayjs from 'dayjs'
 import { useEffect, useState } from 'react'
 import { Button, Col, Container, Row, Table } from 'react-bootstrap'
@@ -28,25 +32,10 @@ export default function ShiftInputView({
     const shiftData = useAppSelector((state) =>
         selectShiftsByStaffId(state, staffId)
     )
+    const shiftDrafts = useAppSelector(selectAllShiftDrafts)
     const dispatch = useAppDispatch()
 
-    const [originalShiftData, setOriginalShiftData] = useState<
-        {
-            date: string
-            startTime: string
-            endTime: string
-            id: string
-        }[]
-    >([])
-
-    const [shiftDraft, setShiftDraft] = useState<
-        {
-            date: string
-            startTime: string
-            endTime: string
-            id: string
-        }[]
-    >([])
+    const [originalShiftData, setOriginalShiftData] = useState<ShiftDraft[]>([])
 
     useEffect(() => {
         const filteredShifts = shiftData
@@ -54,7 +43,8 @@ export default function ShiftInputView({
                 (shift) =>
                     shift.date >= startDate &&
                     shift.date <=
-                        dayjs(startDate).add(6, 'day').format('YYYY-MM-DD')
+                        dayjs(startDate).add(6, 'day').format('YYYY-MM-DD') &&
+                    staffId === shift.staffId
             )
             .map((shift) => ({
                 date: shift.date,
@@ -63,61 +53,49 @@ export default function ShiftInputView({
                 id: shift.id,
             }))
 
-        setShiftDraft(filteredShifts)
-        setOriginalShiftData(filteredShifts)
-    }, [shiftData])
+        // 確定シフトから草稿を作成
+        const drafts = filteredShifts.map((shift) => ({
+            ...shift,
+            date: shift.date, // ShiftDraftには date が必要
+        }))
 
-    const handleUpdate = (
-        temporalValues: {
-            startTime: string
-            endTime: string
-            id: string
-        }[]
-    ) => {
-        const updatedDraft = shiftDraft.map((shift) => {
-            const targetIndex = temporalValues.findIndex(
-                (value) => value.id === shift.id
-            )
-            if (targetIndex !== -1) {
-                return {
-                    ...shift,
-                    startTime: temporalValues[targetIndex].startTime,
-                    endTime: temporalValues[targetIndex].endTime,
-                }
-            }
-            return shift
-        })
-        setShiftDraft(updatedDraft)
-    }
+        dispatch(setShiftDrafts(drafts))
+        setOriginalShiftData(filteredShifts)
+    }, [shiftData, startDate, dispatch])
 
     const handleSave = () => {
-        // 編集・作成したシフトの保存
-        shiftDraft.forEach((shift) => {
-            dispatch(editShift(shift))
+        // 草稿から確定シフトへ保存
+        shiftDrafts.forEach((draft) => {
+            dispatch(
+                editShift({
+                    id: draft.id,
+                    date: draft.date,
+                    startTime: draft.startTime,
+                    endTime: draft.endTime,
+                    staffId, // staffIdを追加
+                })
+            )
         })
+
         // 削除されたものの削除
         const deletedShifts = originalShiftData.filter(
-            (shift) => !shiftDraft.some((draft) => draft.id === shift.id)
+            (shift) => !shiftDrafts.some((draft) => draft.id === shift.id)
         )
         deletedShifts.forEach((shift) => {
             dispatch(deleteShift(shift.id))
         })
-        setOriginalShiftData([...shiftDraft])
+
+        dispatch(clearShiftDrafts())
         onClose()
     }
 
     const handleCancel = () => {
-        setShiftDraft([...originalShiftData])
+        dispatch(clearShiftDrafts())
         onClose()
     }
 
-    const handleDelete = (shiftId: string) => {
-        const updatedDraft = shiftDraft.filter((shift) => shift.id !== shiftId)
-        setShiftDraft(updatedDraft)
-    }
-
     const hasChanges =
-        JSON.stringify(shiftDraft) !== JSON.stringify(originalShiftData)
+        JSON.stringify(shiftDrafts) !== JSON.stringify(originalShiftData)
 
     return (
         <div style={{ paddingBottom: '80px' }}>
@@ -171,18 +149,7 @@ export default function ShiftInputView({
                                 <br />({dayjs(day).format('ddd')})
                             </td>
                             <td className="p-0">
-                                <ShiftCell
-                                    shiftsAtDay={
-                                        shiftDraft.filter(
-                                            (shift) =>
-                                                shift.date ===
-                                                day.format('YYYY-MM-DD')
-                                        ) || []
-                                    }
-                                    today={day.format('YYYY-MM-DD')}
-                                    onUpdate={handleUpdate}
-                                    onDelete={handleDelete}
-                                />
+                                <ShiftCell date={day.format('YYYY-MM-DD')} />
                             </td>
                         </tr>
                     ))}

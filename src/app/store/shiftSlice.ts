@@ -1,4 +1,4 @@
-import { Shift, ShiftTemplate } from '@/app/types/shift'
+import { Shift, ShiftDraft, ShiftTemplate } from '@/app/types/shift'
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { SHIFT_TESTDATA } from '../components/testdata/shiftTestData'
 import { TemporalHoliday } from '../types/temporalHoliday'
@@ -6,12 +6,14 @@ import { RootState } from './store'
 
 interface ShiftState {
     shifts: Shift[]
+    shiftDrafts: ShiftDraft[]
     temporalHolidays: TemporalHoliday[]
     shiftTemplates: ShiftTemplate[]
 }
 
 const initialState: ShiftState = {
     shifts: SHIFT_TESTDATA,
+    shiftDrafts: [],
     temporalHolidays: [{ date: '2025-06-07', name: '店長出張' }],
     shiftTemplates: [
         // 店長は全部出勤
@@ -142,6 +144,27 @@ const shiftSlice = createSlice({
                 (shift) => shift.id !== action.payload
             )
         },
+        setShiftDrafts: (state, action: PayloadAction<ShiftDraft[]>) => {
+            state.shiftDrafts = action.payload
+        },
+        updateShiftDraft: (state, action: PayloadAction<ShiftDraft>) => {
+            const targetIndex = state.shiftDrafts.findIndex(
+                (draft) => draft.id === action.payload.id
+            )
+            if (targetIndex !== -1) {
+                state.shiftDrafts[targetIndex] = action.payload
+            } else {
+                state.shiftDrafts.push(action.payload)
+            }
+        },
+        deleteShiftDraft: (state, action: PayloadAction<string>) => {
+            state.shiftDrafts = state.shiftDrafts.filter(
+                (draft) => draft.id !== action.payload
+            )
+        },
+        clearShiftDrafts: (state) => {
+            state.shiftDrafts = []
+        },
     },
 })
 
@@ -154,6 +177,25 @@ export const selectShiftsByStaffId = createSelector(
         shifts.filter((shift: Shift) => shift.staffId === staffId)
 )
 
-export const { editShift, deleteShift } = shiftSlice.actions
+export const selectShiftDraftsForDay = createSelector(
+    [
+        (state: RootState) => state.shift.shiftDrafts,
+        (_: RootState, date: string) => date,
+    ],
+    (shiftDrafts, date) =>
+        shiftDrafts.filter((draft: ShiftDraft) => draft.date === date)
+)
+
+export const selectAllShiftDrafts = (state: RootState) =>
+    state.shift.shiftDrafts
+
+export const {
+    editShift,
+    deleteShift,
+    setShiftDrafts,
+    updateShiftDraft,
+    deleteShiftDraft,
+    clearShiftDrafts,
+} = shiftSlice.actions
 
 export default shiftSlice.reducer

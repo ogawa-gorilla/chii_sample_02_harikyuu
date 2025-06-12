@@ -10,6 +10,7 @@ export interface Shift {
  * シフトの下書きデータを表す型
  */
 export interface ShiftDraft {
+    date: string
     startTime: string
     endTime: string
     id: string
