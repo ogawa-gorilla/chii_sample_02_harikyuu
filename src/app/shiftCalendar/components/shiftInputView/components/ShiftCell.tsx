@@ -8,7 +8,7 @@ import {
     updateShiftDraft,
 } from '@/app/store/shiftSlice'
 import { ShiftDraft } from '@/app/types/shift'
-import { validateShiftDraft } from '@/utils/validation/shiftValidation'
+import { validateShiftDraftGroup } from '@/utils/validation/shiftValidation'
 import dayjs from 'dayjs'
 import { useMemo } from 'react'
 import { v4 } from 'uuid'
@@ -75,7 +75,7 @@ export default function ShiftCell({ date }: ShiftCellProps) {
     }
 
     const renderShiftCards = () => {
-        const { errors, warnings } = validateShiftDraft(
+        const { errors, warnings } = validateShiftDraftGroup(
             shiftDraftsAtDay,
             isHoliday,
             holidayReason

@@ -16,7 +16,7 @@ export interface ShiftValidationResult {
  * @param holidayReason - 休日の理由（休日の場合）
  * @returns バリデーション結果
  */
-export function validateShiftDraft(
+export function validateShiftDraftGroup(
     shiftDrafts: ShiftDraft[],
     isHoliday: boolean = false,
     holidayReason: string = ''
