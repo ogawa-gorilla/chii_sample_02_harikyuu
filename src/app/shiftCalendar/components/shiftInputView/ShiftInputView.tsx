@@ -37,9 +37,8 @@ export default function ShiftInputView({
 
     const [originalShiftData, setOriginalShiftData] = useState<ShiftDraft[]>([])
 
-    const hasDraftsWithErrors = useAppSelector((state) =>
-        state.shift.shiftDrafts.some((draft) => draft.hasError)
-    )
+    // TODO: 草稿のエラーチェックを実装
+    const hasDraftsWithErrors = false
 
     useEffect(() => {
         const filteredShifts = shiftData

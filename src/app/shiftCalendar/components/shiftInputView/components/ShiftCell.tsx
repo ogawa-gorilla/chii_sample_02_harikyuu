@@ -1,12 +1,9 @@
-import { weeklyClosedDays } from '@/app/constants/weeklyClosedDays'
 import { useAppDispatch, useAppSelector } from '@/app/hooks'
+import { useHolidayCheck } from '@/app/hooks/useHolidayCheck'
 import {
     selectShiftDraftsForDay,
     updateShiftDraft,
 } from '@/app/store/shiftSlice'
-import { validateShiftDraftGroup } from '@/utils/validation/shiftValidation'
-import dayjs from 'dayjs'
-import { useMemo } from 'react'
 import { v4 } from 'uuid'
 import AddButton from './AddButton'
 import ClosedDaysCard from './ClosedDaysCard'
@@ -24,27 +21,7 @@ export default function ShiftCell({ date }: ShiftCellProps) {
         selectShiftDraftsForDay(state, date)
     )
 
-    const temporalHoliday = useAppSelector((state) =>
-        state.shift.temporalHolidays.find((holiday) => holiday.date === date)
-    )
-
-    const { isHoliday, holidayReason } = useMemo(() => {
-        if (weeklyClosedDays.includes(dayjs(date).format('d'))) {
-            return {
-                isHoliday: true,
-                holidayReason: '定休日',
-            }
-        } else if (temporalHoliday) {
-            return {
-                isHoliday: true,
-                holidayReason: '臨時休業日',
-            }
-        }
-        return {
-            isHoliday: false,
-            holidayReason: '',
-        }
-    }, [date, temporalHoliday])
+    const { isHoliday, holidayReason } = useHolidayCheck(date)
 
     if (isHoliday && shiftDraftsAtDay.length === 0) {
         return <ClosedDaysCard reason={holidayReason} />
@@ -61,12 +38,6 @@ export default function ShiftCell({ date }: ShiftCellProps) {
         )
     }
 
-    const { errors, warnings } = validateShiftDraftGroup(
-        shiftDraftsAtDay,
-        isHoliday,
-        holidayReason
-    )
-
     const renderShiftCards = () => {
         switch (shiftDraftsAtDay.length) {
             case 0:
@@ -80,9 +51,8 @@ export default function ShiftCell({ date }: ShiftCellProps) {
                     <div key={shiftDraftsAtDay[0].id}>
                         <ShiftCard
                             shiftNumber={0}
-                            initialShift={shiftDraftsAtDay[0]}
-                            groupErrors={errors}
-                            groupWarnings={warnings}
+                            shiftsInGroup={shiftDraftsAtDay}
+                            shiftDraft={shiftDraftsAtDay[0]}
                         />
                         {<AddButton onClick={() => handleAddShift(date)} />}
                     </div>
@@ -92,15 +62,13 @@ export default function ShiftCell({ date }: ShiftCellProps) {
                     <div key={shiftDraftsAtDay[0].id}>
                         <ShiftCard
                             shiftNumber={0}
-                            initialShift={shiftDraftsAtDay[0]}
-                            groupErrors={errors}
-                            groupWarnings={warnings}
+                            shiftsInGroup={shiftDraftsAtDay}
+                            shiftDraft={shiftDraftsAtDay[0]}
                         />
                         <ShiftCard
                             shiftNumber={1}
-                            initialShift={shiftDraftsAtDay[1]}
-                            groupErrors={errors}
-                            groupWarnings={warnings}
+                            shiftsInGroup={shiftDraftsAtDay}
+                            shiftDraft={shiftDraftsAtDay[1]}
                         />
                     </div>
                 )
