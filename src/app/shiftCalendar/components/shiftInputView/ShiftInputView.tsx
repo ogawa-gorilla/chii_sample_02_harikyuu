@@ -138,22 +138,25 @@ export default function ShiftInputView({
                 <tbody>
                     {days.map((day, index) => (
                         <tr key={day.format('YYYY-MM-DD')}>
-                            <td
-                                style={{
-                                    fontSize: '0.7rem',
-                                    lineHeight: '1.2',
-                                }}
-                            >
-                                {index === 0 ? (
-                                    <>
-                                        25
+                            {index === 0 ? (
+                                <td
+                                    style={{
+                                        fontSize: '0.6rem',
+                                        lineHeight: '1.2',
+                                    }}
+                                    rowSpan={7}
+                                >
+                                    <div>
+                                        {dayjs(days[0]).format('YYYY').slice(2)}
+                                        <br />年
                                         <br />
-                                        /06
-                                    </>
-                                ) : (
-                                    ''
-                                )}
-                            </td>
+                                        {dayjs(days[0]).format('MM')}
+                                        <br />月
+                                    </div>
+                                </td>
+                            ) : (
+                                ''
+                            )}
                             <td
                                 style={{
                                     fontSize: '0.7rem',
