@@ -165,20 +165,27 @@ const shiftSlice = createSlice({
         clearShiftDrafts: (state) => {
             state.shiftDrafts = []
         },
-        markDraftError: (state, action: PayloadAction<string>) => {
+        setDraftErrors: (
+            state,
+            action: PayloadAction<{ id: string; errors: string[] }>
+        ) => {
             const targetIndex = state.shiftDrafts.findIndex(
-                (draft) => draft.id === action.payload
+                (draft) => draft.id === action.payload.id
             )
             if (targetIndex !== -1) {
-                state.shiftDrafts[targetIndex].hasError = true
+                state.shiftDrafts[targetIndex].errors = action.payload.errors
             }
         },
-        unmarkDraftError: (state, action: PayloadAction<string>) => {
+        setDraftWarnings: (
+            state,
+            action: PayloadAction<{ id: string; warnings: string[] }>
+        ) => {
             const targetIndex = state.shiftDrafts.findIndex(
-                (draft) => draft.id === action.payload
+                (draft) => draft.id === action.payload.id
             )
             if (targetIndex !== -1) {
-                state.shiftDrafts[targetIndex].hasError = false
+                state.shiftDrafts[targetIndex].warnings =
+                    action.payload.warnings
             }
         },
     },
@@ -212,8 +219,8 @@ export const {
     updateShiftDraft,
     deleteShiftDraft,
     clearShiftDrafts,
-    markDraftError,
-    unmarkDraftError,
+    setDraftErrors,
+    setDraftWarnings,
 } = shiftSlice.actions
 
 export default shiftSlice.reducer

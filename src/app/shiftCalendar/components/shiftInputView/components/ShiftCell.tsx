@@ -1,9 +1,7 @@
 import { weeklyClosedDays } from '@/app/constants/weeklyClosedDays'
 import { useAppDispatch, useAppSelector } from '@/app/hooks'
 import {
-    markDraftError,
     selectShiftDraftsForDay,
-    unmarkDraftError,
     updateShiftDraft,
 } from '@/app/store/shiftSlice'
 import { validateShiftDraftGroup } from '@/utils/validation/shiftValidation'
@@ -68,15 +66,6 @@ export default function ShiftCell({ date }: ShiftCellProps) {
         isHoliday,
         holidayReason
     )
-    if (errors.length > 0) {
-        shiftDraftsAtDay.forEach((shift) => {
-            dispatch(markDraftError(shift.id))
-        })
-    } else {
-        shiftDraftsAtDay.forEach((shift) => {
-            dispatch(unmarkDraftError(shift.id))
-        })
-    }
 
     const renderShiftCards = () => {
         switch (shiftDraftsAtDay.length) {
@@ -92,8 +81,8 @@ export default function ShiftCell({ date }: ShiftCellProps) {
                         <ShiftCard
                             shiftNumber={0}
                             initialShift={shiftDraftsAtDay[0]}
-                            errors={errors}
-                            warnings={warnings}
+                            groupErrors={errors}
+                            groupWarnings={warnings}
                         />
                         {<AddButton onClick={() => handleAddShift(date)} />}
                     </div>
@@ -104,14 +93,14 @@ export default function ShiftCell({ date }: ShiftCellProps) {
                         <ShiftCard
                             shiftNumber={0}
                             initialShift={shiftDraftsAtDay[0]}
-                            errors={errors}
-                            warnings={warnings}
+                            groupErrors={errors}
+                            groupWarnings={warnings}
                         />
                         <ShiftCard
                             shiftNumber={1}
                             initialShift={shiftDraftsAtDay[1]}
-                            errors={errors}
-                            warnings={warnings}
+                            groupErrors={errors}
+                            groupWarnings={warnings}
                         />
                     </div>
                 )

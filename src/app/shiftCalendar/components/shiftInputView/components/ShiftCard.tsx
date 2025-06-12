@@ -1,41 +1,49 @@
 import { useAppDispatch } from '@/app/hooks'
-import { deleteShiftDraft, updateShiftDraft } from '@/app/store/shiftSlice'
+import {
+    deleteShiftDraft,
+    setDraftErrors,
+    setDraftWarnings,
+    updateShiftDraft,
+} from '@/app/store/shiftSlice'
 import { ShiftDraft } from '@/app/types/shift'
-import { useState } from 'react'
+import { validateShiftDraft } from '@/utils/validation/shiftValidation'
+import { useEffect } from 'react'
 import { Button, Card, Col, Form, Row } from 'react-bootstrap'
 
 interface ShiftCardProps {
     shiftNumber: number
-    initialShift: ShiftDraft
-    errors: string[]
-    warnings: string[]
+    draft: ShiftDraft
+    groupErrors: string[]
+    groupWarnings: string[]
 }
 
 export default function ShiftCard({
     shiftNumber,
-    initialShift,
-    errors,
-    warnings,
+    draft,
+    groupErrors,
+    groupWarnings,
 }: ShiftCardProps) {
-    // 個別のtemporalValue状態
-    const [temporalValue, setTemporalValue] = useState<ShiftDraft>(initialShift)
     const dispatch = useAppDispatch()
 
     const handleStartTimeChange = (startTime: string) => {
-        const newValue = { ...temporalValue, startTime }
-        setTemporalValue(newValue)
+        const newValue = { ...draft, startTime }
         dispatch(updateShiftDraft(newValue))
     }
 
     const handleEndTimeChange = (endTime: string) => {
-        const newValue = { ...temporalValue, endTime }
-        setTemporalValue(newValue)
+        const newValue = { ...draft, endTime }
         dispatch(updateShiftDraft(newValue))
     }
 
     const handleDelete = () => {
-        dispatch(deleteShiftDraft(temporalValue.id))
+        dispatch(deleteShiftDraft(draft.id))
     }
+
+    useEffect(() => {
+        const { errors, warnings } = validateShiftDraft(draft)
+        dispatch(setDraftErrors({ id: draft.id, errors: errors }))
+        dispatch(setDraftWarnings({ id: draft.id, warnings: warnings }))
+    }, [temporalValue, groupErrors, groupWarnings])
 
     return (
         <Card
