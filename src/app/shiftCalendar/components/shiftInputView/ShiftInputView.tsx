@@ -14,12 +14,14 @@ interface ShiftInputViewProps {
     startDate: string
     today: string
     staffId: string
+    onClose: () => void
 }
 
 export default function ShiftInputView({
     today,
     startDate,
     staffId,
+    onClose,
 }: ShiftInputViewProps) {
     dayjs.locale('ja')
 
@@ -103,10 +105,12 @@ export default function ShiftInputView({
             dispatch(deleteShift(shift.id))
         })
         setOriginalShiftData([...shiftDraft])
+        onClose()
     }
 
-    const handleUndo = () => {
+    const handleCancel = () => {
         setShiftDraft([...originalShiftData])
+        onClose()
     }
 
     const handleDelete = (shiftId: string) => {
@@ -204,10 +208,9 @@ export default function ShiftInputView({
                             <div className="d-flex justify-content-center gap-3">
                                 <Button
                                     variant="outline-secondary"
-                                    onClick={handleUndo}
-                                    disabled={!hasChanges}
+                                    onClick={handleCancel}
                                 >
-                                    最初の状態に戻す
+                                    キャンセル
                                 </Button>
                                 <Button
                                     variant="primary"
