@@ -12,13 +12,11 @@ import ShiftCell from './components/ShiftCell'
 
 interface ShiftInputViewProps {
     startDate: string
-    today: string
     staffId: string
     onClose: () => void
 }
 
 export default function ShiftInputView({
-    today,
     startDate,
     staffId,
     onClose,
@@ -140,7 +138,7 @@ export default function ShiftInputView({
                     </tr>
                 </thead>
                 <tbody>
-                    {days.map((day, index) => (
+                    {days(startDate).map((day, index) => (
                         <tr key={day.format('YYYY-MM-DD')}>
                             {index === 0 ? (
                                 <td
@@ -151,10 +149,12 @@ export default function ShiftInputView({
                                     rowSpan={7}
                                 >
                                     <div>
-                                        {dayjs(days[0]).format('YYYY').slice(2)}
+                                        {dayjs(startDate)
+                                            .format('YYYY')
+                                            .slice(2)}
                                         <br />年
                                         <br />
-                                        {dayjs(days[0]).format('MM')}
+                                        {dayjs(startDate).format('MM')}
                                         <br />月
                                     </div>
                                 </td>

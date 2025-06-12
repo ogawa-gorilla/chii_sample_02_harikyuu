@@ -3,24 +3,20 @@
 import { useState } from 'react'
 import { Button, Container } from 'react-bootstrap'
 import StaffSelector from '../components/common/StaffSelector'
-import { Shift } from '../types/shift'
 import ShiftCalendar from './components/ShiftCalendar'
 import ShiftInputView from './components/shiftInputView/ShiftInputView'
 
 export default function ShiftCalendarPage() {
-    const [selectedStaff, setSelectedStaff] = useState('')
-    const [showDailyShiftListModal, setShowDailyShiftListModal] =
-        useState(false)
-    const [selectedDate, setSelectedDate] = useState('')
+    const [selectedStaff, setSelectedStaff] = useState('all')
+    const [startDate, setStartDate] = useState('')
     const [showShiftInputView, setShowShiftInputView] = useState(false)
-
-    const handleCellClick = (date: string, shifts: Shift[]) => {
-        setShowDailyShiftListModal(true)
-        setSelectedDate(date)
-    }
 
     const handleInputShift = () => {
         setShowShiftInputView(true)
+    }
+
+    const handleWeekChange = (startDate: string) => {
+        setStartDate(startDate)
     }
 
     return (
@@ -28,8 +24,7 @@ export default function ShiftCalendarPage() {
             {showShiftInputView ? (
                 <ShiftInputView
                     staffId={selectedStaff}
-                    startDate="2025-06-02"
-                    today="2025-06-02"
+                    startDate={startDate}
                     onClose={() => setShowShiftInputView(false)}
                 />
             ) : (
@@ -39,26 +34,29 @@ export default function ShiftCalendarPage() {
                         selectedStaff={selectedStaff}
                         onStaffChange={setSelectedStaff}
                     />
-                    <div className="d-flex justify-content-between mb-2">
-                        <Button
-                            variant="outline-success"
-                            size="sm"
-                            onClick={handleInputShift}
-                        >
-                            シフト入力
-                        </Button>
-                        <Button variant="outline-success" size="sm">
-                            一括入力
-                        </Button>
-                        <Button variant="outline-secondary" size="sm">
-                            個人設定
-                        </Button>
-                    </div>
-                    {selectedStaff && (
-                        <ShiftCalendar
-                            staffId={selectedStaff}
-                            onCellClick={handleCellClick}
-                        />
+                    {selectedStaff !== 'all' && (
+                        <div>
+                            <div className="d-flex justify-content-between mb-2">
+                                <Button variant="outline-success" size="sm">
+                                    一括入力
+                                </Button>
+                                <Button
+                                    variant="outline-success"
+                                    size="sm"
+                                    onClick={handleInputShift}
+                                >
+                                    シフト入力
+                                </Button>
+                                <Button variant="outline-secondary" size="sm">
+                                    個人設定
+                                </Button>
+                            </div>
+                            <ShiftCalendar
+                                staffId={selectedStaff}
+                                onWeekChange={handleWeekChange}
+                                startDate={startDate}
+                            />
+                        </div>
                     )}
                 </div>
             )}
