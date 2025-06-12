@@ -1,47 +1,50 @@
 import { useAppDispatch } from '@/app/hooks'
+import { useHolidayCheck } from '@/app/hooks/useHolidayCheck'
 import { deleteShiftDraft, updateShiftDraft } from '@/app/store/shiftSlice'
 import { ShiftDraft } from '@/app/types/shift'
-import { useState } from 'react'
+import { validateShiftDraft } from '@/utils/validation/shiftValidation'
 import { Button, Card, Col, Form, Row } from 'react-bootstrap'
 
 interface ShiftCardProps {
     shiftNumber: number
-    initialShift: ShiftDraft
-    errors: string[]
-    warnings: string[]
+    shiftDraft: ShiftDraft
+    shiftsInGroup: ShiftDraft[]
 }
 
 export default function ShiftCard({
     shiftNumber,
-    initialShift,
-    errors,
-    warnings,
+    shiftDraft,
+    shiftsInGroup,
 }: ShiftCardProps) {
     // 個別のtemporalValue状態
-    const [temporalValue, setTemporalValue] = useState<ShiftDraft>(initialShift)
     const dispatch = useAppDispatch()
 
     const handleStartTimeChange = (startTime: string) => {
-        const newValue = { ...temporalValue, startTime }
-        setTemporalValue(newValue)
+        const newValue = { ...shiftDraft, startTime }
         dispatch(updateShiftDraft(newValue))
     }
 
     const handleEndTimeChange = (endTime: string) => {
-        const newValue = { ...temporalValue, endTime }
-        setTemporalValue(newValue)
+        const newValue = { ...shiftDraft, endTime }
         dispatch(updateShiftDraft(newValue))
     }
 
     const handleDelete = () => {
-        dispatch(deleteShiftDraft(temporalValue.id))
+        dispatch(deleteShiftDraft(shiftDraft.id))
     }
+
+    const { isHoliday } = useHolidayCheck(shiftDraft.date)
+    const { errors, warnings } = validateShiftDraft(
+        shiftDraft,
+        shiftsInGroup,
+        isHoliday
+    )
 
     return (
         <Card
             className="mb-2"
             style={{ fontSize: '0.75rem' }}
-            key={temporalValue.id}
+            key={shiftDraft.id}
         >
             <Card.Header className="py-1 px-2" style={{ fontSize: '0.7rem' }}>
                 シフト{shiftNumber + 1}
@@ -66,7 +69,7 @@ export default function ShiftCard({
                             max="18:00"
                             step="1800"
                             size="sm"
-                            value={temporalValue.startTime}
+                            value={shiftDraft.startTime}
                             style={{ fontSize: '0.7rem' }}
                             onChange={(e) =>
                                 handleStartTimeChange(e.target.value)
@@ -88,7 +91,7 @@ export default function ShiftCard({
                             max="18:00"
                             step="1800"
                             size="sm"
-                            value={temporalValue.endTime}
+                            value={shiftDraft.endTime}
                             style={{ fontSize: '0.7rem' }}
                             onChange={(e) =>
                                 handleEndTimeChange(e.target.value)
