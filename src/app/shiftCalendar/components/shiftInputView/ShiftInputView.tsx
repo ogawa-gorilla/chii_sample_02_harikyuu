@@ -37,6 +37,10 @@ export default function ShiftInputView({
 
     const [originalShiftData, setOriginalShiftData] = useState<ShiftDraft[]>([])
 
+    const hasDraftsWithErrors = useAppSelector((state) =>
+        state.shift.shiftDrafts.some((draft) => draft.hasError)
+    )
+
     useEffect(() => {
         const filteredShifts = shiftData
             .filter(
@@ -182,7 +186,9 @@ export default function ShiftInputView({
                                 <Button
                                     variant="primary"
                                     onClick={handleSave}
-                                    disabled={!hasChanges}
+                                    disabled={
+                                        !hasChanges || hasDraftsWithErrors
+                                    }
                                 >
                                     保存
                                 </Button>

@@ -2,7 +2,9 @@ import { weeklyClosedDays } from '@/app/constants/weeklyClosedDays'
 import { useAppDispatch, useAppSelector } from '@/app/hooks'
 import {
     deleteShiftDraft,
+    markDraftError,
     selectShiftDraftsForDay,
+    unmarkDraftError,
     updateShiftDraft,
 } from '@/app/store/shiftSlice'
 import { ShiftDraft } from '@/app/types/shift'
@@ -22,7 +24,7 @@ export default function ShiftCell({ date }: ShiftCellProps) {
     const dispatch = useAppDispatch()
 
     // storeから直接草稿データを取得
-    const shiftsAtDay = useAppSelector((state) =>
+    const shiftDraftsAtDay = useAppSelector((state) =>
         selectShiftDraftsForDay(state, date)
     )
 
@@ -48,7 +50,7 @@ export default function ShiftCell({ date }: ShiftCellProps) {
         }
     }, [date, temporalHoliday])
 
-    if (isHoliday && shiftsAtDay.length === 0) {
+    if (isHoliday && shiftDraftsAtDay.length === 0) {
         return <ClosedDaysCard reason={holidayReason} />
     }
 
@@ -74,11 +76,20 @@ export default function ShiftCell({ date }: ShiftCellProps) {
 
     const renderShiftCards = () => {
         const { errors, warnings } = validateShiftDraft(
-            shiftsAtDay,
+            shiftDraftsAtDay,
             isHoliday,
             holidayReason
         )
-        switch (shiftsAtDay.length) {
+        if (errors.length > 0) {
+            shiftDraftsAtDay.forEach((shift) => {
+                dispatch(markDraftError(shift.id))
+            })
+        } else {
+            shiftDraftsAtDay.forEach((shift) => {
+                dispatch(unmarkDraftError(shift.id))
+            })
+        }
+        switch (shiftDraftsAtDay.length) {
             case 0:
                 return (
                     <div>
@@ -87,10 +98,10 @@ export default function ShiftCell({ date }: ShiftCellProps) {
                 )
             case 1:
                 return (
-                    <div key={shiftsAtDay[0].id}>
+                    <div key={shiftDraftsAtDay[0].id}>
                         <ShiftCard
                             shiftNumber={0}
-                            initialShift={shiftsAtDay[0]}
+                            initialShift={shiftDraftsAtDay[0]}
                             onShiftChange={handleShiftChange}
                             onDelete={handleDelete}
                             errors={errors}
@@ -101,10 +112,10 @@ export default function ShiftCell({ date }: ShiftCellProps) {
                 )
             case 2:
                 return (
-                    <div key={shiftsAtDay[0].id}>
+                    <div key={shiftDraftsAtDay[0].id}>
                         <ShiftCard
                             shiftNumber={0}
-                            initialShift={shiftsAtDay[0]}
+                            initialShift={shiftDraftsAtDay[0]}
                             onShiftChange={handleShiftChange}
                             onDelete={handleDelete}
                             errors={errors}
@@ -112,7 +123,7 @@ export default function ShiftCell({ date }: ShiftCellProps) {
                         />
                         <ShiftCard
                             shiftNumber={1}
-                            initialShift={shiftsAtDay[1]}
+                            initialShift={shiftDraftsAtDay[1]}
                             onShiftChange={handleShiftChange}
                             onDelete={handleDelete}
                             errors={errors}

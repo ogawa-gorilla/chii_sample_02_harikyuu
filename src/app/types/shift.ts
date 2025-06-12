@@ -14,6 +14,7 @@ export interface ShiftDraft {
     startTime: string
     endTime: string
     id: string
+    hasError?: boolean
 }
 
 export interface ShiftTemplateDay {
