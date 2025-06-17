@@ -1,3 +1,5 @@
+import { TimeIdentifier } from './timeIdentifier'
+
 export interface Shift {
     id: string
     staffId: string
@@ -10,7 +12,7 @@ export interface Shift {
  * シフトの下書きデータを表す型
  */
 export interface ShiftDraft {
-    date: string
+    date: TimeIdentifier
     startTime: string
     endTime: string
     id: string

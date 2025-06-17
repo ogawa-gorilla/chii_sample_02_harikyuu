@@ -6,6 +6,7 @@ import ShiftInputActionBar from '../components/shiftInputTable/components/ShiftI
 import { useAppSelector } from '../hooks'
 import { useShiftDraftManager } from '../hooks/useShiftDraftManager'
 import { getMonthlyShifts, selectAllShiftDrafts } from '../store/shiftSlice'
+import { TimeIdentifier } from '../types/timeIdentifier'
 
 interface ShiftInputPageProps {
     staffId: string
@@ -33,7 +34,11 @@ export default function ShiftInputPage({ staffId }: ShiftInputPageProps) {
     const { initializeDrafts } = useShiftDraftManager()
 
     useEffect(() => {
-        const targetDates = days.map((day) => day.format('YYYY-MM-DD'))
+        const targetDates: TimeIdentifier[] = days.map((day) => ({
+            value: day.format('YYYY-MM-DD'),
+            displayValue: day.format('D(ddd)'),
+            type: 'date',
+        }))
         initializeDrafts(originalShiftData, targetDates)
     }, [originalShiftData, initializeDrafts])
 
@@ -49,7 +54,7 @@ export default function ShiftInputPage({ staffId }: ShiftInputPageProps) {
 
     return (
         <Container style={{ paddingBottom: '80px' }}>
-            <ShiftInputTable days={days} onCommit={handleSave} />
+            <ShiftInputTable onCommit={handleSave} />
             <ShiftInputActionBar onSave={handleSave} onUndo={handleUndo} />
         </Container>
     )

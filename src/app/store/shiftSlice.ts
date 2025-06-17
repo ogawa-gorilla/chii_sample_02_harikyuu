@@ -3,13 +3,14 @@ import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import dayjs from 'dayjs'
 import { SHIFT_TESTDATA } from '../components/testdata/shiftTestData'
 import { TemporalHoliday } from '../types/temporalHoliday'
+import { TimeIdentifier } from '../types/timeIdentifier'
 import { RootState } from './store'
 
 interface ShiftState {
     shifts: Shift[]
     shiftDraft: {
         drafts: ShiftDraft[]
-        targetDates: string[]
+        targetDates: TimeIdentifier[]
     }
     temporalHolidays: TemporalHoliday[]
     shiftTemplates: ShiftTemplate[]
@@ -172,7 +173,7 @@ const shiftSlice = createSlice({
         clearShiftDrafts: (state) => {
             state.shiftDraft.drafts = []
         },
-        setTargetDates: (state, action: PayloadAction<string[]>) => {
+        setTargetDates: (state, action: PayloadAction<TimeIdentifier[]>) => {
             state.shiftDraft.targetDates = action.payload
         },
     },
@@ -190,10 +191,12 @@ export const selectShiftsByStaffId = createSelector(
 export const selectShiftDraftsForDay = createSelector(
     [
         (state: RootState) => state.shift.shiftDraft.drafts,
-        (_: RootState, date: string) => date,
+        (_: RootState, date: TimeIdentifier) => date,
     ],
     (shiftDrafts, date) =>
-        shiftDrafts.filter((draft: ShiftDraft) => draft.date === date)
+        shiftDrafts.filter(
+            (draft: ShiftDraft) => draft.date.value === date.value
+        )
 )
 
 export const getMonthlyShifts = createSelector(

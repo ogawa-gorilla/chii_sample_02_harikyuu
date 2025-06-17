@@ -10,6 +10,7 @@ import {
     updateShiftDraft,
 } from '../store/shiftSlice'
 import { Shift, ShiftDraft } from '../types/shift'
+import { TimeIdentifier } from '../types/timeIdentifier'
 
 export function useShiftDraftManager() {
     const dispatch = useDispatch()
@@ -19,15 +20,24 @@ export function useShiftDraftManager() {
     )
 
     const initializeDrafts = useCallback(
-        (shifts: Shift[], targetDates: string[]) => {
+        (shifts: Shift[], targetDates: TimeIdentifier[]) => {
             const initialDrafts = shifts
-                .filter((shift) => targetDates.includes(shift.date))
-                .map((shift) => ({
-                    date: shift.date,
-                    startTime: shift.startTime,
-                    endTime: shift.endTime,
-                    id: shift.id,
-                }))
+                .filter((shift) =>
+                    targetDates.some((td) => td.value === shift.date)
+                )
+                .map((shift) => {
+                    const draft: ShiftDraft = {
+                        date: {
+                            value: shift.date,
+                            displayValue: shift.date,
+                            type: 'date',
+                        },
+                        startTime: shift.startTime,
+                        endTime: shift.endTime,
+                        id: shift.id,
+                    }
+                    return draft
+                })
             dispatch(setShiftDrafts(initialDrafts))
             dispatch(setTargetDates(targetDates))
         },
@@ -42,10 +52,10 @@ export function useShiftDraftManager() {
     )
 
     const handleDraftCreate = useCallback(
-        (date: string) => {
+        (date: TimeIdentifier) => {
             const newDraft: ShiftDraft = {
                 date,
-                startTime: '9:00',
+                startTime: '09:00',
                 endTime: '18:00',
                 id: v4(),
             }
@@ -55,8 +65,10 @@ export function useShiftDraftManager() {
     )
 
     const handleDraftDelete = useCallback(
-        (date: string) => {
-            const draftsToDelete = shiftDrafts.filter((d) => d.date === date)
+        (date: TimeIdentifier) => {
+            const draftsToDelete = shiftDrafts.filter(
+                (d) => d.date.value === date.value
+            )
             draftsToDelete.forEach((draft) => {
                 dispatch(deleteShiftDraft(draft.id))
             })
@@ -65,8 +77,10 @@ export function useShiftDraftManager() {
     )
 
     const handleDraftSplit = useCallback(
-        (date: string) => {
-            const targetDraft = shiftDrafts.find((d) => d.date === date)
+        (date: TimeIdentifier) => {
+            const targetDraft = shiftDrafts.find(
+                (d) => d.date.value === date.value
+            )
             if (!targetDraft) return
 
             const newDraft: ShiftDraft = {
@@ -81,8 +95,10 @@ export function useShiftDraftManager() {
     )
 
     const handleDraftMerge = useCallback(
-        (date: string) => {
-            const targetDrafts = shiftDrafts.filter((d) => d.date === date)
+        (date: TimeIdentifier) => {
+            const targetDrafts = shiftDrafts.filter(
+                (d) => d.date.value === date.value
+            )
             if (targetDrafts.length !== 2) {
                 console.error(
                     'handleDraftMerge: 対象の日付のドラフトが2個ではありません'

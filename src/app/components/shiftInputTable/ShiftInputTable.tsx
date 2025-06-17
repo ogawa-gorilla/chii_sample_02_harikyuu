@@ -1,20 +1,16 @@
-import dayjs from 'dayjs'
 import { Table } from 'react-bootstrap'
 import { useShiftDraftManager } from '../../hooks/useShiftDraftManager'
 import { ShiftDraft } from '../../types/shift'
 import RowForDay from './components/RowForDay'
 
 interface ShiftInputTableProps {
-    days: dayjs.Dayjs[]
     onCommit: (drafts: ShiftDraft[]) => void
 }
 
-export default function ShiftInputTable({
-    days,
-    onCommit,
-}: ShiftInputTableProps) {
+export default function ShiftInputTable({ onCommit }: ShiftInputTableProps) {
     const {
         shiftDrafts,
+        targetDates,
         handleDraftUpdate,
         handleDraftCreate,
         handleDraftDelete,
@@ -68,14 +64,14 @@ export default function ShiftInputTable({
                     </tr>
                 </thead>
                 <tbody>
-                    {days.map((day) => {
+                    {targetDates.map((date) => {
                         const drafts = shiftDrafts.filter(
-                            (draft) => draft.date === day.format('YYYY-MM-DD')
+                            (draft) => draft.date.value === date.value
                         )
                         return (
                             <RowForDay
-                                key={day.format('YYYY-MM-DD')}
-                                day={day}
+                                key={date.value}
+                                date={date}
                                 shiftDrafts={drafts}
                                 onDraftUpdate={handleDraftUpdate}
                                 onDraftCreate={handleDraftCreate}

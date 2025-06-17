@@ -1,8 +1,9 @@
+import { TimeIdentifier } from '@/app/types/timeIdentifier'
 import React from 'react'
 import { Button, Col } from 'react-bootstrap'
 
 interface ShiftCellForNoShiftProps {
-    date: string
+    date: TimeIdentifier
     onDraftCreate: () => void
 }
 
@@ -11,7 +12,7 @@ export default function ShiftCellForOneShift({
     onDraftCreate,
 }: ShiftCellForNoShiftProps) {
     return (
-        <React.Fragment key={date}>
+        <React.Fragment key={date.value}>
             <Col
                 md={6}
                 xs={12}

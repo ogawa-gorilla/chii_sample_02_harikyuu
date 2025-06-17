@@ -1,20 +1,21 @@
 import { useHolidayCheck } from '@/app/hooks/useHolidayCheck'
+import { TimeIdentifier } from '@/app/types/timeIdentifier'
 import dayjs from 'dayjs'
 import { ShiftDraft } from '../../../types/shift'
 import ShiftCell from './ShiftCell'
 
 interface RowForDayProps {
-    day: dayjs.Dayjs
+    date: TimeIdentifier
     shiftDrafts: ShiftDraft[]
     onDraftUpdate: (draft: ShiftDraft) => void
-    onDraftCreate: (date: string) => void
-    onDraftDelete: (date: string) => void
-    onDraftSplit: (date: string) => void
-    onDraftMerge: (date: string) => void
+    onDraftCreate: (date: TimeIdentifier) => void
+    onDraftDelete: (date: TimeIdentifier) => void
+    onDraftSplit: (date: TimeIdentifier) => void
+    onDraftMerge: (date: TimeIdentifier) => void
 }
 
 export default function RowForDay({
-    day,
+    date,
     shiftDrafts,
     onDraftUpdate,
     onDraftCreate,
@@ -22,9 +23,7 @@ export default function RowForDay({
     onDraftSplit,
     onDraftMerge,
 }: RowForDayProps) {
-    const { isHoliday, holidayReason } = useHolidayCheck(
-        day.format('YYYY-MM-DD')
-    )
+    const { isHoliday, holidayReason } = useHolidayCheck(date)
 
     const getTdClass = () => {
         if (shiftDrafts.length === 0) {
@@ -33,22 +32,27 @@ export default function RowForDay({
         return ''
     }
 
-    const getDateHeaderClass = (date: string) => {
+    const getDateHeaderClass = (date: TimeIdentifier) => {
+        let dateId: number
+        if (date.type === 'date') {
+            dateId = dayjs(date.value).day()
+        } else {
+            dateId = parseInt(date.value)
+        }
+
         const base = 'date-header'
-        if (dayjs(date).day() === 0) {
+        if (dateId === 0) {
             return `${base} sunday`
         }
-        if (dayjs(date).day() === 6) {
+        if (dateId === 6) {
             return `${base} saturday`
         }
         return base
     }
 
     return (
-        <tr key={day.format('YYYY-MM-DD')}>
-            <td className={getDateHeaderClass(day.format('YYYY-MM-DD'))}>
-                {day.format('D (ddd)')}
-            </td>
+        <tr>
+            <td className={getDateHeaderClass(date)}>{date.displayValue}</td>
             {isHoliday ? (
                 <td className="holiday">
                     <div className="small">{holidayReason}</div>
@@ -56,10 +60,10 @@ export default function RowForDay({
             ) : (
                 <td className={getTdClass()}>
                     <ShiftCell
-                        key={day.format('YYYY-MM-DD')}
-                        date={day.format('YYYY-MM-DD')}
+                        key={date.value}
+                        date={date}
                         onDraftCreate={() => {
-                            onDraftCreate(day.format('YYYY-MM-DD'))
+                            onDraftCreate(date)
                         }}
                         shiftDrafts={shiftDrafts}
                         onDraftUpdate={onDraftUpdate}

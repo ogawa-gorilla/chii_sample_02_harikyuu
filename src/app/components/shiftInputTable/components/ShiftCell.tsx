@@ -1,3 +1,4 @@
+import { TimeIdentifier } from '@/app/types/timeIdentifier'
 import { Row } from 'react-bootstrap'
 import { ShiftDraft } from '../../../types/shift'
 import ShiftCellForNoShift from './ShiftCellForNoShift'
@@ -5,13 +6,13 @@ import ShiftCellForOneShift from './ShiftCellForOneShift'
 import ShiftCellForTwoShifts from './ShiftCellForTwoShifts'
 
 interface ShiftCellProps {
-    date: string
+    date: TimeIdentifier
     shiftDrafts: ShiftDraft[]
     onDraftUpdate: (draft: ShiftDraft) => void
-    onDraftCreate: (date: string) => void
-    onDraftDelete: (date: string) => void
-    onDraftSplit: (date: string) => void
-    onDraftMerge: (date: string) => void
+    onDraftCreate: (date: TimeIdentifier) => void
+    onDraftDelete: (date: TimeIdentifier) => void
+    onDraftSplit: (date: TimeIdentifier) => void
+    onDraftMerge: (date: TimeIdentifier) => void
 }
 
 export default function ShiftCell({

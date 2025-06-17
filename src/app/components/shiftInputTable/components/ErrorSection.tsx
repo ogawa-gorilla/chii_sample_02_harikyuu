@@ -15,10 +15,14 @@ export default function ErrorSection({ validationResult }: ErrorSectionProps) {
     return (
         <Col xs={12} md={12} className="d-flex justify-content-center gap-1">
             {warningMessages.map((message) => (
-                <Alert variant="warning">{message}</Alert>
+                <Alert variant="warning" key={message}>
+                    {message}
+                </Alert>
             ))}
             {errorMessages.map((message) => (
-                <Alert variant="danger">{message}</Alert>
+                <Alert variant="danger" key={message}>
+                    {message}
+                </Alert>
             ))}
         </Col>
     )
