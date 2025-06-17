@@ -182,6 +182,9 @@ const shiftSlice = createSlice({
         },
         pushHistory: (state) => {
             state.shiftDraft.history.push(state.shiftDraft.drafts)
+            if (state.shiftDraft.history.length > 20) {
+                state.shiftDraft.history.shift()
+            }
         },
         undo: (state) => {
             if (state.shiftDraft.history.length > 1) {
