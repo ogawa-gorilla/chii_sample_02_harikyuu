@@ -29,6 +29,9 @@ export default function ShiftInputTable({
     return (
         <div className="text-center">
             <style>{`
+                table.shift-input-table {
+                    border: solid 1px #000000;
+                }
                 td.holiday {
                     background-color: #666666;
                     color: #cccccc;
@@ -38,17 +41,34 @@ export default function ShiftInputTable({
                 td.off {
                     background-color: #f0f0f0;
                 }
+                th.table-header {
+                    background-color: #eeffee;
+                }
+                td.date-header {
+                    background-color: #eeeeee;
+                }
+                          table th.saturday,
+                table td.saturday {
+                  color: #007Bcc !important;
+                  background-color: #e6f0ff !important;
+                }
+
+                table th.sunday,
+                table td.sunday {
+                  color: #cc3B30 !important;
+                  background-color: #ffe6e6 !important;
+                }
             `}</style>
             <span className="text-muted">※PCでの操作をおすすめします。</span>
             <Table
                 bordered
                 responsive
-                className="w-100 text-center align-middle small"
+                className="w-100 text-center align-middle small shift-input-table"
             >
                 <thead>
                     <tr>
-                        <th>日付</th>
-                        <th>シフト</th>
+                        <th className="table-header">日</th>
+                        <th className="table-header">シフト</th>
                     </tr>
                 </thead>
                 <tbody>

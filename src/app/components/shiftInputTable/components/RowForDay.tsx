@@ -33,9 +33,22 @@ export default function RowForDay({
         return ''
     }
 
+    const getDateHeaderClass = (date: string) => {
+        const base = 'date-header'
+        if (dayjs(date).day() === 0) {
+            return `${base} sunday`
+        }
+        if (dayjs(date).day() === 6) {
+            return `${base} saturday`
+        }
+        return base
+    }
+
     return (
         <tr key={day.format('YYYY-MM-DD')}>
-            <td>{day.format('D (ddd)')}</td>
+            <td className={getDateHeaderClass(day.format('YYYY-MM-DD'))}>
+                {day.format('D (ddd)')}
+            </td>
             {isHoliday ? (
                 <td className="holiday">
                     <div className="small">{holidayReason}</div>
