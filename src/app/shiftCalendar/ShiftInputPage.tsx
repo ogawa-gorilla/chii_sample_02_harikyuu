@@ -3,7 +3,7 @@ import { useEffect, useMemo } from 'react'
 import { Container } from 'react-bootstrap'
 import ShiftInputTable from '../components/shiftInputTable/ShiftInputTable'
 import ShiftInputActionBar from '../components/shiftInputTable/components/ShiftInputActionBar'
-import { useAppDispatch, useAppSelector } from '../hooks'
+import { useAppSelector } from '../hooks'
 import { useShiftDraftManager } from '../hooks/useShiftDraftManager'
 import { getMonthlyShifts, selectAllShiftDrafts } from '../store/shiftSlice'
 
@@ -13,7 +13,6 @@ interface ShiftInputPageProps {
 
 export default function ShiftInputPage({ staffId }: ShiftInputPageProps) {
     dayjs.locale('ja')
-    const dispatch = useAppDispatch()
 
     // いったん定数
     const month = 5

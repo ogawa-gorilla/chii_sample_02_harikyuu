@@ -7,14 +7,20 @@ import { RootState } from './store'
 
 interface ShiftState {
     shifts: Shift[]
-    shiftDrafts: ShiftDraft[]
+    shiftDraft: {
+        drafts: ShiftDraft[]
+        targetDates: string[]
+    }
     temporalHolidays: TemporalHoliday[]
     shiftTemplates: ShiftTemplate[]
 }
 
 const initialState: ShiftState = {
     shifts: SHIFT_TESTDATA,
-    shiftDrafts: [],
+    shiftDraft: {
+        drafts: [],
+        targetDates: [],
+    },
     temporalHolidays: [{ date: '2025-06-07', name: '店長出張' }],
     shiftTemplates: [
         // 店長は全部出勤
@@ -146,25 +152,28 @@ const shiftSlice = createSlice({
             )
         },
         setShiftDrafts: (state, action: PayloadAction<ShiftDraft[]>) => {
-            state.shiftDrafts = action.payload
+            state.shiftDraft.drafts = action.payload
         },
         updateShiftDraft: (state, action: PayloadAction<ShiftDraft>) => {
-            const targetIndex = state.shiftDrafts.findIndex(
+            const targetIndex = state.shiftDraft.drafts.findIndex(
                 (draft) => draft.id === action.payload.id
             )
             if (targetIndex !== -1) {
-                state.shiftDrafts[targetIndex] = action.payload
+                state.shiftDraft.drafts[targetIndex] = action.payload
             } else {
-                state.shiftDrafts.push(action.payload)
+                state.shiftDraft.drafts.push(action.payload)
             }
         },
         deleteShiftDraft: (state, action: PayloadAction<string>) => {
-            state.shiftDrafts = state.shiftDrafts.filter(
+            state.shiftDraft.drafts = state.shiftDraft.drafts.filter(
                 (draft) => draft.id !== action.payload
             )
         },
         clearShiftDrafts: (state) => {
-            state.shiftDrafts = []
+            state.shiftDraft.drafts = []
+        },
+        setTargetDates: (state, action: PayloadAction<string[]>) => {
+            state.shiftDraft.targetDates = action.payload
         },
     },
 })
@@ -180,7 +189,7 @@ export const selectShiftsByStaffId = createSelector(
 
 export const selectShiftDraftsForDay = createSelector(
     [
-        (state: RootState) => state.shift.shiftDrafts,
+        (state: RootState) => state.shift.shiftDraft.drafts,
         (_: RootState, date: string) => date,
     ],
     (shiftDrafts, date) =>
@@ -201,7 +210,7 @@ export const getMonthlyShifts = createSelector(
 )
 
 export const selectAllShiftDrafts = (state: RootState) =>
-    state.shift.shiftDrafts
+    state.shift.shiftDraft.drafts
 
 export const {
     editShift,
@@ -210,6 +219,7 @@ export const {
     updateShiftDraft,
     deleteShiftDraft,
     clearShiftDrafts,
+    setTargetDates,
 } = shiftSlice.actions
 
 export default shiftSlice.reducer

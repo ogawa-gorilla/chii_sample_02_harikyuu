@@ -1,10 +1,12 @@
 import { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { v4 } from 'uuid'
+import { useAppSelector } from '../hooks'
 import {
     deleteShiftDraft,
     selectAllShiftDrafts,
     setShiftDrafts,
+    setTargetDates,
     updateShiftDraft,
 } from '../store/shiftSlice'
 import { Shift, ShiftDraft } from '../types/shift'
@@ -12,6 +14,9 @@ import { Shift, ShiftDraft } from '../types/shift'
 export function useShiftDraftManager() {
     const dispatch = useDispatch()
     const shiftDrafts = useSelector(selectAllShiftDrafts)
+    const targetDates = useAppSelector(
+        (state) => state.shift.shiftDraft.targetDates
+    )
 
     const initializeDrafts = useCallback(
         (shifts: Shift[], targetDates: string[]) => {
@@ -24,6 +29,7 @@ export function useShiftDraftManager() {
                     id: shift.id,
                 }))
             dispatch(setShiftDrafts(initialDrafts))
+            dispatch(setTargetDates(targetDates))
         },
         [dispatch]
     )
@@ -100,6 +106,7 @@ export function useShiftDraftManager() {
 
     return {
         shiftDrafts,
+        targetDates,
         initializeDrafts,
         handleDraftUpdate,
         handleDraftCreate,
