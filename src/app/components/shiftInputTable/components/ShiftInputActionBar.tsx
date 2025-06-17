@@ -3,11 +3,13 @@ import { Button, Col, Container, Row } from 'react-bootstrap'
 
 interface ShiftInputActionBarProps {
     onSave: () => void
+    onCancel: () => void
     onUndo: () => void
 }
 
 export default function ShiftInputActionBar({
     onSave,
+    onCancel,
     onUndo,
 }: ShiftInputActionBarProps) {
     const { canUndo } = useShiftDraftManager()
@@ -28,6 +30,9 @@ export default function ShiftInputActionBar({
             <Container>
                 <Row>
                     <Col className="d-flex justify-content-end gap-2">
+                        <Button variant="outline-warning" onClick={onCancel}>
+                            変更を破棄
+                        </Button>
                         <Button
                             variant="outline-secondary"
                             onClick={onUndo}

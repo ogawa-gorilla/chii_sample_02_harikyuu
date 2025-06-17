@@ -6,9 +6,13 @@ import ShiftInputActionBar from './components/ShiftInputActionBar'
 
 interface ShiftInputTableProps {
     onCommit: (drafts: ShiftDraft[]) => void
+    onAbort: () => void
 }
 
-export default function ShiftInputTable({ onCommit }: ShiftInputTableProps) {
+export default function ShiftInputTable({
+    onCommit,
+    onAbort,
+}: ShiftInputTableProps) {
     const {
         shiftDrafts,
         targetDates,
@@ -20,7 +24,15 @@ export default function ShiftInputTable({ onCommit }: ShiftInputTableProps) {
         handleUndo,
     } = useShiftDraftManager()
 
-    const handleSave = () => {}
+    const handleSave = () => {
+        // TODO: 値のバリデーション
+        onCommit(shiftDrafts)
+    }
+
+    const handleCancel = () => {
+        // TODO: モーダルで確認
+        onAbort()
+    }
 
     return (
         <div className="text-center">
@@ -87,7 +99,11 @@ export default function ShiftInputTable({ onCommit }: ShiftInputTableProps) {
                     })}
                 </tbody>
             </Table>
-            <ShiftInputActionBar onSave={handleSave} onUndo={handleUndo} />
+            <ShiftInputActionBar
+                onSave={handleSave}
+                onUndo={handleUndo}
+                onCancel={handleCancel}
+            />
         </div>
     )
 }
