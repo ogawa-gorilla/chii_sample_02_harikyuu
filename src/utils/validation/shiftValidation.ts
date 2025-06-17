@@ -8,6 +8,24 @@ export interface ShiftValidationResult {
     warnings: string[]
 }
 
+export function validateShiftDrafts(
+    formerShiftDraft: ShiftDraft,
+    latterShiftDraft: ShiftDraft
+): ShiftValidationResult {
+    const errors: string[] = []
+    const warnings: string[] = []
+
+    if (formerShiftDraft.startTime > latterShiftDraft.startTime) {
+        errors.push('シフト1はシフト2より早い時間にしてください')
+    }
+
+    if (latterShiftDraft.startTime < formerShiftDraft.endTime) {
+        errors.push('時間に重複があります。直してください')
+    }
+
+    return { errors, warnings }
+}
+
 /**
  * シフト下書きのバリデーションを行う純粋関数
  *
@@ -17,29 +35,11 @@ export interface ShiftValidationResult {
  * @returns バリデーション結果
  */
 export function validateShiftDraft(
-    shiftDraft: ShiftDraft,
-    draftsInGroup: ShiftDraft[],
-    isHoliday: boolean = false
+    shiftDraft: ShiftDraft
 ): ShiftValidationResult {
     const errors: string[] = []
     const warnings: string[] = []
 
-    // 2つのシフトがある場合の重複チェック
-    if (draftsInGroup.length === 2) {
-        const sorted = draftsInGroup.sort((a, b) =>
-            a.startTime.localeCompare(b.startTime)
-        )
-        if (sorted[1].startTime < sorted[0].endTime) {
-            errors.push('時間に重複があります。直してください')
-        }
-    }
-
-    // 休日の警告
-    if (isHoliday) {
-        warnings.push('休業日です。')
-    }
-
-    // 各シフトの個別バリデーション
     // 開始時間 > 終了時間のチェック
     if (shiftDraft.startTime > shiftDraft.endTime) {
         errors.push('開始時間が終了時間より後です。直してください')
