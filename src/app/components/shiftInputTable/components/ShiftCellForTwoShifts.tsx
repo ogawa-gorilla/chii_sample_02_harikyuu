@@ -6,12 +6,14 @@ interface ShiftCellForOneShiftProps {
     shiftDrafts: ShiftDraft[]
     onDraftUpdate: (draft: ShiftDraft) => void
     onDraftDelete: () => void
+    onDraftMerge: () => void
 }
 
 export default function ShiftCellForOneShift({
     shiftDrafts,
     onDraftUpdate,
     onDraftDelete,
+    onDraftMerge,
 }: ShiftCellForOneShiftProps) {
     return (
         <React.Fragment key={shiftDrafts[0].id}>
@@ -55,7 +57,11 @@ export default function ShiftCellForOneShift({
                         {index == 0 ? (
                             <span>と</span>
                         ) : (
-                            <Button variant="outline-warning" size="sm">
+                            <Button
+                                variant="outline-warning"
+                                size="sm"
+                                onClick={onDraftMerge}
+                            >
                                 分割解除
                             </Button>
                         )}

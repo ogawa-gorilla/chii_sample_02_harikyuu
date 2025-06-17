@@ -68,6 +68,18 @@ export default function ShiftInputPage({ staffId }: ShiftInputPageProps) {
         setShiftDrafts((prev) => [...prev, newDraft2])
     }
 
+    const handleDraftMerge = (date: string) => {
+        const targetDrafts = shiftDrafts.filter((d) => d.date === date)
+        if (targetDrafts.length !== 2) {
+            console.error(
+                'handleDraftMerge: 対象の日付のドラフトが2個ではありません'
+            )
+            return
+        }
+        const deleteTargetId = targetDrafts[1].id
+        setShiftDrafts((prev) => prev.filter((d) => d.id !== deleteTargetId))
+    }
+
     return (
         <Container>
             <ShiftInputTable
@@ -77,6 +89,7 @@ export default function ShiftInputPage({ staffId }: ShiftInputPageProps) {
                 onDraftCreate={handleDraftCreate}
                 onDraftDelete={handleDraftDelete}
                 onDraftSplit={handleDraftSplit}
+                onDraftMerge={handleDraftMerge}
             />
         </Container>
     )

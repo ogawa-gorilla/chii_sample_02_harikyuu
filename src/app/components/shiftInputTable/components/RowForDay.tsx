@@ -10,6 +10,7 @@ interface RowForDayProps {
     onDraftCreate: (date: string) => void
     onDraftDelete: (date: string) => void
     onDraftSplit: (date: string) => void
+    onDraftMerge: (date: string) => void
 }
 
 export default function RowForDay({
@@ -19,6 +20,7 @@ export default function RowForDay({
     onDraftCreate,
     onDraftDelete,
     onDraftSplit,
+    onDraftMerge,
 }: RowForDayProps) {
     const { isHoliday, holidayReason } = useHolidayCheck(
         day.format('YYYY-MM-DD')
@@ -50,6 +52,7 @@ export default function RowForDay({
                         onDraftUpdate={onDraftUpdate}
                         onDraftDelete={onDraftDelete}
                         onDraftSplit={onDraftSplit}
+                        onDraftMerge={onDraftMerge}
                     />
                 </td>
             )}
