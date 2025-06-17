@@ -10,6 +10,7 @@ interface ShiftCellProps {
     onDraftUpdate: (draft: ShiftDraft) => void
     onDraftCreate: (date: string) => void
     onDraftDelete: (date: string) => void
+    onDraftSplit: (date: string) => void
 }
 
 export default function ShiftCell({
@@ -18,6 +19,7 @@ export default function ShiftCell({
     onDraftUpdate,
     onDraftCreate,
     onDraftDelete,
+    onDraftSplit,
 }: ShiftCellProps) {
     return (
         <Row className="no-gutters g-1">
@@ -33,6 +35,7 @@ export default function ShiftCell({
                     key={shiftDrafts[0].id}
                     shiftDraft={shiftDrafts[0]}
                     onDraftUpdate={onDraftUpdate}
+                    onDraftSplit={() => onDraftSplit(date)}
                     onDraftDelete={() => onDraftDelete(date)}
                 />
             ) : shiftDrafts.length == 2 ? (

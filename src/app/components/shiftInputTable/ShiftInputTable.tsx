@@ -9,6 +9,7 @@ interface ShiftInputTableProps {
     onDraftUpdate: (draft: ShiftDraft) => void
     onDraftCreate: (date: string) => void
     onDraftDelete: (date: string) => void
+    onDraftSplit: (date: string) => void
 }
 // 将来的にこのシグネチャではなく、ドラフトの状態は独自管理する
 // 外に出す変数としてはonCommitとかを用意する
@@ -21,6 +22,7 @@ export default function ShiftInputTable({
     onDraftUpdate,
     onDraftCreate,
     onDraftDelete,
+    onDraftSplit,
 }: ShiftInputTableProps) {
     return (
         <div className="text-center">
@@ -60,6 +62,7 @@ export default function ShiftInputTable({
                                 onDraftUpdate={onDraftUpdate}
                                 onDraftCreate={onDraftCreate}
                                 onDraftDelete={onDraftDelete}
+                                onDraftSplit={onDraftSplit}
                             />
                         )
                     })}

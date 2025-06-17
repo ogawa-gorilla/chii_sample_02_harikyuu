@@ -36,7 +36,6 @@ export default function ShiftInputPage({ staffId }: ShiftInputPageProps) {
                 id: shift.id,
             }))
         )
-        console.log(shiftDrafts)
     }, [originalShiftData])
 
     const handleDraftUpdate = (draft: ShiftDraft) => {
@@ -56,6 +55,19 @@ export default function ShiftInputPage({ staffId }: ShiftInputPageProps) {
         setShiftDrafts((prev) => prev.filter((d) => d.date !== date))
     }
 
+    const handleDraftSplit = (date: string) => {
+        const targetDraft = shiftDrafts.find((d) => d.date === date)
+        if (!targetDraft) return
+        const newDraft2: ShiftDraft = {
+            startTime: '',
+            endTime: '',
+            date: date,
+            id: v4(),
+        }
+
+        setShiftDrafts((prev) => [...prev, newDraft2])
+    }
+
     return (
         <Container>
             <ShiftInputTable
@@ -64,6 +76,7 @@ export default function ShiftInputPage({ staffId }: ShiftInputPageProps) {
                 onDraftUpdate={handleDraftUpdate}
                 onDraftCreate={handleDraftCreate}
                 onDraftDelete={handleDraftDelete}
+                onDraftSplit={handleDraftSplit}
             />
         </Container>
     )

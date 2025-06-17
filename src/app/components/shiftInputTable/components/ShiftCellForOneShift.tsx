@@ -6,12 +6,14 @@ interface ShiftCellForOneShiftProps {
     shiftDraft: ShiftDraft
     onDraftUpdate: (draft: ShiftDraft) => void
     onDraftDelete: () => void
+    onDraftSplit: () => void
 }
 
 export default function ShiftCellForOneShift({
     shiftDraft,
     onDraftUpdate,
     onDraftDelete,
+    onDraftSplit,
 }: ShiftCellForOneShiftProps) {
     return (
         <React.Fragment key={shiftDraft.id}>
@@ -41,7 +43,11 @@ export default function ShiftCellForOneShift({
                 />
             </Col>
             <Col xs={4} md={1} className="d-flex justify-content-center">
-                <Button variant="outline-primary" size="sm">
+                <Button
+                    variant="outline-primary"
+                    size="sm"
+                    onClick={onDraftSplit}
+                >
                     分割
                 </Button>
             </Col>
