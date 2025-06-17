@@ -3,7 +3,6 @@ import { VIRTUAL_TODAY } from '@/app/constants/virtualToday'
 import { useState } from 'react'
 import { Button, Container } from 'react-bootstrap'
 import StaffSelector from '../components/common/StaffSelector'
-import { useAppDispatch } from '../hooks'
 import ShiftCalendar from './components/ShiftCalendar'
 import ShiftInputPage from './ShiftInputPage'
 
@@ -11,11 +10,6 @@ export default function ShiftCalendarPage() {
     const [selectedStaff, setSelectedStaff] = useState('all')
     const [startDate, setStartDate] = useState(VIRTUAL_TODAY)
     const [showShiftInputView, setShowShiftInputView] = useState(false)
-    const dispatch = useAppDispatch()
-
-    const handleInputShift = () => {
-        setShowShiftInputView(true)
-    }
 
     const handleWeekChange = (startDate: string) => {
         setStartDate(startDate)
@@ -24,7 +18,12 @@ export default function ShiftCalendarPage() {
     return (
         <Container fluid className="py-3">
             {showShiftInputView ? (
-                <ShiftInputPage staffId={selectedStaff} />
+                <ShiftInputPage
+                    staffId={selectedStaff}
+                    onLeave={() => {
+                        setShowShiftInputView(false)
+                    }}
+                />
             ) : (
                 <div>
                     <h5 className="text-center mb-3">シフト一覧</h5>

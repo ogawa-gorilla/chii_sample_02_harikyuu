@@ -1,18 +1,28 @@
 import dayjs from 'dayjs'
 import { useEffect, useMemo } from 'react'
 import { Container } from 'react-bootstrap'
+import { useDispatch } from 'react-redux'
 import ShiftInputTable from '../components/shiftInputTable/ShiftInputTable'
 import { useAppSelector } from '../hooks'
 import { useShiftDraftManager } from '../hooks/useShiftDraftManager'
-import { getMonthlyShifts } from '../store/shiftSlice'
-import { ShiftDraft } from '../types/shift'
+import {
+    deleteShift,
+    getMonthlyShifts,
+    updateOrCreateShift,
+} from '../store/shiftSlice'
+import { Shift, ShiftDraft } from '../types/shift'
 import { TimeIdentifier } from '../types/timeIdentifier'
 
 interface ShiftInputPageProps {
     staffId: string
+    onLeave: () => void
 }
 
-export default function ShiftInputPage({ staffId }: ShiftInputPageProps) {
+export default function ShiftInputPage({
+    staffId,
+    onLeave,
+}: ShiftInputPageProps) {
+    const dispatch = useDispatch()
     dayjs.locale('ja')
 
     // いったん定数
@@ -28,13 +38,34 @@ export default function ShiftInputPage({ staffId }: ShiftInputPageProps) {
         [numDays]
     )
 
+    const originalShifts = useAppSelector((state) =>
+        getMonthlyShifts(state, month, staffId)
+    )
+
     const handleCommit = (drafts: ShiftDraft[]) => {
-        // TODO: データベースに保存する
-        console.log(drafts)
+        // ドラフトに存在するものの保存とアップデート
+        for (const draft of drafts) {
+            const shift: Shift = {
+                ...draft,
+                staffId: staffId,
+                date: draft.date.value,
+            }
+            dispatch(updateOrCreateShift(shift))
+        }
+
+        // 元のデータから消えたものの削除
+        const deletedShifts = originalShifts.filter(
+            (shift) => !drafts.some((draft) => draft.id === shift.id)
+        )
+
+        for (const shift of deletedShifts) {
+            dispatch(deleteShift(shift.id))
+        }
+        onLeave()
     }
 
     const handleAbort = () => {
-        // TODO: ページ遷移とかをする
+        onLeave()
     }
 
     const originalShiftData = useAppSelector((state) =>

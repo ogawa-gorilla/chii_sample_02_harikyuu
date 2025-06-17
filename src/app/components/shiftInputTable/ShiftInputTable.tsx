@@ -1,3 +1,7 @@
+import {
+    validateShiftDraft,
+    validateShiftDrafts,
+} from '@/utils/validation/shiftValidation'
 import { useState } from 'react'
 import { Button, Modal, Table } from 'react-bootstrap'
 import { useShiftDraftManager } from '../../hooks/useShiftDraftManager'
@@ -27,8 +31,34 @@ export default function ShiftInputTable({
 
     const [showConfirmDialog, setShowConfirmDialog] = useState(false)
 
+    const hasAnyErrors = (drafts: ShiftDraft[]) => {
+        for (const date of targetDates) {
+            const draftsForDay = drafts.filter(
+                (d) => d.date.value === date.value
+            )
+            if (draftsForDay.length === 2) {
+                const { errors } = validateShiftDrafts(
+                    draftsForDay[0],
+                    draftsForDay[1]
+                )
+                if (errors.length > 0) {
+                    return true
+                }
+            } else if (draftsForDay.length === 1) {
+                const { result } = validateShiftDraft(draftsForDay[0])
+                if (result.errors.length > 0) {
+                    return true
+                }
+            }
+        }
+        return false
+    }
+
     const handleSave = () => {
-        // TODO: 値のバリデーション
+        if (hasAnyErrors(shiftDrafts)) {
+            alert('エラーをすべて修正してください。')
+            return
+        }
         onCommit(shiftDrafts)
     }
 

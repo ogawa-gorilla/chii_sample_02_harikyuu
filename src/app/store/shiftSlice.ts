@@ -142,11 +142,13 @@ const shiftSlice = createSlice({
             state.shiftDraft.drafts = action.payload
             state.shiftDraft.history = []
         },
-        editShift: (state, action: PayloadAction<Partial<Shift>>) => {
+        updateOrCreateShift: (state, action: PayloadAction<Shift>) => {
             const targetIndex = state.shifts.findIndex(
                 (shift) => shift.id === action.payload.id
             )
-            if (targetIndex !== -1) {
+            if (targetIndex === -1) {
+                state.shifts.push(action.payload)
+            } else {
                 state.shifts[targetIndex] = {
                     ...state.shifts[targetIndex],
                     ...action.payload,
@@ -245,7 +247,7 @@ export const selectAllShiftDrafts = (state: RootState) =>
     state.shift.shiftDraft.drafts
 
 export const {
-    editShift,
+    updateOrCreateShift,
     deleteShift,
     setShiftDrafts,
     updateShiftDraft,
