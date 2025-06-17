@@ -20,13 +20,22 @@ export default function RowForDay({
         day.format('YYYY-MM-DD')
     )
 
+    const getTdClass = () => {
+        if (shiftDrafts.length === 0) {
+            return 'off'
+        }
+        return ''
+    }
+
     return (
         <tr key={day.format('YYYY-MM-DD')}>
             <td>{day.format('D (ddd)')}</td>
-            <td>
-                {isHoliday ? (
-                    <div className="text-muted small">{holidayReason}</div>
-                ) : (
+            {isHoliday ? (
+                <td className="holiday">
+                    <div className="small">{holidayReason}</div>
+                </td>
+            ) : (
+                <td className={getTdClass()}>
                     <ShiftCell
                         key={day.format('YYYY-MM-DD')}
                         date={day.format('YYYY-MM-DD')}
@@ -36,8 +45,8 @@ export default function RowForDay({
                         shiftDrafts={shiftDrafts}
                         onDraftUpdate={onDraftUpdate}
                     />
-                )}
-            </td>
+                </td>
+            )}
         </tr>
     )
 }

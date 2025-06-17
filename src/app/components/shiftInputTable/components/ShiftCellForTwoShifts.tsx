@@ -53,7 +53,7 @@ export default function ShiftCellForOneShift({
                         {index == 0 ? (
                             <span>と</span>
                         ) : (
-                            <Button variant="outline-danger" size="sm">
+                            <Button variant="outline-warning" size="sm">
                                 分割解除
                             </Button>
                         )}

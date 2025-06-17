@@ -18,6 +18,17 @@ export default function ShiftInputTable({
 }: ShiftInputTableProps) {
     return (
         <div className="text-center">
+            <style>{`
+                td.holiday {
+                    background-color: #666666;
+                    color: #cccccc;
+                    padding: 0.25rem 0.5rem;
+                    border-radius: 0.25rem;
+                }
+                td.off {
+                    background-color: #f0f0f0;
+                }
+            `}</style>
             <span className="text-muted">※PCでの操作をおすすめします。</span>
             <Table
                 bordered
