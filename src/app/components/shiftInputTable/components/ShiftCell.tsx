@@ -2,6 +2,7 @@ import { Row } from 'react-bootstrap'
 import { ShiftDraft } from '../../../types/shift'
 import ShiftCellForNoShift from './ShiftCellForNoShift'
 import ShiftCellForOneShift from './ShiftCellForOneShift'
+import ShiftCellForTwoShifts from './ShiftCellForTwoShifts'
 
 interface ShiftCellProps {
     date: string
@@ -29,6 +30,12 @@ export default function ShiftCell({
                 <ShiftCellForOneShift
                     key={shiftDrafts[0].id}
                     shiftDraft={shiftDrafts[0]}
+                    onDraftUpdate={onDraftUpdate}
+                />
+            ) : shiftDrafts.length == 2 ? (
+                <ShiftCellForTwoShifts
+                    key={shiftDrafts[0].id}
+                    shiftDrafts={shiftDrafts}
                     onDraftUpdate={onDraftUpdate}
                 />
             ) : null}

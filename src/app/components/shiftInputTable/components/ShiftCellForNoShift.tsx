@@ -15,7 +15,7 @@ export default function ShiftCellForOneShift({
             <Col
                 md={6}
                 xs={12}
-                className="d-flex justify-content-center text-muted small"
+                className="d-flex justify-content-center text-muted small align-items-center"
             >
                 休み
             </Col>
