@@ -37,7 +37,7 @@ export default function ShiftCellForOneShift({
                         <Col
                             key={shiftDraft.id}
                             className="d-flex align-items-center gap-1"
-                            xs={8}
+                            xs={9}
                             md={5}
                         >
                             <ShiftInput
@@ -50,7 +50,7 @@ export default function ShiftCellForOneShift({
                             />
                         </Col>
                         <Col
-                            xs={4}
+                            xs={3}
                             md={1}
                             className="d-flex justify-content-center align-items-center"
                         >

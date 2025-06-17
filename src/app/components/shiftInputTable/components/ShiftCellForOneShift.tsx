@@ -23,14 +23,14 @@ export default function ShiftCellForOneShift({
     } = validateShiftDraft(shiftDraft)
     return (
         <React.Fragment key={shiftDraft.id}>
-            <Col className="d-flex align-items-center gap-1" xs={8} md={5}>
+            <Col className="d-flex align-items-center gap-1" xs={9} md={5}>
                 <ShiftInput
                     shiftDraft={shiftDraft}
                     validationResult={{ errors, warnings }}
                     onDraftUpdate={onDraftUpdate}
                 />
             </Col>
-            <Col xs={4} md={1} className="d-flex justify-content-center">
+            <Col xs={3} md={1} className="d-flex justify-content-center">
                 <Button
                     variant="outline-primary"
                     size="sm"
