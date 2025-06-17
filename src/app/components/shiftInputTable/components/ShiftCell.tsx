@@ -1,5 +1,6 @@
-import { Form } from 'react-bootstrap'
+import { Row } from 'react-bootstrap'
 import { ShiftDraft } from '../../../types/shift'
+import ShiftCellForOneShift from './ShiftCellForOneShift'
 
 interface ShiftCellProps {
     shiftDrafts: ShiftDraft[]
@@ -11,32 +12,14 @@ export default function ShiftCell({
     onDraftUpdate,
 }: ShiftCellProps) {
     return (
-        <div>
+        <Row className="no-gutters g-1">
             {shiftDrafts.map((draft) => (
-                <div key={draft.id} className="d-flex align-items-center gap-2">
-                    <Form.Control
-                        type="time"
-                        value={draft.startTime}
-                        onChange={(e) => {
-                            onDraftUpdate({
-                                ...draft,
-                                startTime: e.target.value,
-                            })
-                        }}
-                    />
-                    <span>～</span>
-                    <Form.Control
-                        type="time"
-                        value={draft.endTime}
-                        onChange={(e) => {
-                            onDraftUpdate({
-                                ...draft,
-                                endTime: e.target.value,
-                            })
-                        }}
-                    />
-                </div>
+                <ShiftCellForOneShift
+                    key={draft.id}
+                    shiftDraft={draft}
+                    onDraftUpdate={onDraftUpdate}
+                />
             ))}
-        </div>
+        </Row>
     )
 }
