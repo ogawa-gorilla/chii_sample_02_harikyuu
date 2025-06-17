@@ -6,13 +6,14 @@ import RowForDay from './components/RowForDay'
 interface ShiftInputTableProps {
     days: dayjs.Dayjs[]
     shiftDrafts: ShiftDraft[]
+    onDraftUpdate: (draft: ShiftDraft) => void
 }
 
 export default function ShiftInputTable({
     days,
     shiftDrafts,
+    onDraftUpdate,
 }: ShiftInputTableProps) {
-    console.log(shiftDrafts)
     return (
         <div className="text-center">
             <span className="text-muted">※PCでの操作をおすすめします。</span>
@@ -37,6 +38,7 @@ export default function ShiftInputTable({
                                 key={day.format('YYYY-MM-DD')}
                                 day={day}
                                 shiftDrafts={drafts}
+                                onDraftUpdate={onDraftUpdate}
                             />
                         )
                     })}

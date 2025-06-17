@@ -25,8 +25,6 @@ export default function ShiftInputPage({ staffId }: ShiftInputPageProps) {
     const originalShiftData = useAppSelector((state) =>
         getMonthlyShifts(state, month, staffId)
     )
-    console.log(originalShiftData)
-    console.log(staffId)
 
     useEffect(() => {
         setShiftDrafts(
@@ -40,9 +38,19 @@ export default function ShiftInputPage({ staffId }: ShiftInputPageProps) {
         console.log(shiftDrafts)
     }, [originalShiftData])
 
+    const handleDraftUpdate = (draft: ShiftDraft) => {
+        setShiftDrafts((prev) =>
+            prev.map((d) => (d.id === draft.id ? draft : d))
+        )
+    }
+
     return (
         <Container>
-            <ShiftInputTable days={days} shiftDrafts={shiftDrafts} />
+            <ShiftInputTable
+                days={days}
+                shiftDrafts={shiftDrafts}
+                onDraftUpdate={handleDraftUpdate}
+            />
         </Container>
     )
 }
