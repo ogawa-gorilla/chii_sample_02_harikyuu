@@ -1,6 +1,8 @@
 import { ShiftDraft } from '@/app/types/shift'
+import { validateShiftDrafts } from '@/utils/validation/shiftValidation'
 import React from 'react'
-import { Button, Col, Form } from 'react-bootstrap'
+import { Button, Col } from 'react-bootstrap'
+import ShiftInput from './ShiftInput'
 
 interface ShiftCellForOneShiftProps {
     shiftDrafts: ShiftDraft[]
@@ -15,6 +17,7 @@ export default function ShiftCellForOneShift({
     onDraftDelete,
     onDraftMerge,
 }: ShiftCellForOneShiftProps) {
+    const errors = validateShiftDrafts(shiftDrafts[0], shiftDrafts[1])
     return (
         <React.Fragment key={shiftDrafts[0].id}>
             {shiftDrafts.map((shiftDraft, index) => (
@@ -25,28 +28,9 @@ export default function ShiftCellForOneShift({
                         xs={8}
                         md={5}
                     >
-                        <Form.Control
-                            type="time"
-                            size="sm"
-                            value={shiftDraft.startTime}
-                            onChange={(e) => {
-                                onDraftUpdate({
-                                    ...shiftDraft,
-                                    startTime: e.target.value,
-                                })
-                            }}
-                        />
-                        <span className="small">～</span>
-                        <Form.Control
-                            type="time"
-                            size="sm"
-                            value={shiftDraft.endTime}
-                            onChange={(e) => {
-                                onDraftUpdate({
-                                    ...shiftDraft,
-                                    endTime: e.target.value,
-                                })
-                            }}
+                        <ShiftInput
+                            shiftDraft={shiftDraft}
+                            onDraftUpdate={onDraftUpdate}
                         />
                     </Col>
                     <Col
