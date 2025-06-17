@@ -8,6 +8,7 @@ interface RowForDayProps {
     shiftDrafts: ShiftDraft[]
     onDraftUpdate: (draft: ShiftDraft) => void
     onDraftCreate: (date: string) => void
+    onDraftDelete: (date: string) => void
 }
 
 export default function RowForDay({
@@ -15,6 +16,7 @@ export default function RowForDay({
     shiftDrafts,
     onDraftUpdate,
     onDraftCreate,
+    onDraftDelete,
 }: RowForDayProps) {
     const { isHoliday, holidayReason } = useHolidayCheck(
         day.format('YYYY-MM-DD')
@@ -44,6 +46,7 @@ export default function RowForDay({
                         }}
                         shiftDrafts={shiftDrafts}
                         onDraftUpdate={onDraftUpdate}
+                        onDraftDelete={onDraftDelete}
                     />
                 </td>
             )}

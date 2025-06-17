@@ -9,6 +9,7 @@ interface ShiftCellProps {
     shiftDrafts: ShiftDraft[]
     onDraftUpdate: (draft: ShiftDraft) => void
     onDraftCreate: (date: string) => void
+    onDraftDelete: (date: string) => void
 }
 
 export default function ShiftCell({
@@ -16,6 +17,7 @@ export default function ShiftCell({
     shiftDrafts,
     onDraftUpdate,
     onDraftCreate,
+    onDraftDelete,
 }: ShiftCellProps) {
     return (
         <Row className="no-gutters g-1">
@@ -31,12 +33,14 @@ export default function ShiftCell({
                     key={shiftDrafts[0].id}
                     shiftDraft={shiftDrafts[0]}
                     onDraftUpdate={onDraftUpdate}
+                    onDraftDelete={() => onDraftDelete(date)}
                 />
             ) : shiftDrafts.length == 2 ? (
                 <ShiftCellForTwoShifts
                     key={shiftDrafts[0].id}
                     shiftDrafts={shiftDrafts}
                     onDraftUpdate={onDraftUpdate}
+                    onDraftDelete={() => onDraftDelete(date)}
                 />
             ) : null}
         </Row>

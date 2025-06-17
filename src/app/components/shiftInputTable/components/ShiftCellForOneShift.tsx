@@ -5,11 +5,13 @@ import { Button, Col, Form } from 'react-bootstrap'
 interface ShiftCellForOneShiftProps {
     shiftDraft: ShiftDraft
     onDraftUpdate: (draft: ShiftDraft) => void
+    onDraftDelete: () => void
 }
 
 export default function ShiftCellForOneShift({
     shiftDraft,
     onDraftUpdate,
+    onDraftDelete,
 }: ShiftCellForOneShiftProps) {
     return (
         <React.Fragment key={shiftDraft.id}>
@@ -44,7 +46,11 @@ export default function ShiftCellForOneShift({
                 </Button>
             </Col>
             <Col xs={12} md={6} className="d-flex justify-content-center">
-                <Button variant="outline-danger" size="sm">
+                <Button
+                    variant="outline-danger"
+                    size="sm"
+                    onClick={onDraftDelete}
+                >
                     休みにする
                 </Button>
             </Col>

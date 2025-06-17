@@ -52,6 +52,10 @@ export default function ShiftInputPage({ staffId }: ShiftInputPageProps) {
         ])
     }
 
+    const handleDraftDelete = (date: string) => {
+        setShiftDrafts((prev) => prev.filter((d) => d.date !== date))
+    }
+
     return (
         <Container>
             <ShiftInputTable
@@ -59,6 +63,7 @@ export default function ShiftInputPage({ staffId }: ShiftInputPageProps) {
                 shiftDrafts={shiftDrafts}
                 onDraftUpdate={handleDraftUpdate}
                 onDraftCreate={handleDraftCreate}
+                onDraftDelete={handleDraftDelete}
             />
         </Container>
     )

@@ -8,13 +8,19 @@ interface ShiftInputTableProps {
     shiftDrafts: ShiftDraft[]
     onDraftUpdate: (draft: ShiftDraft) => void
     onDraftCreate: (date: string) => void
+    onDraftDelete: (date: string) => void
 }
+// 将来的にこのシグネチャではなく、ドラフトの状態は独自管理する
+// 外に出す変数としてはonCommitとかを用意する
+// また、daysはDayjsではなく、正確な日付以外の情報も扱えるようstringにする(イメージとしては日付とはかぎらなくて、曜日なども扱えるように)
+// ↑ってことはナビゲーションの部分はTableに含めない？
 
 export default function ShiftInputTable({
     days,
     shiftDrafts,
     onDraftUpdate,
     onDraftCreate,
+    onDraftDelete,
 }: ShiftInputTableProps) {
     return (
         <div className="text-center">
@@ -53,6 +59,7 @@ export default function ShiftInputTable({
                                 shiftDrafts={drafts}
                                 onDraftUpdate={onDraftUpdate}
                                 onDraftCreate={onDraftCreate}
+                                onDraftDelete={onDraftDelete}
                             />
                         )
                     })}
