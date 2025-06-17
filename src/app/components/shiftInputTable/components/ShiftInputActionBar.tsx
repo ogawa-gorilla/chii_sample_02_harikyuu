@@ -30,11 +30,11 @@ export default function ShiftInputActionBar({
             <Container>
                 <Row>
                     <Col className="d-flex justify-content-end gap-2">
-                        <Button variant="outline-warning" onClick={onCancel}>
-                            変更を破棄
+                        <Button variant="secondary" onClick={onCancel}>
+                            キャンセル
                         </Button>
                         <Button
-                            variant="outline-secondary"
+                            variant="success"
                             onClick={onUndo}
                             disabled={!canUndo}
                         >
