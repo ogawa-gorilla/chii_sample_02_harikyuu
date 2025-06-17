@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { Container } from 'react-bootstrap'
 import { v4 } from 'uuid'
 import ShiftInputTable from '../components/shiftInputTable/ShiftInputTable'
+import ShiftInputActionBar from '../components/shiftInputTable/components/ShiftInputActionBar'
 import { useAppSelector } from '../hooks'
 import { getMonthlyShifts } from '../store/shiftSlice'
 import { ShiftDraft } from '../types/shift'
@@ -84,8 +85,18 @@ export default function ShiftInputPage({ staffId }: ShiftInputPageProps) {
         setShiftDrafts((prev) => [...prev, firstDraft])
     }
 
+    const handleSave = () => {
+        // TODO: 実際の保存処理を実装
+        console.log('保存しました', shiftDrafts)
+    }
+
+    const handleUndo = () => {
+        // TODO: 実際の元に戻す処理を実装
+        console.log('元に戻しました')
+    }
+
     return (
-        <Container>
+        <Container style={{ paddingBottom: '80px' }}>
             <ShiftInputTable
                 days={days}
                 shiftDrafts={shiftDrafts}
@@ -95,6 +106,7 @@ export default function ShiftInputPage({ staffId }: ShiftInputPageProps) {
                 onDraftSplit={handleDraftSplit}
                 onDraftMerge={handleDraftMerge}
             />
+            <ShiftInputActionBar onSave={handleSave} onUndo={handleUndo} />
         </Container>
     )
 }
