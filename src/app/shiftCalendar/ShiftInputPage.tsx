@@ -47,7 +47,7 @@ export default function ShiftInputPage({ staffId }: ShiftInputPageProps) {
     const handleDraftCreate = (date: string) => {
         setShiftDrafts((prev) => [
             ...prev,
-            { date, startTime: '09:00', endTime: '18:00', id: v4() },
+            { date, startTime: '9:00', endTime: '18:00', id: v4() },
         ])
     }
 
@@ -59,8 +59,8 @@ export default function ShiftInputPage({ staffId }: ShiftInputPageProps) {
         const targetDraft = shiftDrafts.find((d) => d.date === date)
         if (!targetDraft) return
         const newDraft2: ShiftDraft = {
-            startTime: '',
-            endTime: '',
+            startTime: targetDraft.endTime,
+            endTime: '18:00',
             date: date,
             id: v4(),
         }
@@ -76,8 +76,12 @@ export default function ShiftInputPage({ staffId }: ShiftInputPageProps) {
             )
             return
         }
-        const deleteTargetId = targetDrafts[1].id
-        setShiftDrafts((prev) => prev.filter((d) => d.id !== deleteTargetId))
+        const firstDraft = targetDrafts[0]
+        firstDraft.endTime = targetDrafts[1].endTime
+        setShiftDrafts((prev) =>
+            prev.filter((d) => d.date !== targetDrafts[0].date)
+        )
+        setShiftDrafts((prev) => [...prev, firstDraft])
     }
 
     return (

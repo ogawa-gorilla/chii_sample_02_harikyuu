@@ -49,16 +49,16 @@ export function validateShiftDrafts(
         }
     }
 
-    if (formerShiftDraft.startTime > latterShiftDraft.startTime) {
+    if (formerShiftDraft.startTime >= latterShiftDraft.startTime) {
         errors.push({
             message: 'シフト1はシフト2より早い時間にしてください',
             indices: [0, 2],
         })
     }
 
-    if (latterShiftDraft.startTime < formerShiftDraft.endTime) {
+    if (latterShiftDraft.startTime <= formerShiftDraft.endTime) {
         errors.push({
-            message: '時間に重複があります。直してください',
+            message: '時間に重複があります',
             indices: [1, 2],
         })
     }
