@@ -4,13 +4,29 @@ import { v4 } from 'uuid'
 import {
     deleteShiftDraft,
     selectAllShiftDrafts,
+    setShiftDrafts,
     updateShiftDraft,
 } from '../store/shiftSlice'
-import { ShiftDraft } from '../types/shift'
+import { Shift, ShiftDraft } from '../types/shift'
 
 export function useShiftDraftManager() {
     const dispatch = useDispatch()
     const shiftDrafts = useSelector(selectAllShiftDrafts)
+
+    const initializeDrafts = useCallback(
+        (shifts: Shift[], targetDates: string[]) => {
+            const initialDrafts = shifts
+                .filter((shift) => targetDates.includes(shift.date))
+                .map((shift) => ({
+                    date: shift.date,
+                    startTime: shift.startTime,
+                    endTime: shift.endTime,
+                    id: shift.id,
+                }))
+            dispatch(setShiftDrafts(initialDrafts))
+        },
+        [dispatch]
+    )
 
     const handleDraftUpdate = useCallback(
         (draft: ShiftDraft) => {
@@ -84,6 +100,7 @@ export function useShiftDraftManager() {
 
     return {
         shiftDrafts,
+        initializeDrafts,
         handleDraftUpdate,
         handleDraftCreate,
         handleDraftDelete,

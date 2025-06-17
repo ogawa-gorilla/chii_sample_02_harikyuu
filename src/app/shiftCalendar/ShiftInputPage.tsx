@@ -1,14 +1,11 @@
 import dayjs from 'dayjs'
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { Container } from 'react-bootstrap'
 import ShiftInputTable from '../components/shiftInputTable/ShiftInputTable'
 import ShiftInputActionBar from '../components/shiftInputTable/components/ShiftInputActionBar'
 import { useAppDispatch, useAppSelector } from '../hooks'
-import {
-    getMonthlyShifts,
-    selectAllShiftDrafts,
-    setShiftDrafts,
-} from '../store/shiftSlice'
+import { useShiftDraftManager } from '../hooks/useShiftDraftManager'
+import { getMonthlyShifts, selectAllShiftDrafts } from '../store/shiftSlice'
 
 interface ShiftInputPageProps {
     staffId: string
@@ -22,25 +19,24 @@ export default function ShiftInputPage({ staffId }: ShiftInputPageProps) {
     const month = 5
 
     const numDays = dayjs(new Date(2025, month, 1)).daysInMonth()
-    const days: dayjs.Dayjs[] = Array.from({ length: numDays }, (_, i) =>
-        dayjs(new Date(2025, month, i + 1))
+    const days = useMemo(
+        () =>
+            Array.from({ length: numDays }, (_, i) =>
+                dayjs(new Date(2025, month, i + 1))
+            ),
+        [numDays]
     )
 
     const originalShiftData = useAppSelector((state) =>
         getMonthlyShifts(state, month, staffId)
     )
     const shiftDrafts = useAppSelector(selectAllShiftDrafts)
+    const { initializeDrafts } = useShiftDraftManager()
 
     useEffect(() => {
-        // 初期データの読み込み
-        const initialDrafts = originalShiftData.map((shift) => ({
-            date: shift.date,
-            startTime: shift.startTime,
-            endTime: shift.endTime,
-            id: shift.id,
-        }))
-        dispatch(setShiftDrafts(initialDrafts))
-    }, [originalShiftData, dispatch])
+        const targetDates = days.map((day) => day.format('YYYY-MM-DD'))
+        initializeDrafts(originalShiftData, targetDates)
+    }, [originalShiftData, initializeDrafts])
 
     const handleSave = () => {
         // TODO: 実際の保存処理を実装
