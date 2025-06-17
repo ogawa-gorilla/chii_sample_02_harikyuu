@@ -1,31 +1,27 @@
 import dayjs from 'dayjs'
 import { Table } from 'react-bootstrap'
+import { useShiftDraftManager } from '../../hooks/useShiftDraftManager'
 import { ShiftDraft } from '../../types/shift'
 import RowForDay from './components/RowForDay'
 
 interface ShiftInputTableProps {
     days: dayjs.Dayjs[]
-    shiftDrafts: ShiftDraft[]
-    onDraftUpdate: (draft: ShiftDraft) => void
-    onDraftCreate: (date: string) => void
-    onDraftDelete: (date: string) => void
-    onDraftSplit: (date: string) => void
-    onDraftMerge: (date: string) => void
+    onCommit: (drafts: ShiftDraft[]) => void
 }
-// 将来的にこのシグネチャではなく、ドラフトの状態は独自管理する
-// 外に出す変数としてはonCommitとかを用意する
-// また、daysはDayjsではなく、正確な日付以外の情報も扱えるようstringにする(イメージとしては日付とはかぎらなくて、曜日なども扱えるように)
-// ↑ってことはナビゲーションの部分はTableに含めない？
 
 export default function ShiftInputTable({
     days,
-    shiftDrafts,
-    onDraftUpdate,
-    onDraftCreate,
-    onDraftDelete,
-    onDraftSplit,
-    onDraftMerge,
+    onCommit,
 }: ShiftInputTableProps) {
+    const {
+        shiftDrafts,
+        handleDraftUpdate,
+        handleDraftCreate,
+        handleDraftDelete,
+        handleDraftSplit,
+        handleDraftMerge,
+    } = useShiftDraftManager()
+
     return (
         <div className="text-center">
             <style>{`
@@ -81,11 +77,11 @@ export default function ShiftInputTable({
                                 key={day.format('YYYY-MM-DD')}
                                 day={day}
                                 shiftDrafts={drafts}
-                                onDraftUpdate={onDraftUpdate}
-                                onDraftCreate={onDraftCreate}
-                                onDraftDelete={onDraftDelete}
-                                onDraftSplit={onDraftSplit}
-                                onDraftMerge={onDraftMerge}
+                                onDraftUpdate={handleDraftUpdate}
+                                onDraftCreate={handleDraftCreate}
+                                onDraftDelete={handleDraftDelete}
+                                onDraftSplit={handleDraftSplit}
+                                onDraftMerge={handleDraftMerge}
                             />
                         )
                     })}
