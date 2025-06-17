@@ -11,6 +11,7 @@ interface ShiftState {
     shiftDraft: {
         drafts: ShiftDraft[]
         targetDates: TimeIdentifier[]
+        history: ShiftDraft[][]
     }
     temporalHolidays: TemporalHoliday[]
     shiftTemplates: ShiftTemplate[]
@@ -21,6 +22,7 @@ const initialState: ShiftState = {
     shiftDraft: {
         drafts: [],
         targetDates: [],
+        history: [],
     },
     temporalHolidays: [{ date: '2025-06-07', name: '店長出張' }],
     shiftTemplates: [
@@ -136,6 +138,10 @@ const shiftSlice = createSlice({
     name: 'shift',
     initialState,
     reducers: {
+        setShiftDrafts: (state, action: PayloadAction<ShiftDraft[]>) => {
+            state.shiftDraft.drafts = action.payload
+            state.shiftDraft.history = []
+        },
         editShift: (state, action: PayloadAction<Partial<Shift>>) => {
             const targetIndex = state.shifts.findIndex(
                 (shift) => shift.id === action.payload.id
@@ -146,14 +152,13 @@ const shiftSlice = createSlice({
                     ...action.payload,
                 }
             }
+            state.shiftDraft.history.push(state.shiftDraft.drafts)
         },
         deleteShift: (state, action: PayloadAction<string>) => {
             state.shifts = state.shifts.filter(
                 (shift) => shift.id !== action.payload
             )
-        },
-        setShiftDrafts: (state, action: PayloadAction<ShiftDraft[]>) => {
-            state.shiftDraft.drafts = action.payload
+            state.shiftDraft.history.push(state.shiftDraft.drafts)
         },
         updateShiftDraft: (state, action: PayloadAction<ShiftDraft>) => {
             const targetIndex = state.shiftDraft.drafts.findIndex(
@@ -164,17 +169,29 @@ const shiftSlice = createSlice({
             } else {
                 state.shiftDraft.drafts.push(action.payload)
             }
+            state.shiftDraft.history.push(state.shiftDraft.drafts)
         },
         deleteShiftDraft: (state, action: PayloadAction<string>) => {
             state.shiftDraft.drafts = state.shiftDraft.drafts.filter(
                 (draft) => draft.id !== action.payload
             )
+            state.shiftDraft.history.push(state.shiftDraft.drafts)
         },
         clearShiftDrafts: (state) => {
             state.shiftDraft.drafts = []
+            state.shiftDraft.history = []
         },
         setTargetDates: (state, action: PayloadAction<TimeIdentifier[]>) => {
             state.shiftDraft.targetDates = action.payload
+        },
+        undo: (state) => {
+            if (state.shiftDraft.history.length > 0) {
+                state.shiftDraft.drafts =
+                    state.shiftDraft.history[
+                        state.shiftDraft.history.length - 1
+                    ]
+                state.shiftDraft.history.pop()
+            }
         },
     },
 })
@@ -212,6 +229,11 @@ export const getMonthlyShifts = createSelector(
         )
 )
 
+export const historyLength = createSelector(
+    (state: RootState) => state.shift.shiftDraft.history,
+    (history) => history.length
+)
+
 export const selectAllShiftDrafts = (state: RootState) =>
     state.shift.shiftDraft.drafts
 
@@ -223,6 +245,7 @@ export const {
     deleteShiftDraft,
     clearShiftDrafts,
     setTargetDates,
+    undo,
 } = shiftSlice.actions
 
 export default shiftSlice.reducer

@@ -4,9 +4,11 @@ import { v4 } from 'uuid'
 import { useAppSelector } from '../hooks'
 import {
     deleteShiftDraft,
+    historyLength,
     selectAllShiftDrafts,
     setShiftDrafts,
     setTargetDates,
+    undo,
     updateShiftDraft,
 } from '../store/shiftSlice'
 import { Shift, ShiftDraft } from '../types/shift'
@@ -18,6 +20,7 @@ export function useShiftDraftManager() {
     const targetDates = useAppSelector(
         (state) => state.shift.shiftDraft.targetDates
     )
+    const canUndo = useAppSelector(historyLength) > 0
 
     const initializeDrafts = useCallback(
         (shifts: Shift[], targetDates: TimeIdentifier[]) => {
@@ -120,6 +123,10 @@ export function useShiftDraftManager() {
         [dispatch, shiftDrafts]
     )
 
+    const handleUndo = useCallback(() => {
+        dispatch(undo())
+    }, [dispatch])
+
     return {
         shiftDrafts,
         targetDates,
@@ -129,5 +136,7 @@ export function useShiftDraftManager() {
         handleDraftDelete,
         handleDraftSplit,
         handleDraftMerge,
+        handleUndo,
+        canUndo,
     }
 }
