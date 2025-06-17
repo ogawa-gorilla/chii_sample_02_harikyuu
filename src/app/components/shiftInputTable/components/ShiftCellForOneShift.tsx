@@ -1,7 +1,8 @@
 import { ShiftDraft } from '@/app/types/shift'
 import { validateShiftDraft } from '@/utils/validation/shiftValidation'
 import React from 'react'
-import { Alert, Button, Col } from 'react-bootstrap'
+import { Button, Col } from 'react-bootstrap'
+import ErrorSection from './ErrorSection'
 import ShiftInput from './ShiftInput'
 
 interface ShiftCellForOneShiftProps {
@@ -17,14 +18,15 @@ export default function ShiftCellForOneShift({
     onDraftDelete,
     onDraftSplit,
 }: ShiftCellForOneShiftProps) {
-    const { errors, warnings } = validateShiftDraft(shiftDraft)
+    const {
+        result: { errors, warnings },
+    } = validateShiftDraft(shiftDraft)
     return (
         <React.Fragment key={shiftDraft.id}>
             <Col className="d-flex align-items-center gap-1" xs={8} md={5}>
                 <ShiftInput
                     shiftDraft={shiftDraft}
-                    hasError={errors.length > 0}
-                    hasWarning={warnings.length > 0}
+                    validationResult={{ errors, warnings }}
                     onDraftUpdate={onDraftUpdate}
                 />
             </Col>
@@ -46,13 +48,7 @@ export default function ShiftCellForOneShift({
                     休みにする
                 </Button>
             </Col>
-            {errors.length > 0 && (
-                <Col xs={12} md={12} className="d-flex justify-content-center">
-                    <Alert variant="danger">
-                        {errors.map((error) => error)}
-                    </Alert>
-                </Col>
-            )}
+            <ErrorSection validationResult={{ errors, warnings }} />
         </React.Fragment>
     )
 }

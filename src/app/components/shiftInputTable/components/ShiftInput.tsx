@@ -1,26 +1,36 @@
 import { ShiftDraft } from '@/app/types/shift'
+import {
+    ShiftError,
+    ShiftValidationResult,
+} from '@/utils/validation/shiftValidation'
 import React from 'react'
 import { Form } from 'react-bootstrap'
 
 interface ShiftInputProps {
     shiftDraft: ShiftDraft
-    hasWarning: boolean
-    hasError: boolean
+    validationResult: ShiftValidationResult
     onDraftUpdate: (draft: ShiftDraft) => void
 }
 
 export default function ShiftInput({
     shiftDraft,
-    hasWarning,
-    hasError,
+    validationResult,
     onDraftUpdate,
 }: ShiftInputProps) {
-    const getClass = () => {
-        if (hasError) {
-            return 'is-invalid bg-danger-subtle'
+    const getClass = (index: number) => {
+        if (
+            validationResult.errors.some((error: ShiftError) =>
+                error.indices?.includes(index)
+            )
+        ) {
+            return 'bg-danger-subtle'
         }
-        if (hasWarning) {
-            return 'is-warning bg-warning-subtle'
+        if (
+            validationResult.warnings.some((warning: ShiftError) =>
+                warning.indices?.includes(index)
+            )
+        ) {
+            return 'bg-warning-subtle'
         }
         return ''
     }
@@ -28,7 +38,7 @@ export default function ShiftInput({
     return (
         <React.Fragment>
             <Form.Control
-                className={getClass()}
+                className={getClass(0)}
                 type="time"
                 size="sm"
                 value={shiftDraft.startTime}
@@ -41,7 +51,7 @@ export default function ShiftInput({
             />
             <span className="small">～</span>
             <Form.Control
-                className={getClass()}
+                className={getClass(1)}
                 type="time"
                 size="sm"
                 value={shiftDraft.endTime}

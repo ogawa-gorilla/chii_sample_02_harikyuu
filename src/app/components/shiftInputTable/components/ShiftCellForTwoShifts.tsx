@@ -1,10 +1,11 @@
 import { ShiftDraft } from '@/app/types/shift'
 import {
-    validateShiftDraft,
+    shiftIndices,
     validateShiftDrafts,
 } from '@/utils/validation/shiftValidation'
 import React from 'react'
-import { Alert, Button, Col } from 'react-bootstrap'
+import { Button, Col } from 'react-bootstrap'
+import ErrorSection from './ErrorSection'
 import ShiftInput from './ShiftInput'
 
 interface ShiftCellForOneShiftProps {
@@ -20,20 +21,17 @@ export default function ShiftCellForOneShift({
     onDraftDelete,
     onDraftMerge,
 }: ShiftCellForOneShiftProps) {
-    let { errors: allErrors, warnings: allWarnings } = validateShiftDrafts(
+    const globalValidationResult = validateShiftDrafts(
         shiftDrafts[0],
         shiftDrafts[1]
     )
-    shiftDrafts.forEach((shiftDraft) => {
-        const { errors, warnings } = validateShiftDraft(shiftDraft)
-        allErrors = [...allErrors, ...errors]
-        allWarnings = [...allWarnings, ...warnings]
-    })
-
     return (
         <React.Fragment key={shiftDrafts[0].id}>
             {shiftDrafts.map((shiftDraft, index) => {
-                const { errors, warnings } = validateShiftDraft(shiftDraft)
+                const { errors, warnings } = shiftIndices(
+                    globalValidationResult,
+                    index * -2
+                )
                 return (
                     <React.Fragment key={shiftDraft.id}>
                         <Col
@@ -44,13 +42,10 @@ export default function ShiftCellForOneShift({
                         >
                             <ShiftInput
                                 shiftDraft={shiftDraft}
-                                hasError={
-                                    errors.length > 0 || allErrors.length > 0
-                                }
-                                hasWarning={
-                                    warnings.length > 0 ||
-                                    allWarnings.length > 0
-                                }
+                                validationResult={{
+                                    errors: errors,
+                                    warnings: warnings,
+                                }}
                                 onDraftUpdate={onDraftUpdate}
                             />
                         </Col>
@@ -67,7 +62,7 @@ export default function ShiftCellForOneShift({
                                     size="sm"
                                     onClick={onDraftMerge}
                                 >
-                                    分割解除
+                                    結合
                                 </Button>
                             )}
                         </Col>
@@ -83,13 +78,7 @@ export default function ShiftCellForOneShift({
                     休みにする
                 </Button>
             </Col>
-            {allErrors.length > 0 && (
-                <Col xs={12} md={12} className="d-flex justify-content-center">
-                    <Alert variant="danger">
-                        {allErrors.map((error) => error)}
-                    </Alert>
-                </Col>
-            )}
+            <ErrorSection validationResult={globalValidationResult} />
         </React.Fragment>
     )
 }
