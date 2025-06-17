@@ -2,10 +2,9 @@ import dayjs from 'dayjs'
 import { useEffect, useMemo } from 'react'
 import { Container } from 'react-bootstrap'
 import ShiftInputTable from '../components/shiftInputTable/ShiftInputTable'
-import ShiftInputActionBar from '../components/shiftInputTable/components/ShiftInputActionBar'
 import { useAppSelector } from '../hooks'
 import { useShiftDraftManager } from '../hooks/useShiftDraftManager'
-import { getMonthlyShifts, selectAllShiftDrafts } from '../store/shiftSlice'
+import { getMonthlyShifts } from '../store/shiftSlice'
 import { TimeIdentifier } from '../types/timeIdentifier'
 
 interface ShiftInputPageProps {
@@ -30,7 +29,6 @@ export default function ShiftInputPage({ staffId }: ShiftInputPageProps) {
     const originalShiftData = useAppSelector((state) =>
         getMonthlyShifts(state, month, staffId)
     )
-    const shiftDrafts = useAppSelector(selectAllShiftDrafts)
     const { initializeDrafts } = useShiftDraftManager()
 
     useEffect(() => {
@@ -42,20 +40,9 @@ export default function ShiftInputPage({ staffId }: ShiftInputPageProps) {
         initializeDrafts(originalShiftData, targetDates)
     }, [originalShiftData, initializeDrafts])
 
-    const handleSave = () => {
-        // TODO: 実際の保存処理を実装
-        console.log('保存しました', shiftDrafts)
-    }
-
-    const handleUndo = () => {
-        // TODO: 実際の元に戻す処理を実装
-        console.log('元に戻しました')
-    }
-
     return (
         <Container style={{ paddingBottom: '80px' }}>
-            <ShiftInputTable onCommit={handleSave} />
-            <ShiftInputActionBar onSave={handleSave} onUndo={handleUndo} />
+            <ShiftInputTable onCommit={() => {}} />
         </Container>
     )
 }

@@ -2,6 +2,7 @@ import { Table } from 'react-bootstrap'
 import { useShiftDraftManager } from '../../hooks/useShiftDraftManager'
 import { ShiftDraft } from '../../types/shift'
 import RowForDay from './components/RowForDay'
+import ShiftInputActionBar from './components/ShiftInputActionBar'
 
 interface ShiftInputTableProps {
     onCommit: (drafts: ShiftDraft[]) => void
@@ -16,7 +17,10 @@ export default function ShiftInputTable({ onCommit }: ShiftInputTableProps) {
         handleDraftDelete,
         handleDraftSplit,
         handleDraftMerge,
+        handleUndo,
     } = useShiftDraftManager()
+
+    const handleSave = () => {}
 
     return (
         <div className="text-center">
@@ -83,6 +87,7 @@ export default function ShiftInputTable({ onCommit }: ShiftInputTableProps) {
                     })}
                 </tbody>
             </Table>
+            <ShiftInputActionBar onSave={handleSave} onUndo={handleUndo} />
         </div>
     )
 }
