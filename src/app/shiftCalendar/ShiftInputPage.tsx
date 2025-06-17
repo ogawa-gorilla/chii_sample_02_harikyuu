@@ -1,6 +1,7 @@
 import dayjs from 'dayjs'
 import { useEffect, useState } from 'react'
 import { Container } from 'react-bootstrap'
+import { v4 } from 'uuid'
 import ShiftInputTable from '../components/shiftInputTable/ShiftInputTable'
 import { useAppSelector } from '../hooks'
 import { getMonthlyShifts } from '../store/shiftSlice'
@@ -44,12 +45,20 @@ export default function ShiftInputPage({ staffId }: ShiftInputPageProps) {
         )
     }
 
+    const handleDraftCreate = (date: string) => {
+        setShiftDrafts((prev) => [
+            ...prev,
+            { date, startTime: '09:00', endTime: '18:00', id: v4() },
+        ])
+    }
+
     return (
         <Container>
             <ShiftInputTable
                 days={days}
                 shiftDrafts={shiftDrafts}
                 onDraftUpdate={handleDraftUpdate}
+                onDraftCreate={handleDraftCreate}
             />
         </Container>
     )

@@ -7,12 +7,14 @@ interface RowForDayProps {
     day: dayjs.Dayjs
     shiftDrafts: ShiftDraft[]
     onDraftUpdate: (draft: ShiftDraft) => void
+    onDraftCreate: (date: string) => void
 }
 
 export default function RowForDay({
     day,
     shiftDrafts,
     onDraftUpdate,
+    onDraftCreate,
 }: RowForDayProps) {
     const { isHoliday, holidayReason } = useHolidayCheck(
         day.format('YYYY-MM-DD')
@@ -24,14 +26,16 @@ export default function RowForDay({
             <td>
                 {isHoliday ? (
                     <div className="text-muted small">{holidayReason}</div>
-                ) : shiftDrafts.length > 0 ? (
+                ) : (
                     <ShiftCell
                         key={day.format('YYYY-MM-DD')}
+                        date={day.format('YYYY-MM-DD')}
+                        onDraftCreate={() => {
+                            onDraftCreate(day.format('YYYY-MM-DD'))
+                        }}
                         shiftDrafts={shiftDrafts}
                         onDraftUpdate={onDraftUpdate}
                     />
-                ) : (
-                    <span className="text-muted">未入力</span>
                 )}
             </td>
         </tr>

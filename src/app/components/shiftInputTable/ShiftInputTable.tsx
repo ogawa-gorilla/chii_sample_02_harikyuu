@@ -7,12 +7,14 @@ interface ShiftInputTableProps {
     days: dayjs.Dayjs[]
     shiftDrafts: ShiftDraft[]
     onDraftUpdate: (draft: ShiftDraft) => void
+    onDraftCreate: (date: string) => void
 }
 
 export default function ShiftInputTable({
     days,
     shiftDrafts,
     onDraftUpdate,
+    onDraftCreate,
 }: ShiftInputTableProps) {
     return (
         <div className="text-center">
@@ -39,6 +41,7 @@ export default function ShiftInputTable({
                                 day={day}
                                 shiftDrafts={drafts}
                                 onDraftUpdate={onDraftUpdate}
+                                onDraftCreate={onDraftCreate}
                             />
                         )
                     })}
