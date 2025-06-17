@@ -152,13 +152,11 @@ const shiftSlice = createSlice({
                     ...action.payload,
                 }
             }
-            state.shiftDraft.history.push(state.shiftDraft.drafts)
         },
         deleteShift: (state, action: PayloadAction<string>) => {
             state.shifts = state.shifts.filter(
                 (shift) => shift.id !== action.payload
             )
-            state.shiftDraft.history.push(state.shiftDraft.drafts)
         },
         updateShiftDraft: (state, action: PayloadAction<ShiftDraft>) => {
             const targetIndex = state.shiftDraft.drafts.findIndex(
@@ -169,13 +167,11 @@ const shiftSlice = createSlice({
             } else {
                 state.shiftDraft.drafts.push(action.payload)
             }
-            state.shiftDraft.history.push(state.shiftDraft.drafts)
         },
         deleteShiftDraft: (state, action: PayloadAction<string>) => {
             state.shiftDraft.drafts = state.shiftDraft.drafts.filter(
                 (draft) => draft.id !== action.payload
             )
-            state.shiftDraft.history.push(state.shiftDraft.drafts)
         },
         clearShiftDrafts: (state) => {
             state.shiftDraft.drafts = []
@@ -184,13 +180,21 @@ const shiftSlice = createSlice({
         setTargetDates: (state, action: PayloadAction<TimeIdentifier[]>) => {
             state.shiftDraft.targetDates = action.payload
         },
+        pushHistory: (state) => {
+            state.shiftDraft.history.push(state.shiftDraft.drafts)
+        },
         undo: (state) => {
-            if (state.shiftDraft.history.length > 0) {
-                state.shiftDraft.drafts =
-                    state.shiftDraft.history[
-                        state.shiftDraft.history.length - 1
-                    ]
+            if (state.shiftDraft.history.length > 1) {
                 state.shiftDraft.history.pop()
+                if (state.shiftDraft.history.length > 0) {
+                    const target =
+                        state.shiftDraft.history[
+                            state.shiftDraft.history.length - 1
+                        ]
+                    state.shiftDraft.drafts = target
+                } else {
+                    state.shiftDraft.drafts = []
+                }
             }
         },
     },
@@ -245,6 +249,7 @@ export const {
     deleteShiftDraft,
     clearShiftDrafts,
     setTargetDates,
+    pushHistory,
     undo,
 } = shiftSlice.actions
 

@@ -5,6 +5,7 @@ import { useAppSelector } from '../hooks'
 import {
     deleteShiftDraft,
     historyLength,
+    pushHistory,
     selectAllShiftDrafts,
     setShiftDrafts,
     setTargetDates,
@@ -20,7 +21,7 @@ export function useShiftDraftManager() {
     const targetDates = useAppSelector(
         (state) => state.shift.shiftDraft.targetDates
     )
-    const canUndo = useAppSelector(historyLength) > 0
+    const canUndo = useAppSelector(historyLength) > 1
 
     const initializeDrafts = useCallback(
         (shifts: Shift[], targetDates: TimeIdentifier[]) => {
@@ -42,14 +43,22 @@ export function useShiftDraftManager() {
                     return draft
                 })
             dispatch(setShiftDrafts(initialDrafts))
+            dispatch(pushHistory())
             dispatch(setTargetDates(targetDates))
         },
         [dispatch]
     )
 
+    const memorize = () => {
+        setTimeout(() => {
+            dispatch(pushHistory())
+        }, 0)
+    }
+
     const handleDraftUpdate = useCallback(
         (draft: ShiftDraft) => {
             dispatch(updateShiftDraft(draft))
+            memorize()
         },
         [dispatch]
     )
@@ -63,6 +72,7 @@ export function useShiftDraftManager() {
                 id: v4(),
             }
             dispatch(updateShiftDraft(newDraft))
+            memorize()
         },
         [dispatch]
     )
@@ -75,6 +85,7 @@ export function useShiftDraftManager() {
             draftsToDelete.forEach((draft) => {
                 dispatch(deleteShiftDraft(draft.id))
             })
+            memorize()
         },
         [dispatch, shiftDrafts]
     )
@@ -93,6 +104,7 @@ export function useShiftDraftManager() {
                 id: v4(),
             }
             dispatch(updateShiftDraft(newDraft))
+            memorize()
         },
         [dispatch, shiftDrafts]
     )
@@ -119,6 +131,7 @@ export function useShiftDraftManager() {
 
             // マージしたドラフトを追加
             dispatch(updateShiftDraft(firstDraft))
+            memorize()
         },
         [dispatch, shiftDrafts]
     )
