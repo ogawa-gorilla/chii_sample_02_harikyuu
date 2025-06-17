@@ -1,4 +1,5 @@
-import { Table } from 'react-bootstrap'
+import { useState } from 'react'
+import { Button, Modal, Table } from 'react-bootstrap'
 import { useShiftDraftManager } from '../../hooks/useShiftDraftManager'
 import { ShiftDraft } from '../../types/shift'
 import RowForDay from './components/RowForDay'
@@ -24,14 +25,24 @@ export default function ShiftInputTable({
         handleUndo,
     } = useShiftDraftManager()
 
+    const [showConfirmDialog, setShowConfirmDialog] = useState(false)
+
     const handleSave = () => {
         // TODO: 値のバリデーション
         onCommit(shiftDrafts)
     }
 
     const handleCancel = () => {
-        // TODO: モーダルで確認
+        setShowConfirmDialog(true)
+    }
+
+    const handleConfirmCancel = () => {
+        setShowConfirmDialog(false)
         onAbort()
+    }
+
+    const handleCloseDialog = () => {
+        setShowConfirmDialog(false)
     }
 
     return (
@@ -104,6 +115,22 @@ export default function ShiftInputTable({
                 onUndo={handleUndo}
                 onCancel={handleCancel}
             />
+            <Modal show={showConfirmDialog} onHide={handleCloseDialog}>
+                <Modal.Header closeButton>
+                    <Modal.Title>確認</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    すべての変更が破棄されます。よろしいですか？
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleCloseDialog}>
+                        キャンセル
+                    </Button>
+                    <Button variant="danger" onClick={handleConfirmCancel}>
+                        破棄する
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     )
 }
