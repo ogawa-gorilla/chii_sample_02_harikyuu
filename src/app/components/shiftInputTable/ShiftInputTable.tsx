@@ -1,6 +1,7 @@
 import dayjs from 'dayjs'
 import { Table } from 'react-bootstrap'
 import { ShiftDraft } from '../../types/shift'
+import RowForDay from './components/RowForDay'
 
 interface ShiftInputTableProps {
     days: dayjs.Dayjs[]
@@ -27,23 +28,18 @@ export default function ShiftInputTable({
                     </tr>
                 </thead>
                 <tbody>
-                    {days.map((day) => (
-                        <tr key={day.format('YYYY-MM-DD')}>
-                            <td>{day.format('D (ddd)')}</td>
-                            <td>
-                                {shiftDrafts.some(
-                                    (draft) =>
-                                        draft.date === day.format('YYYY-MM-DD')
-                                )
-                                    ? shiftDrafts.find(
-                                          (draft) =>
-                                              draft.date ===
-                                              day.format('YYYY-MM-DD')
-                                      )?.startTime
-                                    : null}
-                            </td>
-                        </tr>
-                    ))}
+                    {days.map((day) => {
+                        const drafts = shiftDrafts.filter(
+                            (draft) => draft.date === day.format('YYYY-MM-DD')
+                        )
+                        return (
+                            <RowForDay
+                                key={day.format('YYYY-MM-DD')}
+                                day={day}
+                                shiftDrafts={drafts}
+                            />
+                        )
+                    })}
                 </tbody>
             </Table>
         </div>
