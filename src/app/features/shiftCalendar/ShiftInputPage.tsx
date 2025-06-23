@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 import { useEffect, useMemo } from 'react'
-import { Container } from 'react-bootstrap'
+import { Button, Container } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
 import ShiftInputTable from '../../components/shiftInputTable/ShiftInputTable'
 import { useAppSelector } from '../../hooks'
@@ -27,15 +27,11 @@ export default function ShiftInputPage({
     const dispatch = useDispatch()
     dayjs.locale('ja')
 
-    // いったん定数
-    // TODO: カレンダーで見ていた日付とかに同期する
-    const month = 5
-
-    const numDays = dayjs(new Date(2025, month, 1)).daysInMonth()
+    const numDays = dayjs(new Date(date.year(), date.month(), 1)).daysInMonth()
     const days = useMemo(
         () =>
             Array.from({ length: numDays }, (_, i) =>
-                dayjs(new Date(2025, month, i + 1))
+                dayjs(new Date(date.year(), date.month(), i + 1))
             ),
         [numDays]
     )
@@ -45,7 +41,7 @@ export default function ShiftInputPage({
     )
 
     const originalShifts = useAppSelector((state) =>
-        getMonthlyShifts(state, month, staffId)
+        getMonthlyShifts(state, date.month(), staffId)
     )
 
     const handleCommit = (drafts: ShiftDraft[]) => {
@@ -75,7 +71,7 @@ export default function ShiftInputPage({
     }
 
     const originalShiftData = useAppSelector((state) =>
-        getMonthlyShifts(state, month, staffId)
+        getMonthlyShifts(state, date.month(), staffId)
     )
     const { initializeDrafts } = useShiftDraftManager()
 
@@ -93,6 +89,9 @@ export default function ShiftInputPage({
             <h1 className="text-center mb-3">
                 {staff?.name}さんの {date.format('YYYY年M月')} シフト
             </h1>
+            <Button variant="success-outline" size="sm">
+                テンプレートから入力
+            </Button>
             <ShiftInputTable onCommit={handleCommit} onAbort={handleAbort} />
         </Container>
     )
