@@ -30,7 +30,7 @@ export default function ShiftCellForOneShift({
                     onDraftUpdate={onDraftUpdate}
                 />
             </Col>
-            <Col xs={3} md={1} className="d-flex justify-content-center">
+            <Col xs={6} md={1} className="d-flex justify-content-center">
                 <Button
                     variant="outline-primary"
                     size="sm"
@@ -39,7 +39,7 @@ export default function ShiftCellForOneShift({
                     分割
                 </Button>
             </Col>
-            <Col xs={12} md={6} className="d-flex justify-content-center">
+            <Col xs={6} md={6} className="d-flex justify-content-center">
                 <Button
                     variant="outline-danger"
                     size="sm"
