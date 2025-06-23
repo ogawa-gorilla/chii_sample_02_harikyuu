@@ -18,7 +18,7 @@ export default function ApplyTemplateModal({
             </Modal.Header>
             <Modal.Body>
                 <p>
-                    テンプレートを適用しますか？
+                    全体にテンプレートを適用しますか？
                     <br />
                     今までに入力した内容は上書きされます。
                 </p>
