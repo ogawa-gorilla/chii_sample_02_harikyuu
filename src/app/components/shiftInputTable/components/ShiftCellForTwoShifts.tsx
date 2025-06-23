@@ -49,14 +49,21 @@ export default function ShiftCellForOneShift({
                                 onDraftUpdate={onDraftUpdate}
                             />
                         </Col>
-                        <Col
-                            xs={3}
-                            md={1}
-                            className="d-flex justify-content-center align-items-center"
-                        >
-                            {index == 0 ? (
+
+                        {index == 0 ? (
+                            <Col
+                                className="d-flex justify-content-center align-items-center"
+                                xs={12}
+                                md={1}
+                            >
                                 <span>と</span>
-                            ) : (
+                            </Col>
+                        ) : (
+                            <Col
+                                xs={6}
+                                md={1}
+                                className="d-flex justify-content-center align-items-center"
+                            >
                                 <Button
                                     variant="outline-warning"
                                     size="sm"
@@ -64,12 +71,12 @@ export default function ShiftCellForOneShift({
                                 >
                                     結合
                                 </Button>
-                            )}
-                        </Col>
+                            </Col>
+                        )}
                     </React.Fragment>
                 )
             })}
-            <Col xs={12} md={12} className="d-flex justify-content-center">
+            <Col xs={6} md={12} className="d-flex justify-content-center">
                 <Button
                     variant="outline-danger"
                     size="sm"
