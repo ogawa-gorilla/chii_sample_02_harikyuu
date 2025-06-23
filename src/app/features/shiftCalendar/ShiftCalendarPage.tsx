@@ -70,7 +70,7 @@ export default function ShiftCalendarPage() {
                                         setShowShiftTemplateInputView(true)
                                     }}
                                 >
-                                    個人設定
+                                    テンプレ設定
                                 </Button>
                             </div>
                             <ShiftCalendar
