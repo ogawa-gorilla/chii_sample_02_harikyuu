@@ -46,7 +46,8 @@ export default function ShiftCalendarPage() {
                                         setShowShiftInputView(true)
                                     }}
                                 >
-                                    シフト入力
+                                    {dayjs(startDate).format('M月')}
+                                    のシフトを入力
                                 </Button>
                                 <Button variant="outline-secondary" size="sm">
                                     個人設定
