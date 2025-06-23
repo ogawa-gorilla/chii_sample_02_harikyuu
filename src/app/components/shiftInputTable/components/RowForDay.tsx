@@ -1,6 +1,7 @@
 import { useHolidayCheck } from '@/app/hooks/useHolidayCheck'
 import { TimeIdentifier } from '@/app/types/timeIdentifier'
 import dayjs from 'dayjs'
+import { Button } from 'react-bootstrap'
 import { ShiftDraft } from '../../../types/shift'
 import ShiftCell from './ShiftCell'
 
@@ -73,6 +74,13 @@ export default function RowForDay({
                     />
                 </td>
             )}
+            {date.type === 'date' && dayjs(date.value).day() === 1 ? (
+                <td rowSpan={7}>
+                    <Button variant="outline-success" size="sm">
+                        テンプレート適用
+                    </Button>
+                </td>
+            ) : null}
         </tr>
     )
 }
