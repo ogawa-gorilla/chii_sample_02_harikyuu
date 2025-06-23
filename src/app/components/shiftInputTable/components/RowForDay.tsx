@@ -13,6 +13,7 @@ interface RowForDayProps {
     onDraftDelete: (date: TimeIdentifier) => void
     onDraftSplit: (date: TimeIdentifier) => void
     onDraftMerge: (date: TimeIdentifier) => void
+    showTemplateColumn: boolean
 }
 
 export default function RowForDay({
@@ -23,6 +24,7 @@ export default function RowForDay({
     onDraftDelete,
     onDraftSplit,
     onDraftMerge,
+    showTemplateColumn,
 }: RowForDayProps) {
     const { isHoliday, holidayReason } = useHolidayCheck(date)
 
@@ -74,7 +76,9 @@ export default function RowForDay({
                     />
                 </td>
             )}
-            {date.type === 'date' && dayjs(date.value).day() === 1 ? (
+            {showTemplateColumn &&
+            date.type === 'date' &&
+            dayjs(date.value).day() === 1 ? (
                 <td rowSpan={7}>
                     <Button variant="outline-success" size="sm">
                         テンプレート適用

@@ -155,7 +155,11 @@ export default function ShiftInputPage({
                     テンプレートから一括入力
                 </Button>
             </div>
-            <ShiftInputTable onCommit={handleCommit} onAbort={handleAbort} />
+            <ShiftInputTable
+                onCommit={handleCommit}
+                onAbort={handleAbort}
+                showTemplateColumn={true}
+            />
             <ApplyTemplateModal
                 show={showApplyTemplateConfirmModal}
                 onHide={() => setShowApplyTemplateConfirmModal(false)}

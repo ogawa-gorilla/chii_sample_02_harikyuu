@@ -12,11 +12,13 @@ import ShiftInputActionBar from './components/ShiftInputActionBar'
 interface ShiftInputTableProps {
     onCommit: (drafts: ShiftDraft[]) => void
     onAbort: () => void
+    showTemplateColumn?: boolean
 }
 
 export default function ShiftInputTable({
     onCommit,
     onAbort,
+    showTemplateColumn = false,
 }: ShiftInputTableProps) {
     const {
         shiftDrafts,
@@ -118,7 +120,9 @@ export default function ShiftInputTable({
                     <tr>
                         <th className="table-header">日</th>
                         <th className="table-header">シフト</th>
-                        <th className="table-header">テンプレ</th>
+                        {showTemplateColumn && (
+                            <th className="table-header">テンプレ</th>
+                        )}
                     </tr>
                 </thead>
                 <tbody>
@@ -136,6 +140,7 @@ export default function ShiftInputTable({
                                 onDraftDelete={handleDraftDelete}
                                 onDraftSplit={handleDraftSplit}
                                 onDraftMerge={handleDraftMerge}
+                                showTemplateColumn={showTemplateColumn}
                             />
                         )
                     })}
