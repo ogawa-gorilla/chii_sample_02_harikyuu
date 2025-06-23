@@ -15,11 +15,13 @@ import { TimeIdentifier } from '../types/timeIdentifier'
 
 interface ShiftInputPageProps {
     staffId: string
+    date: dayjs.Dayjs
     onLeave: () => void
 }
 
 export default function ShiftInputPage({
     staffId,
+    date,
     onLeave,
 }: ShiftInputPageProps) {
     const dispatch = useDispatch()
@@ -36,6 +38,10 @@ export default function ShiftInputPage({
                 dayjs(new Date(2025, month, i + 1))
             ),
         [numDays]
+    )
+
+    const staff = useAppSelector((state) =>
+        state.user.users.find((user) => user.id === staffId)
     )
 
     const originalShifts = useAppSelector((state) =>
@@ -84,6 +90,9 @@ export default function ShiftInputPage({
 
     return (
         <Container style={{ paddingBottom: '80px' }}>
+            <h1 className="text-center mb-3">
+                {staff?.name}さんの {date.format('YYYY年M月')} シフト
+            </h1>
             <ShiftInputTable onCommit={handleCommit} onAbort={handleAbort} />
         </Container>
     )
