@@ -45,6 +45,8 @@ export function useShiftDraftManager() {
                 })
             dispatch(setShiftDrafts(initialDrafts))
             dispatch(setTargetDates(targetDates))
+            dispatch(clearHistory())
+            memorize()
         },
         [dispatch]
     )
@@ -59,9 +61,7 @@ export function useShiftDraftManager() {
     )
 
     const memorize = () => {
-        setTimeout(() => {
-            dispatch(pushHistory())
-        }, 0)
+        dispatch(pushHistory())
     }
 
     const handleDraftUpdate = useCallback(

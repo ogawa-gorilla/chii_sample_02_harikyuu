@@ -1,3 +1,4 @@
+import { TimeIdentifier } from '@/app/types/timeIdentifier'
 import {
     validateShiftDraft,
     validateShiftDrafts,
@@ -12,12 +13,14 @@ import ShiftInputActionBar from './components/ShiftInputActionBar'
 interface ShiftInputTableProps {
     onCommit: (drafts: ShiftDraft[]) => void
     onAbort: () => void
+    onTemplateOnWeek?: (date: TimeIdentifier) => void
     showTemplateColumn?: boolean
 }
 
 export default function ShiftInputTable({
     onCommit,
     onAbort,
+    onTemplateOnWeek,
     showTemplateColumn = false,
 }: ShiftInputTableProps) {
     const {
@@ -140,6 +143,9 @@ export default function ShiftInputTable({
                                 onDraftDelete={handleDraftDelete}
                                 onDraftSplit={handleDraftSplit}
                                 onDraftMerge={handleDraftMerge}
+                                onTemplateOnWeek={
+                                    onTemplateOnWeek || (() => {})
+                                }
                                 showTemplateColumn={showTemplateColumn}
                             />
                         )

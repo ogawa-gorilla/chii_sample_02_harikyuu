@@ -94,9 +94,20 @@ export default function ShiftInputPage({
             handleApplyTemplateConfirm()
         }
     }
+    const handleTemplateOnWeek = (date: TimeIdentifier) => {
+        // 確認モーダルは出さない。どうせ元に戻せるので
+        const targetDays = Array.from({ length: 7 }, (_, i) =>
+            dayjs(date.value).add(i, 'day')
+        )
+        applyTemplate(targetDays)
+    }
 
     const handleApplyTemplateConfirm = () => {
         setShowApplyTemplateConfirmModal(false)
+        applyTemplate(days)
+    }
+
+    const applyTemplate = (targetDays: dayjs.Dayjs[]) => {
         // テンプレートをシフトドラフトに変換
         const constructedDrafts: ShiftDraft[] = []
         days.forEach((day) => {
@@ -137,8 +148,9 @@ export default function ShiftInputPage({
             displayValue: day.format('M/D(ddd)'),
             type: 'date',
         }))
+        console.log(shiftDrafts)
         initializeDrafts(originalShiftData, targetDates)
-    }, [originalShiftData, initializeDrafts])
+    }, [originalShiftData])
 
     return (
         <Container style={{ paddingBottom: '80px' }}>
@@ -159,6 +171,7 @@ export default function ShiftInputPage({
                 onCommit={handleCommit}
                 onAbort={handleAbort}
                 showTemplateColumn={true}
+                onTemplateOnWeek={handleTemplateOnWeek}
             />
             <ApplyTemplateModal
                 show={showApplyTemplateConfirmModal}

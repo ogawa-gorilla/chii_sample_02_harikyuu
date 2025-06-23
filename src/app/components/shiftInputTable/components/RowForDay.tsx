@@ -13,6 +13,7 @@ interface RowForDayProps {
     onDraftDelete: (date: TimeIdentifier) => void
     onDraftSplit: (date: TimeIdentifier) => void
     onDraftMerge: (date: TimeIdentifier) => void
+    onTemplateOnWeek: (date: TimeIdentifier) => void
     showTemplateColumn: boolean
 }
 
@@ -24,6 +25,7 @@ export default function RowForDay({
     onDraftDelete,
     onDraftSplit,
     onDraftMerge,
+    onTemplateOnWeek,
     showTemplateColumn,
 }: RowForDayProps) {
     const { isHoliday, holidayReason } = useHolidayCheck(date)
@@ -88,6 +90,9 @@ export default function RowForDay({
                             textOrientation: 'upright',
                         }}
                         className="h-50"
+                        onClick={() => {
+                            onTemplateOnWeek(date)
+                        }}
                     >
                         この週にテンプレート適用
                     </Button>
