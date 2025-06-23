@@ -96,10 +96,10 @@ export default function ShiftInputPage({
     }
     const handleTemplateOnWeek = (date: TimeIdentifier) => {
         // 確認モーダルは出さない。どうせ元に戻せるので
-        const targetDays = Array.from({ length: 7 }, (_, i) =>
+        const daysOfWeek = Array.from({ length: 7 }, (_, i) =>
             dayjs(date.value).add(i, 'day')
         )
-        applyTemplate(targetDays)
+        applyTemplate(daysOfWeek)
     }
 
     const handleApplyTemplateConfirm = () => {
@@ -110,7 +110,7 @@ export default function ShiftInputPage({
     const applyTemplate = (targetDays: dayjs.Dayjs[]) => {
         // テンプレートをシフトドラフトに変換
         const constructedDrafts: ShiftDraft[] = []
-        days.forEach((day) => {
+        targetDays.forEach((day) => {
             const targetTemplate = template!.shiftDrafts.find(
                 (templateDraft) =>
                     templateDraft.date.value === day.day().toString()
@@ -130,7 +130,7 @@ export default function ShiftInputPage({
             }
             constructedDrafts.push(newDraft)
         })
-        batchDrafts(constructedDrafts)
+        batchDrafts(shiftDrafts, constructedDrafts, targetDays)
     }
 
     const originalShiftData = useAppSelector((state) =>
@@ -148,7 +148,6 @@ export default function ShiftInputPage({
             displayValue: day.format('M/D(ddd)'),
             type: 'date',
         }))
-        console.log(shiftDrafts)
         initializeDrafts(originalShiftData, targetDates)
     }, [originalShiftData])
 

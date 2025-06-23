@@ -1,3 +1,4 @@
+import dayjs from 'dayjs'
 import { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { v4 } from 'uuid'
@@ -150,8 +151,21 @@ export function useShiftDraftManager() {
     }, [dispatch])
 
     const batchDrafts = useCallback(
-        (drafts: ShiftDraft[]) => {
-            dispatch(setShiftDrafts(drafts))
+        (
+            originalData: ShiftDraft[],
+            addedDrafts: ShiftDraft[],
+            targetDates: dayjs.Dayjs[]
+        ) => {
+            const updated = originalData.filter(
+                (draft) =>
+                    !targetDates.some(
+                        (td) => td.format('YYYY-MM-DD') === draft.date.value
+                    )
+            )
+
+            updated.push(...addedDrafts)
+
+            dispatch(setShiftDrafts(updated))
             memorize()
         },
         [dispatch]
