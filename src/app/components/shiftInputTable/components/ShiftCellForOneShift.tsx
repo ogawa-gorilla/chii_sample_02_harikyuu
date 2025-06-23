@@ -44,6 +44,7 @@ export default function ShiftCellForOneShift({
                     variant="outline-danger"
                     size="sm"
                     onClick={onDraftDelete}
+                    className="w-100"
                 >
                     休みにする
                 </Button>
