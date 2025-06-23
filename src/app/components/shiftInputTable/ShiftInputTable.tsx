@@ -118,10 +118,10 @@ export default function ShiftInputTable({
             >
                 <thead>
                     <tr>
-                        <th className="table-header">日</th>
+                        <th className="table-header w-10">日</th>
                         <th className="table-header">シフト</th>
                         {showTemplateColumn && (
-                            <th className="table-header">テンプレ</th>
+                            <th className="table-header w-10"></th>
                         )}
                     </tr>
                 </thead>

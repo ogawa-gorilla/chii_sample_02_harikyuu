@@ -1,5 +1,5 @@
 'use client'
-import { VIRTUAL_TODAY } from '@/app/constants/virtualToday'
+import { useCalendar } from '@/app/hooks/useCalendar'
 import dayjs from 'dayjs'
 import { useState } from 'react'
 import { Button, Container } from 'react-bootstrap'
@@ -11,8 +11,10 @@ import ShiftTemplateInputPage from './shiftTemplate/ShiftTemplateInputPage'
 export default function ShiftCalendarPage() {
     dayjs.locale('ja')
 
+    const { startOfWeek } = useCalendar()
+
     const [selectedStaff, setSelectedStaff] = useState('all')
-    const [startDate, setStartDate] = useState(VIRTUAL_TODAY)
+    const [startDate, setStartDate] = useState(startOfWeek.format('YYYY-MM-DD'))
     const [showShiftInputView, setShowShiftInputView] = useState(false)
     const [showShiftTemplateInputView, setShowShiftTemplateInputView] =
         useState(false)

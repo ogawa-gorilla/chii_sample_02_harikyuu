@@ -80,8 +80,16 @@ export default function RowForDay({
             date.type === 'date' &&
             dayjs(date.value).day() === 1 ? (
                 <td rowSpan={7}>
-                    <Button variant="outline-success" size="sm">
-                        テンプレート適用
+                    <Button
+                        variant="outline-success"
+                        size="sm"
+                        style={{
+                            writingMode: 'vertical-rl',
+                            textOrientation: 'upright',
+                        }}
+                        className="h-50"
+                    >
+                        この週にテンプレート適用
                     </Button>
                 </td>
             ) : null}
