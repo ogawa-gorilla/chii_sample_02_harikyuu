@@ -35,7 +35,6 @@ const shiftSlice = createSlice({
     reducers: {
         setShiftDrafts: (state, action: PayloadAction<ShiftDraft[]>) => {
             state.shiftDraft.drafts = action.payload
-            state.shiftDraft.history = []
         },
         updateOrCreateShift: (state, action: PayloadAction<Shift>) => {
             const targetIndex = state.shifts.findIndex(
@@ -76,6 +75,9 @@ const shiftSlice = createSlice({
         },
         setTargetDates: (state, action: PayloadAction<TimeIdentifier[]>) => {
             state.shiftDraft.targetDates = action.payload
+        },
+        clearHistory: (state) => {
+            state.shiftDraft.history = []
         },
         pushHistory: (state) => {
             state.shiftDraft.history.push(state.shiftDraft.drafts)
@@ -165,6 +167,7 @@ export const {
     deleteShiftDraft,
     clearShiftDrafts,
     setTargetDates,
+    clearHistory,
     pushHistory,
     undo,
     createShiftTemplate,

@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { v4 } from 'uuid'
 import { useAppSelector } from '../hooks'
 import {
+    clearHistory,
     deleteShiftDraft,
     historyLength,
     pushHistory,
@@ -43,7 +44,6 @@ export function useShiftDraftManager() {
                     return draft
                 })
             dispatch(setShiftDrafts(initialDrafts))
-            dispatch(pushHistory())
             dispatch(setTargetDates(targetDates))
         },
         [dispatch]
@@ -53,6 +53,7 @@ export function useShiftDraftManager() {
         (drafts: ShiftDraft[], targetDates: TimeIdentifier[]) => {
             dispatch(setShiftDrafts(drafts))
             dispatch(setTargetDates(targetDates))
+            dispatch(clearHistory())
         },
         [dispatch]
     )
@@ -148,6 +149,14 @@ export function useShiftDraftManager() {
         dispatch(undo())
     }, [dispatch])
 
+    const batchDrafts = useCallback(
+        (drafts: ShiftDraft[]) => {
+            dispatch(setShiftDrafts(drafts))
+            memorize()
+        },
+        [dispatch]
+    )
+
     return {
         shiftDrafts,
         targetDates,
@@ -159,6 +168,7 @@ export function useShiftDraftManager() {
         handleDraftSplit,
         handleDraftMerge,
         handleUndo,
+        batchDrafts,
         canUndo,
     }
 }

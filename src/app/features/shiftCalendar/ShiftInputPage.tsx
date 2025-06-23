@@ -1,7 +1,8 @@
 import dayjs from 'dayjs'
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Button, Container } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
+import { v4 } from 'uuid'
 import ShiftInputTable from '../../components/shiftInputTable/ShiftInputTable'
 import { useAppSelector } from '../../hooks'
 import { useShiftDraftManager } from '../../hooks/useShiftDraftManager'
@@ -12,6 +13,7 @@ import {
 } from '../../store/shiftSlice'
 import { Shift, ShiftDraft } from '../../types/shift'
 import { TimeIdentifier } from '../../types/timeIdentifier'
+import ApplyTemplateModal from './components/ApplyTemplateModal'
 
 interface ShiftInputPageProps {
     staffId: string
@@ -35,14 +37,23 @@ export default function ShiftInputPage({
             ),
         [numDays]
     )
+    const [showApplyTemplateConfirmModal, setShowApplyTemplateConfirmModal] =
+        useState(false)
 
     const staff = useAppSelector((state) =>
         state.user.users.find((user) => user.id === staffId)
     )
-
     const originalShifts = useAppSelector((state) =>
         getMonthlyShifts(state, date.month(), staffId)
     )
+    const template = useAppSelector((state) =>
+        state.shift.shiftTemplates.find(
+            (template) => template.userId === staffId
+        )
+    )
+
+    const { initializeDrafts, shiftDrafts, batchDrafts } =
+        useShiftDraftManager()
 
     const handleCommit = (drafts: ShiftDraft[]) => {
         // ドラフトに存在するものの保存とアップデート
@@ -70,10 +81,44 @@ export default function ShiftInputPage({
         onLeave()
     }
 
+    const handleApplyTemplate = () => {
+        if (shiftDrafts.length > 0) {
+            setShowApplyTemplateConfirmModal(true)
+        } else {
+            handleApplyTemplateConfirm()
+        }
+    }
+
+    const handleApplyTemplateConfirm = () => {
+        setShowApplyTemplateConfirmModal(false)
+        // テンプレートをシフトドラフトに変換
+        const constructedDrafts: ShiftDraft[] = []
+        days.forEach((day) => {
+            const targetTemplate = template!.shiftDrafts.find(
+                (templateDraft) =>
+                    templateDraft.date.value === day.day().toString()
+            )
+            if (!targetTemplate) {
+                return
+            }
+            const newDraft: ShiftDraft = {
+                date: {
+                    value: day.format('YYYY-MM-DD'),
+                    displayValue: day.format('D(ddd)'),
+                    type: 'date',
+                },
+                startTime: targetTemplate.startTime,
+                endTime: targetTemplate.endTime,
+                id: v4(),
+            }
+            constructedDrafts.push(newDraft)
+        })
+        batchDrafts(constructedDrafts)
+    }
+
     const originalShiftData = useAppSelector((state) =>
         getMonthlyShifts(state, date.month(), staffId)
     )
-    const { initializeDrafts } = useShiftDraftManager()
 
     useEffect(() => {
         const targetDates: TimeIdentifier[] = days.map((day) => ({
@@ -89,10 +134,22 @@ export default function ShiftInputPage({
             <h1 className="text-center mb-3">
                 {staff?.name}さんの {date.format('YYYY年M月')} シフト
             </h1>
-            <Button variant="success-outline" size="sm">
-                テンプレートから入力
-            </Button>
+            <div className="d-flex justify-content-center mb-3">
+                <Button
+                    variant="outline-success"
+                    size="sm"
+                    onClick={handleApplyTemplate}
+                >
+                    テンプレートから一括入力
+                </Button>
+            </div>
             <ShiftInputTable onCommit={handleCommit} onAbort={handleAbort} />
+            <ApplyTemplateModal
+                show={showApplyTemplateConfirmModal}
+                month={date.month()}
+                onHide={() => setShowApplyTemplateConfirmModal(false)}
+                onApplyConfirm={handleApplyTemplateConfirm}
+            />
         </Container>
     )
 }
