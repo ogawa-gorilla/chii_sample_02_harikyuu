@@ -3,14 +3,17 @@ import { VIRTUAL_TODAY } from '@/app/constants/virtualToday'
 import dayjs from 'dayjs'
 import { useState } from 'react'
 import { Button, Container } from 'react-bootstrap'
-import StaffSelector from '../components/common/StaffSelector'
+import StaffSelector from '../../components/common/StaffSelector'
 import ShiftCalendar from './components/ShiftCalendar'
 import ShiftInputPage from './ShiftInputPage'
+import ShiftTemplateInputPage from './shiftTemplate/ShiftTemplateInputPage'
 
 export default function ShiftCalendarPage() {
     const [selectedStaff, setSelectedStaff] = useState('all')
     const [startDate, setStartDate] = useState(VIRTUAL_TODAY)
     const [showShiftInputView, setShowShiftInputView] = useState(false)
+    const [showShiftTemplateInputView, setShowShiftTemplateInputView] =
+        useState(false)
 
     const handleWeekChange = (startDate: string) => {
         setStartDate(startDate)
@@ -24,6 +27,13 @@ export default function ShiftCalendarPage() {
                     date={dayjs(startDate)}
                     onLeave={() => {
                         setShowShiftInputView(false)
+                    }}
+                />
+            ) : showShiftTemplateInputView ? (
+                <ShiftTemplateInputPage
+                    staffId={selectedStaff}
+                    onLeave={() => {
+                        setShowShiftTemplateInputView(false)
                     }}
                 />
             ) : (
@@ -49,7 +59,13 @@ export default function ShiftCalendarPage() {
                                     {dayjs(startDate).format('M月')}
                                     のシフトを入力
                                 </Button>
-                                <Button variant="outline-secondary" size="sm">
+                                <Button
+                                    variant="outline-secondary"
+                                    size="sm"
+                                    onClick={() => {
+                                        setShowShiftTemplateInputView(true)
+                                    }}
+                                >
                                     個人設定
                                 </Button>
                             </div>

@@ -1,6 +1,7 @@
 import { Shift, ShiftDraft, ShiftTemplate } from '@/app/types/shift'
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import dayjs from 'dayjs'
+import { SHIFT_TEMPLATE_TESTDATA } from '../components/testdata/shiftTemplateTestData'
 import { SHIFT_TESTDATA } from '../components/testdata/shiftTestData'
 import { TemporalHoliday } from '../types/temporalHoliday'
 import { TimeIdentifier } from '../types/timeIdentifier'
@@ -25,113 +26,7 @@ const initialState: ShiftState = {
         history: [],
     },
     temporalHolidays: [{ date: '2025-06-07', name: '店長出張' }],
-    shiftTemplates: [
-        // 店長は全部出勤
-        {
-            id: '1',
-            userId: '1',
-            configPerDay: [
-                [
-                    '0',
-                    {
-                        day: '0',
-                        times: [{ startTime: '09:00', endTime: '18:00' }],
-                    },
-                ], // 日
-                [
-                    '3',
-                    {
-                        day: '3',
-                        times: [{ startTime: '09:00', endTime: '18:00' }],
-                    },
-                ], // 水
-                [
-                    '4',
-                    {
-                        day: '4',
-                        times: [{ startTime: '09:00', endTime: '18:00' }],
-                    },
-                ], // 木
-                [
-                    '5',
-                    {
-                        day: '5',
-                        times: [{ startTime: '09:00', endTime: '18:00' }],
-                    },
-                ], // 金
-                [
-                    '6',
-                    {
-                        day: '6',
-                        times: [{ startTime: '09:00', endTime: '18:00' }],
-                    },
-                ], // 土
-            ],
-        },
-        // 佐藤：水金休み
-        {
-            id: '2',
-            userId: '2',
-            configPerDay: [
-                [
-                    '0',
-                    {
-                        day: '0',
-                        times: [{ startTime: '09:00', endTime: '18:00' }],
-                    },
-                ], // 日
-                [
-                    '4',
-                    {
-                        day: '4',
-                        times: [{ startTime: '09:00', endTime: '18:00' }],
-                    },
-                ], // 木
-                [
-                    '6',
-                    {
-                        day: '6',
-                        times: [{ startTime: '09:00', endTime: '18:00' }],
-                    },
-                ], // 土
-            ],
-        },
-        // 山田：木休み
-        {
-            id: '3',
-            userId: '3',
-            configPerDay: [
-                [
-                    '0',
-                    {
-                        day: '0',
-                        times: [{ startTime: '09:00', endTime: '18:00' }],
-                    },
-                ], // 日
-                [
-                    '3',
-                    {
-                        day: '3',
-                        times: [{ startTime: '09:00', endTime: '18:00' }],
-                    },
-                ], // 水
-                [
-                    '5',
-                    {
-                        day: '5',
-                        times: [{ startTime: '09:00', endTime: '18:00' }],
-                    },
-                ], // 金
-                [
-                    '6',
-                    {
-                        day: '6',
-                        times: [{ startTime: '09:00', endTime: '18:00' }],
-                    },
-                ], // 土
-            ],
-        },
-    ],
+    shiftTemplates: SHIFT_TEMPLATE_TESTDATA,
 }
 
 const shiftSlice = createSlice({
@@ -202,6 +97,14 @@ const shiftSlice = createSlice({
                 }
             }
         },
+        createShiftTemplate: (state, action: PayloadAction<string>) => {
+            const newTemplate: ShiftTemplate = {
+                id: uuidv4(),
+                userId: action.payload,
+                shiftDrafts: [],
+            }
+            state.shiftTemplates.push(newTemplate)
+        },
     },
 })
 
@@ -256,6 +159,10 @@ export const {
     setTargetDates,
     pushHistory,
     undo,
+    createShiftTemplate,
 } = shiftSlice.actions
 
 export default shiftSlice.reducer
+function uuidv4(): string {
+    throw new Error('Function not implemented.')
+}

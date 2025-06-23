@@ -2,16 +2,16 @@ import dayjs from 'dayjs'
 import { useEffect, useMemo } from 'react'
 import { Container } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
-import ShiftInputTable from '../components/shiftInputTable/ShiftInputTable'
-import { useAppSelector } from '../hooks'
-import { useShiftDraftManager } from '../hooks/useShiftDraftManager'
+import ShiftInputTable from '../../components/shiftInputTable/ShiftInputTable'
+import { useAppSelector } from '../../hooks'
+import { useShiftDraftManager } from '../../hooks/useShiftDraftManager'
 import {
     deleteShift,
     getMonthlyShifts,
     updateOrCreateShift,
-} from '../store/shiftSlice'
-import { Shift, ShiftDraft } from '../types/shift'
-import { TimeIdentifier } from '../types/timeIdentifier'
+} from '../../store/shiftSlice'
+import { Shift, ShiftDraft } from '../../types/shift'
+import { TimeIdentifier } from '../../types/timeIdentifier'
 
 interface ShiftInputPageProps {
     staffId: string

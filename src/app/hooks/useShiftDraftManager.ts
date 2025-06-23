@@ -49,6 +49,14 @@ export function useShiftDraftManager() {
         [dispatch]
     )
 
+    const setDrafts = useCallback(
+        (drafts: ShiftDraft[], targetDates: TimeIdentifier[]) => {
+            dispatch(setShiftDrafts(drafts))
+            dispatch(setTargetDates(targetDates))
+        },
+        [dispatch]
+    )
+
     const memorize = () => {
         setTimeout(() => {
             dispatch(pushHistory())
@@ -144,6 +152,7 @@ export function useShiftDraftManager() {
         shiftDrafts,
         targetDates,
         initializeDrafts,
+        setDrafts,
         handleDraftUpdate,
         handleDraftCreate,
         handleDraftDelete,

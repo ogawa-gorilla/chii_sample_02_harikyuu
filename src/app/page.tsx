@@ -7,10 +7,10 @@ import ReservationDetailPage from './features/reservation/ReservationDetailPage'
 import ReservationEditPage from './features/reservation/ReservationEditPage'
 import ReservationCreateCalendarPage from './features/reservationCreateCalendar/ReservationCreateCalendarPage'
 import ReservationCalendarPage from './features/reservationViewCalendar/ReservationViewCalendarPage'
+import ShiftCalendarPage from './features/shiftCalendar/ShiftCalendarPage'
 import HomePage from './HomePage'
 import { useAppSelector } from './hooks'
 import NotImplementedPage from './NotImplementedPage'
-import ShiftCalendarPage from './shiftCalendar/ShiftCalendarPage'
 import { Page } from './types/Page'
 
 const showPage = (page: Page) => {
