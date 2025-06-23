@@ -138,16 +138,20 @@ export const selectShiftDraftsForDay = createSelector(
         )
 )
 
-export const getMonthlyShifts = createSelector(
+export const selectShiftsInPeriod = createSelector(
     [
         (state: RootState) => state.shift.shifts,
-        (_: RootState, month: number) => month,
-        (_: RootState, month: number, staffId: string) => staffId,
+        (_: RootState, startDate: string, endDate: string) => startDate,
+        (_: RootState, startDate: string, endDate: string) => endDate,
+        (_: RootState, startDate: string, endDate: string, staffId: string) =>
+            staffId,
     ],
-    (shifts, month, staffId) =>
+    (shifts, startDate, endDate, staffId) =>
         shifts.filter(
             (shift: Shift) =>
-                dayjs(shift.date).month() === month && shift.staffId === staffId
+                dayjs(shift.date) >= dayjs(startDate) &&
+                dayjs(shift.date) <= dayjs(endDate) &&
+                shift.staffId === staffId
         )
 )
 

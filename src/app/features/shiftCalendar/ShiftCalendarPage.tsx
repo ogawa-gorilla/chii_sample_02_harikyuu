@@ -9,6 +9,8 @@ import ShiftInputPage from './ShiftInputPage'
 import ShiftTemplateInputPage from './shiftTemplate/ShiftTemplateInputPage'
 
 export default function ShiftCalendarPage() {
+    dayjs.locale('ja')
+
     const [selectedStaff, setSelectedStaff] = useState('all')
     const [startDate, setStartDate] = useState(VIRTUAL_TODAY)
     const [showShiftInputView, setShowShiftInputView] = useState(false)
@@ -24,7 +26,7 @@ export default function ShiftCalendarPage() {
             {showShiftInputView ? (
                 <ShiftInputPage
                     staffId={selectedStaff}
-                    date={dayjs(startDate)}
+                    startDate={dayjs(startDate)}
                     onLeave={() => {
                         setShowShiftInputView(false)
                     }}
@@ -56,8 +58,8 @@ export default function ShiftCalendarPage() {
                                         setShowShiftInputView(true)
                                     }}
                                 >
-                                    {dayjs(startDate).format('M月')}
-                                    のシフトを入力
+                                    {dayjs(startDate).format('M/D')}
+                                    ～のシフトを入力
                                 </Button>
                                 <Button
                                     variant="outline-secondary"

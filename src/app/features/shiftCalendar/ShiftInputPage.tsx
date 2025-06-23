@@ -8,7 +8,7 @@ import { useAppSelector } from '../../hooks'
 import { useShiftDraftManager } from '../../hooks/useShiftDraftManager'
 import {
     deleteShift,
-    getMonthlyShifts,
+    selectShiftsInPeriod,
     updateOrCreateShift,
 } from '../../store/shiftSlice'
 import { Shift, ShiftDraft } from '../../types/shift'
@@ -17,26 +17,27 @@ import ApplyTemplateModal from './components/ApplyTemplateModal'
 
 interface ShiftInputPageProps {
     staffId: string
-    date: dayjs.Dayjs
+    startDate: dayjs.Dayjs
     onLeave: () => void
 }
 
 export default function ShiftInputPage({
     staffId,
-    date,
+    startDate,
     onLeave,
 }: ShiftInputPageProps) {
     const dispatch = useDispatch()
     dayjs.locale('ja')
 
-    const numDays = dayjs(new Date(date.year(), date.month(), 1)).daysInMonth()
     const days = useMemo(
         () =>
-            Array.from({ length: numDays }, (_, i) =>
-                dayjs(new Date(date.year(), date.month(), i + 1))
+            Array.from({ length: 28 }, (_, i) =>
+                dayjs(startDate).add(i, 'day')
             ),
-        [numDays]
+        [startDate]
     )
+    const endDate = useMemo(() => dayjs(startDate).add(27, 'day'), [startDate])
+
     const [showApplyTemplateConfirmModal, setShowApplyTemplateConfirmModal] =
         useState(false)
 
@@ -44,7 +45,12 @@ export default function ShiftInputPage({
         state.user.users.find((user) => user.id === staffId)
     )
     const originalShifts = useAppSelector((state) =>
-        getMonthlyShifts(state, date.month(), staffId)
+        selectShiftsInPeriod(
+            state,
+            startDate.format('YYYY-MM-DD'),
+            endDate.format('YYYY-MM-DD'),
+            staffId
+        )
     )
     const template = useAppSelector((state) =>
         state.shift.shiftTemplates.find(
@@ -104,7 +110,7 @@ export default function ShiftInputPage({
             const newDraft: ShiftDraft = {
                 date: {
                     value: day.format('YYYY-MM-DD'),
-                    displayValue: day.format('D(ddd)'),
+                    displayValue: day.format('M/D(ddd)'),
                     type: 'date',
                 },
                 startTime: targetTemplate.startTime,
@@ -117,13 +123,18 @@ export default function ShiftInputPage({
     }
 
     const originalShiftData = useAppSelector((state) =>
-        getMonthlyShifts(state, date.month(), staffId)
+        selectShiftsInPeriod(
+            state,
+            startDate.format('YYYY-MM-DD'),
+            endDate.format('YYYY-MM-DD'),
+            staffId
+        )
     )
 
     useEffect(() => {
         const targetDates: TimeIdentifier[] = days.map((day) => ({
             value: day.format('YYYY-MM-DD'),
-            displayValue: day.format('D(ddd)'),
+            displayValue: day.format('M/D(ddd)'),
             type: 'date',
         }))
         initializeDrafts(originalShiftData, targetDates)
@@ -132,7 +143,8 @@ export default function ShiftInputPage({
     return (
         <Container style={{ paddingBottom: '80px' }}>
             <h1 className="text-center mb-3">
-                {staff?.name}さんの {date.format('YYYY年M月')} シフト
+                {staff?.name}さんの {startDate.format('YYYY年M月D日')} ～{' '}
+                {endDate.format('YYYY年M月D日')} シフト
             </h1>
             <div className="d-flex justify-content-center mb-3">
                 <Button
@@ -146,7 +158,6 @@ export default function ShiftInputPage({
             <ShiftInputTable onCommit={handleCommit} onAbort={handleAbort} />
             <ApplyTemplateModal
                 show={showApplyTemplateConfirmModal}
-                month={date.month()}
                 onHide={() => setShowApplyTemplateConfirmModal(false)}
                 onApplyConfirm={handleApplyTemplateConfirm}
             />

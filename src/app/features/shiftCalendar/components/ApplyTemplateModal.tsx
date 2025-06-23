@@ -2,14 +2,12 @@ import { Button, Modal } from 'react-bootstrap'
 
 interface ApplyTemplateModalProps {
     show: boolean
-    month: number
     onHide: () => void
     onApplyConfirm: () => void
 }
 
 export default function ApplyTemplateModal({
     show,
-    month,
     onHide,
     onApplyConfirm,
 }: ApplyTemplateModalProps) {
@@ -20,7 +18,7 @@ export default function ApplyTemplateModal({
             </Modal.Header>
             <Modal.Body>
                 <p>
-                    {month + 1}月のシフトにテンプレートを適用しますか？
+                    テンプレートを適用しますか？
                     <br />
                     今までに入力した内容は上書きされます。
                 </p>
