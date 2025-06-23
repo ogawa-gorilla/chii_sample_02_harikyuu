@@ -105,6 +105,14 @@ const shiftSlice = createSlice({
             }
             state.shiftTemplates.push(newTemplate)
         },
+        updateShiftTemplate: (state, action: PayloadAction<ShiftTemplate>) => {
+            const targetIndex = state.shiftTemplates.findIndex(
+                (template) => template.id === action.payload.id
+            )
+            if (targetIndex !== -1) {
+                state.shiftTemplates[targetIndex] = action.payload
+            }
+        },
     },
 })
 
@@ -160,6 +168,7 @@ export const {
     pushHistory,
     undo,
     createShiftTemplate,
+    updateShiftTemplate,
 } = shiftSlice.actions
 
 export default shiftSlice.reducer

@@ -3,10 +3,9 @@ import { useAppSelector } from '@/app/hooks'
 import { useShiftDraftManager } from '@/app/hooks/useShiftDraftManager'
 import {
     createShiftTemplate,
-    deleteShift,
-    updateOrCreateShift,
+    updateShiftTemplate,
 } from '@/app/store/shiftSlice'
-import { Shift, ShiftDraft } from '@/app/types/shift'
+import { ShiftDraft } from '@/app/types/shift'
 import { TimeIdentifier } from '@/app/types/timeIdentifier'
 import dayjs from 'dayjs'
 import { useEffect } from 'react'
@@ -74,24 +73,14 @@ export default function ShiftTemplateInputPage({
     )
 
     const handleCommit = (drafts: ShiftDraft[]) => {
-        // ドラフトに存在するものの保存とアップデート
-        for (const draft of drafts) {
-            const shift: Shift = {
-                ...draft,
-                staffId: staff!.id,
-                date: draft.date.value,
-            }
-            dispatch(updateOrCreateShift(shift))
-        }
-
-        // 元のデータから消えたものの削除
-        const deletedShifts = originalShiftTemplate!.shiftDrafts.filter(
-            (draft) => !drafts.some((draft) => draft.id === draft.id)
+        // 全データを更新しちゃって問題ない
+        dispatch(
+            updateShiftTemplate({
+                id: originalShiftTemplate!.id,
+                userId: staffId,
+                shiftDrafts: drafts,
+            })
         )
-
-        for (const shift of deletedShifts) {
-            dispatch(deleteShift(shift.id))
-        }
         onLeave()
     }
 
