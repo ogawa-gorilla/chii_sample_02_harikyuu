@@ -8,6 +8,7 @@ import { RootState } from './store'
 interface TreatmentRecordState {
     records: TreatmentRecord[]
     searchConditions: TreatmentRecordSearchConditions
+    recordIdOnView: string | null
 }
 
 const INITIAL_SEARCH_CONDITIONS: TreatmentRecordSearchConditions = {
@@ -75,6 +76,7 @@ const initialState: TreatmentRecordState = {
         },
     ],
     searchConditions: INITIAL_SEARCH_CONDITIONS,
+    recordIdOnView: null,
 }
 
 export const treatmentRecordSlice = createSlice({
@@ -90,11 +92,17 @@ export const treatmentRecordSlice = createSlice({
         ) => {
             state.searchConditions = action.payload
         },
+        setRecordOnView: (state, action: PayloadAction<string>) => {
+            state.recordIdOnView = action.payload
+        },
     },
 })
 
-export const { resetSearchConditions, updateSearchConditions } =
-    treatmentRecordSlice.actions
+export const {
+    resetSearchConditions,
+    updateSearchConditions,
+    setRecordOnView,
+} = treatmentRecordSlice.actions
 
 const selectAllRecords = (state: RootState) => state.treatmentRecords.records
 const selectSearchConditions = (state: RootState) =>

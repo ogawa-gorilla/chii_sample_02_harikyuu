@@ -8,6 +8,7 @@ import ReservationEditPage from './features/reservation/ReservationEditPage'
 import ReservationCreateCalendarPage from './features/reservationCreateCalendar/ReservationCreateCalendarPage'
 import ReservationCalendarPage from './features/reservationViewCalendar/ReservationViewCalendarPage'
 import ShiftCalendarPage from './features/shiftCalendar/ShiftCalendarPage'
+import TreatmentRecordDetailPage from './features/treatmentRecord/TreatmentRecordDetailPage'
 import TreatmentRecordPage from './features/treatmentRecord/TreatmentRecordPage'
 import HomePage from './HomePage'
 import { useAppSelector } from './hooks'
@@ -32,6 +33,8 @@ const showPage = (page: Page) => {
             return <ShiftCalendarPage />
         case Page.TREATMENT_RECORD_LIST:
             return <TreatmentRecordPage />
+        case Page.TREATMENT_RECORD_DETAIL:
+            return <TreatmentRecordDetailPage />
         default:
             return <NotImplementedPage />
     }

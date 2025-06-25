@@ -1,10 +1,14 @@
 import { useAppDispatch, useAppSelector } from '@/app/hooks'
+import { pushPage } from '@/app/store/navigationSlice'
 import {
     filterTreatmentRecords,
     resetSearchConditions,
+    setRecordOnView,
     updateSearchConditions,
 } from '@/app/store/treatmentRecordSlice'
 import { NavigationAction } from '@/app/types/NavigationAction'
+import { Page } from '@/app/types/Page'
+import { useEffect } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
 import {
     TreatmentRecord,
@@ -25,18 +29,21 @@ const groupByDate = (records: TreatmentRecord[]) => {
 }
 
 const TreatmentRecordList = () => {
+    const dispatch = useAppDispatch()
     const searchConditions = useAppSelector(
         (state) => state.treatmentRecords.searchConditions
     )
-    const dispatch = useAppDispatch()
     const treatmentRecords = useAppSelector((state) =>
         filterTreatmentRecords(state)
     )
 
     const lastAction = useAppSelector((state) => state.navigation.lastAction)
-    if (lastAction === NavigationAction.MOVE_TO) {
-        dispatch(resetSearchConditions())
-    }
+
+    useEffect(() => {
+        if (lastAction === NavigationAction.MOVE_TO) {
+            dispatch(resetSearchConditions())
+        }
+    }, [lastAction, dispatch])
 
     const groupedRecords = groupByDate(treatmentRecords)
     const sortedDates = Object.keys(groupedRecords).sort((a, b) =>
@@ -47,6 +54,11 @@ const TreatmentRecordList = () => {
         conditions: TreatmentRecordSearchConditions
     ) => {
         dispatch(updateSearchConditions(conditions))
+    }
+
+    const handleViewDetail = (recordId: string) => {
+        dispatch(setRecordOnView(recordId))
+        dispatch(pushPage(Page.TREATMENT_RECORD_DETAIL))
     }
 
     return (
@@ -65,7 +77,9 @@ const TreatmentRecordList = () => {
                                     <Col key={record.id}>
                                         <TreatmentRecordCard
                                             record={record}
-                                            onViewDetail={() => {}}
+                                            onViewDetail={() =>
+                                                handleViewDetail(record.id)
+                                            }
                                             onEdit={() => {}}
                                         />
                                     </Col>
