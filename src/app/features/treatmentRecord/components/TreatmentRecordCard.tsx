@@ -16,6 +16,9 @@ export default function TreatmentRecordCard({
         <Card className="h-100">
             <Card.Body>
                 <Card.Title>{record.client}</Card.Title>
+                <Card.Subtitle className="text-muted small">
+                    {record.date}
+                </Card.Subtitle>
                 <Card.Text>{record.content}</Card.Text>
             </Card.Body>
             <Card.Footer>
