@@ -1,8 +1,8 @@
 import { useAppDispatch, useAppSelector } from '@/app/hooks'
 import { updateRecordDraft } from '@/app/store/treatmentRecordSlice'
 import { getStaffs } from '@/app/store/userSlice'
-import { useState } from 'react'
 import { Button, Col, Container, Form, Row } from 'react-bootstrap'
+import AttachedImagesTable from './AttachedImagesTable'
 
 interface TreatmentRecordEditFormProps {
     onSubmit: () => void
@@ -17,19 +17,13 @@ export default function TreatmentRecordEditForm({
     const draft = useAppSelector((state) => state.treatmentRecords.recordDraft)
     const staffs = useAppSelector(getStaffs)
 
-    const [imageFiles, setImageFiles] = useState<File[]>([])
-
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
         dispatch(updateRecordDraft({ [name]: value }))
     }
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const files = Array.from(e.target.files || [])
-        setImageFiles(files)
-    }
-
-    const handleAddImage = () => {
+        const imageFiles = Array.from(e.target.files || [])
         const newImages = imageFiles.map((file) => URL.createObjectURL(file))
         dispatch(
             updateRecordDraft({
@@ -38,7 +32,24 @@ export default function TreatmentRecordEditForm({
         )
     }
 
-    const handleSubmit = () => {
+    const handleImageClick = (imageUrl: string) => {
+        // 画像クリック時の処理（必要に応じてモーダル表示など）
+        console.log('画像をクリック:', imageUrl)
+    }
+
+    const handleDeleteImage = (imageUrl: string) => {
+        const updatedImages = draft.attached_images.filter(
+            (img) => img !== imageUrl
+        )
+        dispatch(
+            updateRecordDraft({
+                attached_images: updatedImages,
+            })
+        )
+    }
+
+    const handleSubmit = (e: React.FormEvent<HTMLButtonElement>) => {
+        e.preventDefault()
         onSubmit()
     }
 
@@ -94,6 +105,12 @@ export default function TreatmentRecordEditForm({
                         required
                     />
                 </Form.Group>
+
+                <AttachedImagesTable
+                    images={draft.attached_images}
+                    onImageClick={handleImageClick}
+                    onDeleteImage={handleDeleteImage}
+                />
 
                 <Form.Group className="mb-4" controlId="attached_images">
                     <Form.Label>画像添付</Form.Label>
