@@ -1,7 +1,7 @@
 import { useAppSelector } from '@/app/hooks'
 import { getStaffs } from '@/app/store/userSlice'
 import { TreatmentRecord } from '@/app/types/treatmentRecord'
-import { Card } from 'react-bootstrap'
+import { Card, Col, Row } from 'react-bootstrap'
 
 interface TreatmentRecordCardProps {
     record: TreatmentRecord
@@ -19,15 +19,25 @@ export default function TreatmentRecordCard({
                 <Card.Text>{record.content}</Card.Text>
             </Card.Body>
             <Card.Footer>
-                <small className="text-muted">
-                    対応スタッフ:{' '}
-                    {staffs.find((staff) => staff.id === record.staffId)!.name}
-                </small>
-                {record.attached_images.length > 0 && (
-                    <small className="text-muted">
-                        添付画像: {record.attached_images.length}件
-                    </small>
-                )}
+                <Row>
+                    <Col>
+                        <small className="text-muted">
+                            対応スタッフ:{' '}
+                            {
+                                staffs.find(
+                                    (staff) => staff.id === record.staffId
+                                )!.name
+                            }
+                        </small>
+                    </Col>
+                    <Col>
+                        {record.attached_images.length > 0 && (
+                            <small className="text-muted">
+                                添付画像: {record.attached_images.length}件
+                            </small>
+                        )}
+                    </Col>
+                </Row>
             </Card.Footer>
         </Card>
     )
