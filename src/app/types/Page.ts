@@ -21,8 +21,10 @@ export const Page = {
     SHIFT: 'shift',
     SHIFT_EDIT: 'shift-edit',
 
-    SESSION_LIST: 'session-list',
-    SESSION_DETAIL: 'session-detail',
+    TREATMENT_RECORD_LIST: 'treatment-record-list',
+    TREATMENT_RECORD_DETAIL: 'treatment-record-detail',
+    TREATMENT_RECORD_CREATE: 'treatment-record-create',
+    TREATMENT_RECORD_EDIT: 'treatment-record-edit',
 
     DASHBOARD: 'dashboard',
 } as const
