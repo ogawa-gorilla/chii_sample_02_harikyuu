@@ -342,4 +342,22 @@ export const RESERVATION_TESTDATA: Reservation[] = [
         },
         notes: '肩関節の可動域改善',
     },
+
+    {
+        id: 'ex-1',
+        date: '2025-06-05',
+        client: '高橋 優',
+        time: '15:00',
+        duration: 1,
+        status: '予約済',
+        staff: {
+            id: '1',
+            name: '鈴木',
+            email: 'manager@example.com',
+            role: Role.MANAGER,
+            password: 'suzuki',
+            themeColor: '#0A192F',
+        },
+        notes: 'ストレスによる不眠',
+    },
 ]

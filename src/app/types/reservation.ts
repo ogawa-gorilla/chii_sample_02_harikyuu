@@ -1,3 +1,4 @@
+import { TreatmentRecord } from './treatmentRecord'
 import { User } from './user'
 
 export interface Reservation {
@@ -9,6 +10,7 @@ export interface Reservation {
     duration: 1 // 時間単位
     status: string
     notes: string
+    records?: TreatmentRecord[]
 }
 
 export interface ReservationFormData {
