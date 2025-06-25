@@ -38,6 +38,10 @@ export default function SearchSection({
                             })
                         }
                     />
+                    <small className="text-muted d-block">
+                        日付は [4ケタ年号-2ケタ月-2ケタ日] で入力してください
+                        (例: 2025-06-21)
+                    </small>
                 </Form>
             </div>
         </div>

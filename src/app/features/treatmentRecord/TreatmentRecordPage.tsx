@@ -46,7 +46,7 @@ const TreatmentRecordList = () => {
                 conditions={searchCondition}
                 onConditionsChange={setSearchCondition}
             />
-            <div style={{ marginTop: '160px' }}>
+            <div style={{ marginTop: '200px' }}>
                 {sortedDates.map((date) => (
                     <div key={date} className="mb-5">
                         <h5 className="mb-3 border-bottom pb-2">{date}</h5>
