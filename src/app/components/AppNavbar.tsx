@@ -66,7 +66,14 @@ export default function AppNavbar() {
                             >
                                 シフト管理
                             </Nav.Link>
-                            <Nav.Link href="#">ダッシュボード</Nav.Link>
+                            <Nav.Link
+                                href="#"
+                                onClick={() =>
+                                    handleNavLinkClick(Page.DASHBOARD)
+                                }
+                            >
+                                ダッシュボード
+                            </Nav.Link>
                         </Nav>
                         <Nav>
                             <NavDropdown
