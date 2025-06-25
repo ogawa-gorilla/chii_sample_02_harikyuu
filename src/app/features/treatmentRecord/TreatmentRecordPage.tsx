@@ -1,6 +1,8 @@
-import { useAppSelector } from '@/app/hooks'
-import { filterTreatmentRecords } from '@/app/store/treatmentRecordSlice'
-import { useState } from 'react'
+import { useAppDispatch, useAppSelector } from '@/app/hooks'
+import {
+    filterTreatmentRecords,
+    updateSearchConditions,
+} from '@/app/store/treatmentRecordSlice'
 import { Col, Container, Row } from 'react-bootstrap'
 import {
     TreatmentRecord,
@@ -21,18 +23,12 @@ const groupByDate = (records: TreatmentRecord[]) => {
 }
 
 const TreatmentRecordList = () => {
-    const [searchCondition, setSearchCondition] =
-        useState<TreatmentRecordSearchConditions>({
-            staffId: 'all',
-            searchText: '',
-        })
-
+    const searchConditions = useAppSelector(
+        (state) => state.treatmentRecords.searchConditions
+    )
+    const dispatch = useAppDispatch()
     const treatmentRecords = useAppSelector((state) =>
-        filterTreatmentRecords(
-            state,
-            searchCondition.staffId,
-            searchCondition.searchText
-        )
+        filterTreatmentRecords(state)
     )
 
     const groupedRecords = groupByDate(treatmentRecords)
@@ -40,11 +36,17 @@ const TreatmentRecordList = () => {
         b.localeCompare(a)
     ) // 新しい日付が上
 
+    const handleConditionsChange = (
+        conditions: TreatmentRecordSearchConditions
+    ) => {
+        dispatch(updateSearchConditions(conditions))
+    }
+
     return (
         <Container className="my-4">
             <SearchSection
-                conditions={searchCondition}
-                onConditionsChange={setSearchCondition}
+                conditions={searchConditions}
+                onConditionsChange={handleConditionsChange}
             />
             <div style={{ marginTop: '200px' }}>
                 {sortedDates.map((date) => (
