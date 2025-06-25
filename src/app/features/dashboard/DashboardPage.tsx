@@ -1,5 +1,6 @@
 import { VIRTUAL_TODAY } from '@/app/constants/virtualToday'
-import { Card, Col, Container, Row } from 'react-bootstrap'
+import { useRef } from 'react'
+import { Alert, Card, Col, Container, Row } from 'react-bootstrap'
 
 const today = '2025-06-25' // 仮定：本日の日付
 
@@ -50,11 +51,20 @@ const groupReservationsByDate = (reservations: any[]) => {
 }
 
 const DashboardPage = ({ userName = '佐藤' }) => {
+    const pendingRecordsRef = useRef<HTMLDivElement>(null)
+
     const todayReservations = reservations.filter((r) => isToday(r.date))
     const thisWeekReservations = reservations.filter((r) => isThisWeek(r.date))
     const pendingRecords = reservations.filter((r) => !r.hasRecord)
     const groupedWeekReservations =
         groupReservationsByDate(thisWeekReservations)
+
+    const scrollToPendingRecords = () => {
+        pendingRecordsRef.current?.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start',
+        })
+    }
 
     const renderList = (title: string, data: any[], icon: string) => (
         <section className="mb-5">
@@ -142,9 +152,33 @@ const DashboardPage = ({ userName = '佐藤' }) => {
         <Container className="my-4">
             <h4 className="mb-4">{userName}さんのダッシュボード</h4>
 
+            {/* 施術記録未完了の警告 */}
+            {pendingRecords.length > 0 && (
+                <Alert
+                    variant="warning"
+                    className="mb-4 cursor-pointer"
+                    onClick={scrollToPendingRecords}
+                    style={{ cursor: 'pointer' }}
+                >
+                    <Alert.Heading>
+                        ⚠️ 施術記録が未完了の予約があります
+                    </Alert.Heading>
+                    <p className="mb-0">
+                        {pendingRecords.length}件の予約で施術記録が未記録です。
+                        クリックして詳細を確認してください。
+                    </p>
+                </Alert>
+            )}
+
             {renderList('本日の予約', todayReservations, '🗓')}
             {renderWeeklyReservations()}
-            {renderList('施術記録がまだの予約があります', pendingRecords, '⚠️')}
+            <div ref={pendingRecordsRef}>
+                {renderList(
+                    '施術記録がまだの予約があります',
+                    pendingRecords,
+                    '⚠️'
+                )}
+            </div>
         </Container>
     )
 }
