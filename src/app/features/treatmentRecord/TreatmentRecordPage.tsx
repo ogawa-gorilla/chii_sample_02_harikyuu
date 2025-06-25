@@ -54,7 +54,11 @@ const TreatmentRecordList = () => {
                             {groupedRecords[date].map(
                                 (record: TreatmentRecord) => (
                                     <Col key={record.id}>
-                                        <TreatmentRecordCard record={record} />
+                                        <TreatmentRecordCard
+                                            record={record}
+                                            onViewDetail={() => {}}
+                                            onEdit={() => {}}
+                                        />
                                     </Col>
                                 )
                             )}

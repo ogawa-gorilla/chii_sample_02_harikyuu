@@ -1,14 +1,18 @@
 import { useAppSelector } from '@/app/hooks'
 import { getStaffs } from '@/app/store/userSlice'
 import { TreatmentRecord } from '@/app/types/treatmentRecord'
-import { Card, Col, Row } from 'react-bootstrap'
+import { Button, ButtonGroup, Card, Col, Row } from 'react-bootstrap'
 
 interface TreatmentRecordCardProps {
     record: TreatmentRecord
+    onViewDetail?: (record: TreatmentRecord) => void
+    onEdit?: (record: TreatmentRecord) => void
 }
 
 export default function TreatmentRecordCard({
     record,
+    onViewDetail,
+    onEdit,
 }: TreatmentRecordCardProps) {
     const staffs = useAppSelector((state) => getStaffs(state))
 
@@ -22,7 +26,7 @@ export default function TreatmentRecordCard({
                 <Card.Text>{record.content}</Card.Text>
             </Card.Body>
             <Card.Footer>
-                <Row>
+                <Row className="mb-2">
                     <Col>
                         <small className="text-muted">
                             対応スタッフ:{' '}
@@ -39,6 +43,30 @@ export default function TreatmentRecordCard({
                                 添付画像: {record.attached_images.length}件
                             </small>
                         )}
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <ButtonGroup size="sm" className="w-100">
+                            {onViewDetail && (
+                                <Button
+                                    variant="outline-primary"
+                                    onClick={() => onViewDetail(record)}
+                                    className="flex-fill"
+                                >
+                                    詳細
+                                </Button>
+                            )}
+                            {onEdit && (
+                                <Button
+                                    variant="outline-secondary"
+                                    onClick={() => onEdit(record)}
+                                    className="flex-fill"
+                                >
+                                    編集
+                                </Button>
+                            )}
+                        </ButtonGroup>
                     </Col>
                 </Row>
             </Card.Footer>
