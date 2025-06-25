@@ -1,4 +1,5 @@
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { image01, image02 } from '../testdata/initialImages'
 import {
     TreatmentRecord,
     TreatmentRecordSearchConditions,
@@ -32,7 +33,7 @@ const initialState: TreatmentRecordState = {
             staffId: '2',
             date: '2025-06-03',
             content: '腰痛への施術。仙腸関節周辺に重点的にアプローチ。',
-            attached_images: ['http://localhost:3000/storage/image.jpg'],
+            attached_images: [image01],
         },
         {
             id: '3',
@@ -48,7 +49,7 @@ const initialState: TreatmentRecordState = {
             staffId: '2',
             date: '2025-05-30',
             content: '背中の張り。脊柱起立筋にアプローチ。',
-            attached_images: [],
+            attached_images: [image02],
         },
         {
             id: '5',
