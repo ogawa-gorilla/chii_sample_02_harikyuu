@@ -6,12 +6,14 @@ interface StaffSelectorForReservationProps {
     selectedStaff: string
     onStaffChange: (staffId: string) => void
     required?: boolean
+    allowAll?: boolean
 }
 
 export default function StaffSelector({
     selectedStaff,
     onStaffChange,
     required = true,
+    allowAll = true,
 }: StaffSelectorForReservationProps) {
     const staffs = useAppSelector(getStaffs)
 
@@ -25,7 +27,7 @@ export default function StaffSelector({
                 onChange={(e) => onStaffChange(e.target.value)}
                 required={required}
             >
-                <option value="all">すべて</option>
+                {allowAll && <option value="all">すべて</option>}
                 {staffs.map((staff) => (
                     <option key={staff.id} value={staff.id}>
                         {staff.name}
