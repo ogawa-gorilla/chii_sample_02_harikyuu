@@ -1,8 +1,10 @@
 import { useAppDispatch, useAppSelector } from '@/app/hooks'
 import { updateRecordDraft } from '@/app/store/treatmentRecordSlice'
 import { getStaffs } from '@/app/store/userSlice'
+import { useState } from 'react'
 import { Button, Col, Container, Form, Row } from 'react-bootstrap'
 import AttachedImagesTable from './AttachedImagesTable'
+import ImageModal from './ImageModal'
 
 interface TreatmentRecordEditFormProps {
     onSubmit: () => void
@@ -16,6 +18,12 @@ export default function TreatmentRecordEditForm({
     const dispatch = useAppDispatch()
     const draft = useAppSelector((state) => state.treatmentRecords.recordDraft)
     const staffs = useAppSelector(getStaffs)
+
+    // モーダルの状態管理
+    const [showImageModal, setShowImageModal] = useState(false)
+    const [selectedImageUrl, setSelectedImageUrl] = useState<string | null>(
+        null
+    )
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
@@ -33,8 +41,13 @@ export default function TreatmentRecordEditForm({
     }
 
     const handleImageClick = (imageUrl: string) => {
-        // 画像クリック時の処理（必要に応じてモーダル表示など）
-        console.log('画像をクリック:', imageUrl)
+        setSelectedImageUrl(imageUrl)
+        setShowImageModal(true)
+    }
+
+    const handleCloseImageModal = () => {
+        setShowImageModal(false)
+        setSelectedImageUrl(null)
     }
 
     const handleDeleteImage = (imageUrl: string) => {
@@ -138,6 +151,12 @@ export default function TreatmentRecordEditForm({
                     </Col>
                 </Row>
             </Form>
+
+            <ImageModal
+                show={showImageModal}
+                onHide={handleCloseImageModal}
+                imageUrl={selectedImageUrl}
+            />
         </Container>
     )
 }
