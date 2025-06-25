@@ -1,8 +1,10 @@
 import { useAppDispatch, useAppSelector } from '@/app/hooks'
 import {
     filterTreatmentRecords,
+    resetSearchConditions,
     updateSearchConditions,
 } from '@/app/store/treatmentRecordSlice'
+import { NavigationAction } from '@/app/types/NavigationAction'
 import { Col, Container, Row } from 'react-bootstrap'
 import {
     TreatmentRecord,
@@ -30,6 +32,11 @@ const TreatmentRecordList = () => {
     const treatmentRecords = useAppSelector((state) =>
         filterTreatmentRecords(state)
     )
+
+    const lastAction = useAppSelector((state) => state.navigation.lastAction)
+    if (lastAction === NavigationAction.MOVE_TO) {
+        dispatch(resetSearchConditions())
+    }
 
     const groupedRecords = groupByDate(treatmentRecords)
     const sortedDates = Object.keys(groupedRecords).sort((a, b) =>
