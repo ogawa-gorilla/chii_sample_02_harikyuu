@@ -1,14 +1,13 @@
 import { useAppSelector } from '@/app/hooks'
 import { filterTreatmentRecords } from '@/app/store/treatmentRecordSlice'
-import { getStaffs } from '@/app/store/userSlice'
-import { User } from '@/app/types/user'
 import { useState } from 'react'
-import { Card, Col, Container, Row } from 'react-bootstrap'
+import { Col, Container, Row } from 'react-bootstrap'
 import {
     TreatmentRecord,
     TreatmentRecordSearchConditions,
 } from '../../types/treatmentRecord'
 import SearchSection from './components/SearchSection'
+import TreatmentRecordCard from './components/TreatmentRecordCard'
 
 // グループ化（date → array of records）
 const groupByDate = (records: TreatmentRecord[]) => {
@@ -35,7 +34,6 @@ const TreatmentRecordList = () => {
             searchCondition.searchText
         )
     )
-    const staffs = useAppSelector((state) => getStaffs(state))
 
     const groupedRecords = groupByDate(treatmentRecords)
     const sortedDates = Object.keys(groupedRecords).sort((a, b) =>
@@ -56,40 +54,7 @@ const TreatmentRecordList = () => {
                             {groupedRecords[date].map(
                                 (record: TreatmentRecord) => (
                                     <Col key={record.id}>
-                                        <Card className="h-100">
-                                            <Card.Body>
-                                                <Card.Title>
-                                                    {record.client}
-                                                </Card.Title>
-                                                <Card.Text>
-                                                    {record.content}
-                                                </Card.Text>
-                                            </Card.Body>
-                                            <Card.Footer>
-                                                <small className="text-muted">
-                                                    対応スタッフ:{' '}
-                                                    {
-                                                        staffs.find(
-                                                            (staff: User) =>
-                                                                staff.id ===
-                                                                record.staffId
-                                                        )!.name
-                                                    }
-                                                </small>
-                                                {record.attached_images.length >
-                                                    0 && (
-                                                    <small className="text-muted">
-                                                        添付画像:{' '}
-                                                        {
-                                                            record
-                                                                .attached_images
-                                                                .length
-                                                        }
-                                                        件
-                                                    </small>
-                                                )}
-                                            </Card.Footer>
-                                        </Card>
+                                        <TreatmentRecordCard record={record} />
                                     </Col>
                                 )
                             )}
