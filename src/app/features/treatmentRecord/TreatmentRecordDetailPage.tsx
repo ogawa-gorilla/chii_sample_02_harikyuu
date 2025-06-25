@@ -1,5 +1,10 @@
 import { useAppDispatch, useAppSelector } from '@/app/hooks'
-import { popPage, pushPage } from '@/app/store/navigationSlice'
+import {
+    canBack,
+    popPage,
+    pushPage,
+    setCurrentPage,
+} from '@/app/store/navigationSlice'
 import {
     setRecordDraft,
     setRecordOnView,
@@ -28,8 +33,14 @@ const TreatmentRecordDetail = () => {
         state.user.users.find((user) => user.id === record?.staffId)
     )
 
+    const canBackToList = useAppSelector(canBack)
+
     const handleBack = () => {
-        dispatch(popPage())
+        if (canBackToList) {
+            dispatch(popPage())
+        } else {
+            dispatch(setCurrentPage(Page.TREATMENT_RECORD_LIST))
+        }
     }
 
     const handleEdit = () => {

@@ -1,15 +1,17 @@
 import { useAppDispatch, useAppSelector } from '@/app/hooks'
-import { popPage } from '@/app/store/navigationSlice'
-import { getStaffs } from '@/app/store/userSlice'
+import { popPage, setCurrentPage } from '@/app/store/navigationSlice'
+import { updateRecord } from '@/app/store/treatmentRecordSlice'
+import { Page } from '@/app/types/Page'
 import TreatmentRecordEditForm from './components/TreatmentRecordEditForm'
 
 const TreatmentRecordEditPage = () => {
     const dispatch = useAppDispatch()
+
     const draft = useAppSelector((state) => state.treatmentRecords.recordDraft)
-    const staffs = useAppSelector(getStaffs)
 
     const handleSubmit = () => {
-        dispatch(popPage())
+        dispatch(updateRecord(draft))
+        dispatch(setCurrentPage(Page.TREATMENT_RECORD_DETAIL))
     }
 
     const handleCancel = () => {
@@ -27,3 +29,6 @@ const TreatmentRecordEditPage = () => {
 }
 
 export default TreatmentRecordEditPage
+function setPage(TREATMENT_RECORD_DETAIL: any): any {
+    throw new Error('Function not implemented.')
+}

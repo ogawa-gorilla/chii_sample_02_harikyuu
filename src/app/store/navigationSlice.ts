@@ -1,6 +1,7 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { NavigationAction } from '../types/NavigationAction'
 import { Page } from '../types/Page'
+import { RootState } from './store'
 
 interface NavigationState {
     pageStack: Page[]
@@ -30,6 +31,11 @@ const navigationSlice = createSlice({
         },
     },
 })
+
+export const canBack = createSelector(
+    (state: RootState) => state.navigation.pageStack,
+    (pageStack) => pageStack.length > 1
+)
 
 export const { setCurrentPage, pushPage, popPage } = navigationSlice.actions
 export default navigationSlice.reducer
