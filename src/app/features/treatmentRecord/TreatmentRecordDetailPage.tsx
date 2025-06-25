@@ -1,11 +1,26 @@
 import { useAppDispatch, useAppSelector } from '@/app/hooks'
 import { popPage } from '@/app/store/navigationSlice'
+import { useState } from 'react'
 import { Button, Card, Col, Container, Image, Row } from 'react-bootstrap'
+import ImageModal from './components/ImageModal'
 
 const TreatmentRecordDetail = () => {
     const dispatch = useAppDispatch()
+    const [showImageModal, setShowImageModal] = useState(false)
+    const [selectedImageUrl, setSelectedImageUrl] = useState('')
+
     const handleBack = () => {
         dispatch(popPage())
+    }
+
+    const handleImageClick = (imageUrl: string) => {
+        setSelectedImageUrl(imageUrl)
+        setShowImageModal(true)
+    }
+
+    const handleCloseImageModal = () => {
+        setShowImageModal(false)
+        setSelectedImageUrl('')
     }
 
     const recordIdOnView = useAppSelector(
@@ -59,6 +74,12 @@ const TreatmentRecordDetail = () => {
                                                     src={imgUrl}
                                                     thumbnail
                                                     fluid
+                                                    style={{
+                                                        cursor: 'pointer',
+                                                    }}
+                                                    onClick={() =>
+                                                        handleImageClick(imgUrl)
+                                                    }
                                                 />
                                             </Col>
                                         )
@@ -73,6 +94,12 @@ const TreatmentRecordDetail = () => {
                         </Button>
                     </Card.Footer>
                 </Card>
+
+                <ImageModal
+                    show={showImageModal}
+                    onHide={handleCloseImageModal}
+                    imageUrl={selectedImageUrl}
+                />
             </Container>
         )
     )
