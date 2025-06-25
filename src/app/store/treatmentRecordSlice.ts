@@ -10,6 +10,7 @@ interface TreatmentRecordState {
     records: TreatmentRecord[]
     searchConditions: TreatmentRecordSearchConditions
     recordIdOnView: string | null
+    recordDraft: TreatmentRecord
 }
 
 const INITIAL_SEARCH_CONDITIONS: TreatmentRecordSearchConditions = {
@@ -78,6 +79,14 @@ const initialState: TreatmentRecordState = {
     ],
     searchConditions: INITIAL_SEARCH_CONDITIONS,
     recordIdOnView: null,
+    recordDraft: {
+        id: '',
+        client: '',
+        staffId: '',
+        date: '',
+        content: '',
+        attached_images: [],
+    },
 }
 
 export const treatmentRecordSlice = createSlice({
@@ -96,6 +105,18 @@ export const treatmentRecordSlice = createSlice({
         setRecordOnView: (state, action: PayloadAction<string>) => {
             state.recordIdOnView = action.payload
         },
+        setRecordDraft: (state, action: PayloadAction<TreatmentRecord>) => {
+            state.recordDraft = action.payload
+        },
+        updateRecordDraft: (
+            state,
+            action: PayloadAction<Partial<TreatmentRecord>>
+        ) => {
+            state.recordDraft = {
+                ...state.recordDraft,
+                ...action.payload,
+            }
+        },
     },
 })
 
@@ -103,6 +124,8 @@ export const {
     resetSearchConditions,
     updateSearchConditions,
     setRecordOnView,
+    setRecordDraft,
+    updateRecordDraft,
 } = treatmentRecordSlice.actions
 
 const selectAllRecords = (state: RootState) => state.treatmentRecords.records

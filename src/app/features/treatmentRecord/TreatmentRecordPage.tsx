@@ -3,6 +3,7 @@ import { pushPage } from '@/app/store/navigationSlice'
 import {
     filterTreatmentRecords,
     resetSearchConditions,
+    setRecordDraft,
     setRecordOnView,
     updateSearchConditions,
 } from '@/app/store/treatmentRecordSlice'
@@ -61,6 +62,15 @@ const TreatmentRecordList = () => {
         dispatch(pushPage(Page.TREATMENT_RECORD_DETAIL))
     }
 
+    const handleEdit = (record: TreatmentRecord) => {
+        const newDraft: TreatmentRecord = {
+            ...record,
+        }
+        dispatch(setRecordOnView(newDraft.id))
+        dispatch(setRecordDraft(newDraft))
+        dispatch(pushPage(Page.TREATMENT_RECORD_EDIT))
+    }
+
     return (
         <Container className="my-4">
             <SearchSection
@@ -80,7 +90,7 @@ const TreatmentRecordList = () => {
                                             onViewDetail={() =>
                                                 handleViewDetail(record.id)
                                             }
-                                            onEdit={() => {}}
+                                            onEdit={() => handleEdit(record)}
                                         />
                                     </Col>
                                 )
