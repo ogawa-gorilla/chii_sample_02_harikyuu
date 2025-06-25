@@ -1,3 +1,5 @@
+import { Reservation } from './reservation'
+
 export interface TreatmentRecord {
     id: string
     client: string
@@ -5,6 +7,7 @@ export interface TreatmentRecord {
     date: string
     content: string
     attached_images: string[]
+    for_reservation?: Reservation
 }
 
 export interface TreatmentRecordSearchConditions {
