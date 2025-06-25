@@ -6,13 +6,11 @@ import { Button, ButtonGroup, Card, Col, Image, Row } from 'react-bootstrap'
 interface TreatmentRecordCardProps {
     record: TreatmentRecord
     onViewDetail?: (record: TreatmentRecord) => void
-    onEdit?: (record: TreatmentRecord) => void
 }
 
 export default function TreatmentRecordCard({
     record,
     onViewDetail,
-    onEdit,
 }: TreatmentRecordCardProps) {
     const staffs = useAppSelector((state) => getStaffs(state))
 
@@ -83,15 +81,6 @@ export default function TreatmentRecordCard({
                                     className="flex-fill"
                                 >
                                     詳細
-                                </Button>
-                            )}
-                            {onEdit && (
-                                <Button
-                                    variant="outline-secondary"
-                                    onClick={() => onEdit(record)}
-                                    className="flex-fill"
-                                >
-                                    編集
                                 </Button>
                             )}
                         </ButtonGroup>

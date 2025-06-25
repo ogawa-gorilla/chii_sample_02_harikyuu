@@ -2,7 +2,7 @@ import { useAppDispatch, useAppSelector } from '@/app/hooks'
 import { updateRecordDraft } from '@/app/store/treatmentRecordSlice'
 import { getStaffs } from '@/app/store/userSlice'
 import { useState } from 'react'
-import { Button, Col, Container, Form, Row } from 'react-bootstrap'
+import { Button, ButtonGroup, Container, Form } from 'react-bootstrap'
 import AttachedImagesTable from './AttachedImagesTable'
 import ImageModal from './ImageModal'
 
@@ -134,22 +134,18 @@ export default function TreatmentRecordEditForm({
                     />
                 </Form.Group>
 
-                <Row>
-                    <Col xs="auto">
-                        <Button
-                            variant="primary"
-                            type="submit"
-                            onClick={handleSubmit}
-                        >
-                            保存
-                        </Button>
-                    </Col>
-                    <Col xs="auto">
-                        <Button variant="secondary" onClick={onCancel}>
-                            キャンセル
-                        </Button>
-                    </Col>
-                </Row>
+                <ButtonGroup className="w-100">
+                    <Button
+                        variant="primary"
+                        type="submit"
+                        onClick={handleSubmit}
+                    >
+                        保存
+                    </Button>
+                    <Button variant="secondary" onClick={onCancel}>
+                        キャンセル
+                    </Button>
+                </ButtonGroup>
             </Form>
 
             <ImageModal

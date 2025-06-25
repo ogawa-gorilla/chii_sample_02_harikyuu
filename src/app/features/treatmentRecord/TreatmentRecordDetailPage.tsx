@@ -12,7 +12,15 @@ import {
 import { Page } from '@/app/types/Page'
 import { TreatmentRecord } from '@/app/types/treatmentRecord'
 import { useState } from 'react'
-import { Button, Card, Col, Container, Image, Row } from 'react-bootstrap'
+import {
+    Button,
+    ButtonGroup,
+    Card,
+    Col,
+    Container,
+    Image,
+    Row,
+} from 'react-bootstrap'
 import ImageModal from './components/ImageModal'
 
 const TreatmentRecordDetail = () => {
@@ -116,12 +124,14 @@ const TreatmentRecordDetail = () => {
                         )}
                     </Card.Body>
                     <Card.Footer className="d-flex justify-content-end gap-2">
-                        <Button variant="primary" onClick={handleEdit}>
-                            編集
-                        </Button>
-                        <Button variant="secondary" onClick={handleBack}>
-                            戻る
-                        </Button>
+                        <ButtonGroup size="sm" className="w-100">
+                            <Button variant="primary" onClick={handleEdit}>
+                                編集
+                            </Button>
+                            <Button variant="secondary" onClick={handleBack}>
+                                戻る
+                            </Button>
+                        </ButtonGroup>
                     </Card.Footer>
                 </Card>
 
