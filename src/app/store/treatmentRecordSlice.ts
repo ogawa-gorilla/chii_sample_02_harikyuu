@@ -32,7 +32,7 @@ const initialState: TreatmentRecordState = {
             staffId: '2',
             date: '2025-06-03',
             content: '腰痛への施術。仙腸関節周辺に重点的にアプローチ。',
-            attached_images: ['2025-06-03-1.jpg'],
+            attached_images: ['http://localhost:3000/storage/image.jpg'],
         },
         {
             id: '3',
