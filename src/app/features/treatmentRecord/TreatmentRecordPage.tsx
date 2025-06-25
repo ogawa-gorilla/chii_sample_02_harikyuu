@@ -1,66 +1,14 @@
+import { useAppSelector } from '@/app/hooks'
+import { filterTreatmentRecords } from '@/app/store/treatmentRecordSlice'
+import { getStaffs } from '@/app/store/userSlice'
+import { User } from '@/app/types/user'
 import { useState } from 'react'
 import { Card, Col, Container, Row } from 'react-bootstrap'
-import { TreatmentRecord } from '../../types/treatmentRecord'
+import {
+    TreatmentRecord,
+    TreatmentRecordSearchConditions,
+} from '../../types/treatmentRecord'
 import SearchSection from './components/SearchSection'
-
-const treatmentRecords: TreatmentRecord[] = [
-    {
-        id: '1',
-        client: '田中 太郎',
-        staff_id: '1',
-        date: '2025-06-01',
-        content: '肩こりの鍼治療。肩甲骨まわりに反応点多数あり。',
-        attached_images: [],
-    },
-    {
-        id: '2',
-        client: '鈴木 花子',
-        staff_id: '2',
-        date: '2025-06-03',
-        content: '腰痛への施術。仙腸関節周辺に重点的にアプローチ。',
-        attached_images: [],
-    },
-    {
-        id: '3',
-        client: '佐藤 健',
-        staff_id: '1',
-        date: '2025-06-03',
-        content: '首のこり。後頚部に硬結があり。',
-        attached_images: [],
-    },
-    {
-        id: '4',
-        client: '山田 真一',
-        staff_id: '2',
-        date: '2025-06-04',
-        content: '背中の張り。脊柱起立筋にアプローチ。',
-        attached_images: [],
-    },
-    {
-        id: '5',
-        client: '井上 美咲',
-        staff_id: '1',
-        date: '2025-06-05',
-        content: '冷え性への対応。足首周辺に施術。',
-        attached_images: [],
-    },
-    {
-        id: '6',
-        client: '中村 海斗',
-        staff_id: '3',
-        date: '2025-06-05',
-        content: 'ストレスによる不眠。頭部と耳周辺の施術。',
-        attached_images: [],
-    },
-    {
-        id: '7',
-        client: '高橋 優',
-        staff_id: '2',
-        date: '2025-06-01',
-        content: '肩関節の可動域改善。',
-        attached_images: [],
-    },
-]
 
 // グループ化（date → array of records）
 const groupByDate = (records: TreatmentRecord[]) => {
@@ -74,20 +22,33 @@ const groupByDate = (records: TreatmentRecord[]) => {
 }
 
 const TreatmentRecordList = () => {
+    const [searchCondition, setSearchCondition] =
+        useState<TreatmentRecordSearchConditions>({
+            staffId: 'all',
+            searchText: '',
+        })
+
+    const treatmentRecords = useAppSelector((state) =>
+        filterTreatmentRecords(
+            state,
+            searchCondition.staffId,
+            searchCondition.searchText
+        )
+    )
+    const staffs = useAppSelector((state) => getStaffs(state))
+
     const groupedRecords = groupByDate(treatmentRecords)
     const sortedDates = Object.keys(groupedRecords).sort((a, b) =>
         b.localeCompare(a)
     ) // 新しい日付が上
 
-    const [selectedStaff, setSelectedStaff] = useState('all')
-
     return (
         <Container className="my-4">
             <SearchSection
-                selectedStaff={selectedStaff}
-                onStaffChange={setSelectedStaff}
+                conditions={searchCondition}
+                onConditionsChange={setSearchCondition}
             />
-            <div style={{ marginTop: '140px' }}>
+            <div style={{ marginTop: '160px' }}>
                 {sortedDates.map((date) => (
                     <div key={date} className="mb-5">
                         <h5 className="mb-3 border-bottom pb-2">{date}</h5>
@@ -104,9 +65,19 @@ const TreatmentRecordList = () => {
                                                     {record.content}
                                                 </Card.Text>
                                             </Card.Body>
-                                            {record.attached_images.length >
-                                                0 && (
-                                                <Card.Footer>
+                                            <Card.Footer>
+                                                <small className="text-muted">
+                                                    対応スタッフ:{' '}
+                                                    {
+                                                        staffs.find(
+                                                            (staff: User) =>
+                                                                staff.id ===
+                                                                record.staffId
+                                                        )!.name
+                                                    }
+                                                </small>
+                                                {record.attached_images.length >
+                                                    0 && (
                                                     <small className="text-muted">
                                                         添付画像:{' '}
                                                         {
@@ -116,8 +87,8 @@ const TreatmentRecordList = () => {
                                                         }
                                                         件
                                                     </small>
-                                                </Card.Footer>
-                                            )}
+                                                )}
+                                            </Card.Footer>
                                         </Card>
                                     </Col>
                                 )

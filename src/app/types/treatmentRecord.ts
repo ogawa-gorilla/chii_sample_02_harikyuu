@@ -1,8 +1,13 @@
 export interface TreatmentRecord {
     id: string
     client: string
-    staff_id: string
+    staffId: string
     date: string
     content: string
     attached_images: string[]
+}
+
+export interface TreatmentRecordSearchConditions {
+    staffId: string
+    searchText: string
 }

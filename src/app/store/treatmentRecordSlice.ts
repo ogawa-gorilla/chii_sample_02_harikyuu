@@ -1,0 +1,96 @@
+import { createSelector, createSlice } from '@reduxjs/toolkit'
+import { TreatmentRecord } from '../types/treatmentRecord'
+import { RootState } from './store'
+
+interface TreatmentRecordState {
+    records: TreatmentRecord[]
+}
+
+const initialState: TreatmentRecordState = {
+    records: [
+        {
+            id: '1',
+            client: '田中 太郎',
+            staffId: '1',
+            date: '2025-06-01',
+            content: '肩こりの鍼治療。肩甲骨まわりに反応点多数あり。',
+            attached_images: [],
+        },
+        {
+            id: '2',
+            client: '鈴木 花子',
+            staffId: '2',
+            date: '2025-06-03',
+            content: '腰痛への施術。仙腸関節周辺に重点的にアプローチ。',
+            attached_images: [],
+        },
+        {
+            id: '3',
+            client: '佐藤 健',
+            staffId: '1',
+            date: '2025-06-03',
+            content: '首のこり。後頚部に硬結があり。',
+            attached_images: [],
+        },
+        {
+            id: '4',
+            client: '山田 真一',
+            staffId: '2',
+            date: '2025-06-04',
+            content: '背中の張り。脊柱起立筋にアプローチ。',
+            attached_images: [],
+        },
+        {
+            id: '5',
+            client: '井上 美咲',
+            staffId: '1',
+            date: '2025-06-05',
+            content: '冷え性への対応。足首周辺に施術。',
+            attached_images: [],
+        },
+        {
+            id: '6',
+            client: '中村 海斗',
+            staffId: '3',
+            date: '2025-06-05',
+            content: 'ストレスによる不眠。頭部と耳周辺の施術。',
+            attached_images: [],
+        },
+        {
+            id: '7',
+            client: '高橋 優',
+            staffId: '2',
+            date: '2025-06-01',
+            content: '肩関節の可動域改善。',
+            attached_images: [],
+        },
+    ],
+}
+
+export const treatmentRecordSlice = createSlice({
+    name: 'treatmentRecord',
+    initialState,
+    reducers: {},
+})
+
+export const {} = treatmentRecordSlice.actions
+
+export const filterTreatmentRecords = createSelector(
+    [
+        (state: RootState) => state.treatmentRecords.records,
+        (_: RootState, staffId: string, searchText: string) => staffId,
+        (_: RootState, staffId: string, searchText: string) => searchText,
+    ],
+    (records, staffId, searchText) =>
+        records.filter((record: TreatmentRecord) => {
+            const isStaffMatch = staffId === 'all' || record.staffId === staffId
+            const isSearchMatch =
+                searchText === '' ||
+                record.client.includes(searchText) ||
+                record.content.includes(searchText) ||
+                record.date.includes(searchText)
+            return isStaffMatch && isSearchMatch
+        })
+)
+
+export default treatmentRecordSlice.reducer

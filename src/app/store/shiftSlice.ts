@@ -1,6 +1,7 @@
 import { Shift, ShiftDraft, ShiftTemplate } from '@/app/types/shift'
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import dayjs from 'dayjs'
+import { v4 } from 'uuid'
 import { SHIFT_TEMPLATE_TESTDATA } from '../components/testdata/shiftTemplateTestData'
 import { SHIFT_TESTDATA } from '../components/testdata/shiftTestData'
 import { TemporalHoliday } from '../types/temporalHoliday'
@@ -101,7 +102,7 @@ const shiftSlice = createSlice({
         },
         createShiftTemplate: (state, action: PayloadAction<string>) => {
             const newTemplate: ShiftTemplate = {
-                id: uuidv4(),
+                id: v4(),
                 userId: action.payload,
                 shiftDrafts: [],
             }
@@ -179,6 +180,3 @@ export const {
 } = shiftSlice.actions
 
 export default shiftSlice.reducer
-function uuidv4(): string {
-    throw new Error('Function not implemented.')
-}
