@@ -1,10 +1,9 @@
 import dayjs from 'dayjs'
 import { useMemo, useState } from 'react'
-import { Button, Container, Form, Table } from 'react-bootstrap'
-import { useReservationNavigation } from '../reservation/hooks/useReservationNavigation'
-import { useTreatmentNavigation } from '../treatmentRecord/hooks/useTreatmentNavigation'
+import { Container, Form, Table } from 'react-bootstrap'
 import MonthNavigation from './components/MonthNavigation'
 import { useReservationTablePseudoBackend } from './hooks/useReservationTablePseudoBackend'
+import ReservationTableRow from './ReservationTableRow'
 
 interface Month {
     month: number
@@ -18,9 +17,6 @@ const representiveDay = (month: Month) => {
 }
 
 export default function ReservationTable() {
-    const { openReservationDetail } = useReservationNavigation()
-    const { openOrCreateTreatmentRecordForReservation } =
-        useTreatmentNavigation()
     const { getTableReservations } = useReservationTablePseudoBackend()
     const reservations = getTableReservations
 
@@ -43,7 +39,7 @@ export default function ReservationTable() {
                 return (
                     searchText === '' ||
                     reservation.client.includes(searchText) ||
-                    reservation.staff.includes(searchText) ||
+                    reservation.staff.name.includes(searchText) ||
                     reservation.date.includes(searchText)
                 )
             })
@@ -112,52 +108,10 @@ export default function ReservationTable() {
                 </thead>
                 <tbody>
                     {filteredReservations.map((reservation) => (
-                        <tr key={reservation.id}>
-                            <td>
-                                {reservation.date} {reservation.time}
-                            </td>
-                            <td>{reservation.staff}</td>
-                            <td>{reservation.client}</td>
-                            <td>{reservation.notes || ''}</td>
-                            <td className="text-center">
-                                <Button
-                                    variant="primary"
-                                    size="sm"
-                                    onClick={() => {
-                                        openReservationDetail(reservation.id)
-                                    }}
-                                >
-                                    閲覧
-                                </Button>
-                            </td>
-                            <td className="text-center">
-                                {reservation.recordId ? (
-                                    <Button
-                                        variant="primary"
-                                        size="sm"
-                                        onClick={() => {
-                                            openOrCreateTreatmentRecordForReservation(
-                                                reservation.id
-                                            )
-                                        }}
-                                    >
-                                        閲覧
-                                    </Button>
-                                ) : (
-                                    <Button
-                                        variant="outline-success"
-                                        size="sm"
-                                        onClick={() => {
-                                            openOrCreateTreatmentRecordForReservation(
-                                                reservation.id
-                                            )
-                                        }}
-                                    >
-                                        作成
-                                    </Button>
-                                )}
-                            </td>
-                        </tr>
+                        <ReservationTableRow
+                            key={reservation.id}
+                            reservation={reservation}
+                        />
                     ))}
                 </tbody>
             </Table>

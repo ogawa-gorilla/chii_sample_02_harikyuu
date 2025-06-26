@@ -17,7 +17,7 @@ export const useReservationTablePseudoBackend = () => {
             )
             return {
                 ...r,
-                staff: r.staff.name,
+                staff: r.staff,
                 recordId: record ? record.id : undefined,
             }
         })
