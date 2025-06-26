@@ -11,9 +11,6 @@ export default function UserDropdown() {
             id="user-dropdown"
             align="end"
         >
-            <NavDropdown.Item href="#">プロフィール</NavDropdown.Item>
-            <NavDropdown.Item href="#">設定</NavDropdown.Item>
-            <NavDropdown.Divider />
             <NavDropdown.Item href="#" onClick={handleLogout}>
                 ログアウト
             </NavDropdown.Item>
