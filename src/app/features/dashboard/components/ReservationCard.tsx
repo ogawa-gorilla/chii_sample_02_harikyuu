@@ -2,8 +2,10 @@ import { useAppDispatch, useAppSelector } from '@/app/hooks'
 import { pushPage } from '@/app/store/navigationSlice'
 import { setSelectedReservation } from '@/app/store/reservationSlice'
 import { Page } from '@/app/types/Page'
+import { TreatmentRecord } from '@/app/types/treatmentRecord'
 import dayjs from 'dayjs'
 import { Button, Card, Col, Row } from 'react-bootstrap'
+import { useTreatmentForm } from '../../treatmentRecord/hooks/useTreatmentForm'
 import { DashboardReservation } from '../types/DashboardReservation'
 
 interface ReservationCardProps {
@@ -16,6 +18,7 @@ export default function ReservationCard({
     hideDate,
 }: ReservationCardProps) {
     const dispatch = useAppDispatch()
+    const { openOrCreateForReservation } = useTreatmentForm()
 
     const targetReservation = useAppSelector((state) =>
         state.reservation.reservations.find((r) => r.id === reservation.id)
@@ -27,7 +30,7 @@ export default function ReservationCard({
     }
 
     const handleRecordClick = () => {
-        console.log(reservation)
+        openOrCreateForReservation(reservation.id)
     }
 
     return (
@@ -54,7 +57,9 @@ export default function ReservationCard({
                                     variant="outline-secondary"
                                     onClick={handleRecordClick}
                                 >
-                                    施術記録
+                                    {reservation.record
+                                        ? '施術記録を編集'
+                                        : '施術記録を作成'}
                                 </Button>
                             </div>
                         </Col>
@@ -72,4 +77,7 @@ export default function ReservationCard({
             </Card>
         </Col>
     )
+}
+function setSelectedTreatmentRecord(record: TreatmentRecord): any {
+    throw new Error('Function not implemented.')
 }
