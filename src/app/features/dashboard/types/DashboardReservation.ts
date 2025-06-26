@@ -6,4 +6,5 @@ export interface DashboardReservation {
     date: string
     time: string
     record?: TreatmentRecord
+    notes?: string
 }

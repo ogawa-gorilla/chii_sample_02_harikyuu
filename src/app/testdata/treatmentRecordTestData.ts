@@ -22,15 +22,6 @@ export const TREATMENT_RECORD_TESTDATA: TreatmentRecord[] = [
         for_reservation: RESERVATION_TESTDATA.find((r) => r.id === 'tr-2'),
     },
     {
-        id: '3',
-        client: '佐藤 健',
-        staffId: '1',
-        date: '2025-06-04',
-        content: '首のこり。後頚部に硬結があり。',
-        attached_images: [],
-        for_reservation: RESERVATION_TESTDATA.find((r) => r.id === 'tr-3'),
-    },
-    {
         id: '4',
         client: '山田 真一',
         staffId: '2',
