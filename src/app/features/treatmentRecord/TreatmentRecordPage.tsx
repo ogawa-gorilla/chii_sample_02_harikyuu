@@ -1,4 +1,5 @@
 import { useAppDispatch, useAppSelector } from '@/app/hooks'
+import { useLogin } from '@/app/hooks/useLogin'
 import { pushPage } from '@/app/store/navigationSlice'
 import {
     filterTreatmentRecords,
@@ -30,6 +31,7 @@ const groupByDate = (records: TreatmentRecord[]) => {
 
 const TreatmentRecordList = () => {
     const dispatch = useAppDispatch()
+    const { loginUser, isStaff } = useLogin()
     const searchConditions = useAppSelector(
         (state) => state.treatmentRecords.searchConditions
     )
@@ -41,9 +43,9 @@ const TreatmentRecordList = () => {
 
     useEffect(() => {
         if (lastAction === NavigationAction.MOVE_TO) {
-            dispatch(resetSearchConditions())
+            dispatch(resetSearchConditions(isStaff ? loginUser!.id : null))
         }
-    }, [lastAction, dispatch])
+    }, [lastAction, dispatch, isStaff, loginUser])
 
     const groupedRecords = groupByDate(treatmentRecords)
     const sortedDates = Object.keys(groupedRecords).sort((a, b) =>

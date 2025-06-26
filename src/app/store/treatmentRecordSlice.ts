@@ -36,8 +36,14 @@ export const treatmentRecordSlice = createSlice({
     name: 'treatmentRecord',
     initialState,
     reducers: {
-        resetSearchConditions: (state) => {
-            state.searchConditions = INITIAL_SEARCH_CONDITIONS
+        resetSearchConditions: (
+            state,
+            action: PayloadAction<string | null>
+        ) => {
+            state.searchConditions = {
+                ...INITIAL_SEARCH_CONDITIONS,
+                staffId: action.payload ?? 'all',
+            }
         },
         updateSearchConditions: (
             state,

@@ -16,5 +16,9 @@ export const useLogin = () => {
     const isManager = loginUser && loginUser.role === Role.MANAGER
     const isOffice = loginUser && loginUser.role === Role.OFFICE
 
-    return { loginUser, handleLogout, isManager, isOffice }
+    const isStaff =
+        loginUser &&
+        (loginUser.role === Role.STAFF || loginUser.role === Role.MANAGER)
+
+    return { loginUser, handleLogout, isManager, isOffice, isStaff }
 }
