@@ -9,6 +9,7 @@ import ReservationEditPage from './features/reservation/ReservationEditPage'
 import ReservationCreateCalendarPage from './features/reservationCreateCalendar/ReservationCreateCalendarPage'
 import ReservationCalendarPage from './features/reservationViewCalendar/ReservationViewCalendarPage'
 import ShiftCalendarPage from './features/shiftCalendar/ShiftCalendarPage'
+import TreatmentRecordCreatePage from './features/treatmentRecord/TreatmentRecordCreatePage'
 import TreatmentRecordDetailPage from './features/treatmentRecord/TreatmentRecordDetailPage'
 import TreatmentRecordEditPage from './features/treatmentRecord/TreatmentRecordEditPage'
 import TreatmentRecordPage from './features/treatmentRecord/TreatmentRecordPage'
@@ -39,6 +40,8 @@ const showPage = (page: Page) => {
             return <TreatmentRecordDetailPage />
         case Page.TREATMENT_RECORD_EDIT:
             return <TreatmentRecordEditPage />
+        case Page.TREATMENT_RECORD_CREATE:
+            return <TreatmentRecordCreatePage />
         case Page.DASHBOARD:
             return <DashboardPage />
         default:

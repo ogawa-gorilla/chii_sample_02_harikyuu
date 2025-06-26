@@ -34,7 +34,7 @@ export default function TreatmentRecordEditForm({
 
     return (
         <Container className="my-5">
-            <h4>施術記録の編集</h4>
+            <h4>施術記録の作成</h4>
             <Form onSubmit={onSubmit}>
                 <Form.Group className="mb-3" controlId="client">
                     <Form.Label>クライアント名</Form.Label>

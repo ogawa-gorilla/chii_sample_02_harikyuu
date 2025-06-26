@@ -29,6 +29,3 @@ const TreatmentRecordEditPage = () => {
 }
 
 export default TreatmentRecordEditPage
-function setPage(TREATMENT_RECORD_DETAIL: any): any {
-    throw new Error('Function not implemented.')
-}

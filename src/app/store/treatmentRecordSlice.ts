@@ -65,6 +65,9 @@ export const treatmentRecordSlice = createSlice({
                 record.id === action.payload.id ? action.payload : record
             )
         },
+        createRecord: (state, action: PayloadAction<TreatmentRecord>) => {
+            state.records.push(action.payload)
+        },
     },
 })
 
@@ -75,6 +78,7 @@ export const {
     setRecordDraft,
     updateRecordDraft,
     updateRecord,
+    createRecord,
 } = treatmentRecordSlice.actions
 
 const selectAllRecords = (state: RootState) => state.treatmentRecords.records
