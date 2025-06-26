@@ -62,7 +62,7 @@ const DashboardPage = () => {
 
     return (
         <Container className="my-4">
-            <h4 className="mb-4">{loginUser.name}さんのダッシュボード</h4>
+            <h4 className="mb-4">{loginUser.name}さんのホーム</h4>
             <h5 className="mb-4 small">
                 {VIRTUAL_TODAY} {VIRTUAL_TODAY_TIME}現在
             </h5>
