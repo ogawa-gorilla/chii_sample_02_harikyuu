@@ -4,7 +4,7 @@ import { setSelectedReservation } from '@/app/store/reservationSlice'
 import { Page } from '@/app/types/Page'
 import { useCallback } from 'react'
 
-export const useReservationForm = () => {
+export const useReservationNavigation = () => {
     const dispatch = useAppDispatch()
     const reservations = useAppSelector(
         (state) => state.reservation.reservations

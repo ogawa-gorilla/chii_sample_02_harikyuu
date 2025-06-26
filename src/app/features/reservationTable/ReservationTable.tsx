@@ -1,6 +1,7 @@
 import dayjs from 'dayjs'
 import { useMemo, useState } from 'react'
 import { Button, Container, Form, Table } from 'react-bootstrap'
+import { useReservationNavigation } from '../reservation/hooks/useReservationNavigation'
 import MonthNavigation from './components/MonthNavigation'
 import { useReservationTablePseudoBackend } from './hooks/useReservationTablePseudoBackend'
 
@@ -16,6 +17,7 @@ const representiveDay = (month: Month) => {
 }
 
 export default function ReservationTable() {
+    const { openReservationDetail } = useReservationNavigation()
     const { getTableReservations } = useReservationTablePseudoBackend()
     const reservations = getTableReservations
 
@@ -100,6 +102,7 @@ export default function ReservationTable() {
                         <th>日時</th>
                         <th>施術者</th>
                         <th>顧客名</th>
+                        <th>特記事項</th>
                         <th>予約詳細</th>
                         <th>施術記録</th>
                     </tr>
@@ -112,8 +115,15 @@ export default function ReservationTable() {
                             </td>
                             <td>{reservation.staff}</td>
                             <td>{reservation.client}</td>
+                            <td>{reservation.notes || ''}</td>
                             <td className="text-center">
-                                <Button variant="outline-primary" size="sm">
+                                <Button
+                                    variant="outline-primary"
+                                    size="sm"
+                                    onClick={() => {
+                                        openReservationDetail(reservation.id)
+                                    }}
+                                >
                                     閲覧
                                 </Button>
                             </td>

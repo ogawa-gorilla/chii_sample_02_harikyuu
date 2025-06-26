@@ -5,4 +5,5 @@ export interface ReservationTableReservation {
     client: string
     staff: string
     recordId?: string
+    notes?: string
 }
