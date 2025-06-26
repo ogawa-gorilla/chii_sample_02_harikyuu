@@ -1,5 +1,6 @@
 'use client'
 import { useCalendar } from '@/app/hooks/useCalendar'
+import { useLogin } from '@/app/hooks/useLogin'
 import dayjs from 'dayjs'
 import { useState } from 'react'
 import { Button, Container } from 'react-bootstrap'
@@ -11,9 +12,14 @@ import ShiftTemplateInputPage from './shiftTemplate/ShiftTemplateInputPage'
 export default function ShiftCalendarPage() {
     dayjs.locale('ja')
 
+    const { isManager, isOffice, loginUser } = useLogin()
+    const canSelectStaff = isManager || isOffice
+
     const { startOfWeek } = useCalendar()
 
-    const [selectedStaff, setSelectedStaff] = useState('all')
+    const [selectedStaff, setSelectedStaff] = useState(
+        canSelectStaff ? 'all' : loginUser!.id
+    )
     const [startDate, setStartDate] = useState(startOfWeek.format('YYYY-MM-DD'))
     const [showShiftInputView, setShowShiftInputView] = useState(false)
     const [showShiftTemplateInputView, setShowShiftTemplateInputView] =
@@ -43,10 +49,13 @@ export default function ShiftCalendarPage() {
             ) : (
                 <div>
                     <h5 className="text-center mb-3">シフト一覧</h5>
-                    <StaffSelector
-                        selectedStaff={selectedStaff}
-                        onStaffChange={setSelectedStaff}
-                    />
+                    {canSelectStaff && (
+                        <StaffSelector
+                            selectedStaff={selectedStaff}
+                            onStaffChange={setSelectedStaff}
+                            labelForAll="スタッフを選択してください"
+                        />
+                    )}
                     {selectedStaff !== 'all' && (
                         <div>
                             <div className="d-flex justify-content-between mb-2">
