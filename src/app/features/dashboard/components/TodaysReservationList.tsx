@@ -16,7 +16,7 @@ export default function TodaysReservationList({
             <h6 className="mb-3 text-primary">
                 {dayjs(VIRTUAL_TODAY).format('MM/DD(ddd)')}
             </h6>
-            <ReservationCardList data={data} />
+            <ReservationCardList data={data} hideDate />
         </section>
     )
 }

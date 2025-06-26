@@ -4,10 +4,12 @@ import ReservationCard from './ReservationCard'
 
 interface ReservationCardListProps {
     data: DashboardReservation[]
+    hideDate?: boolean
 }
 
 export default function ReservationCardList({
     data,
+    hideDate,
 }: ReservationCardListProps) {
     return (
         <Row xs={1} sm={2} md={3} lg={4} className="g-3">
@@ -19,7 +21,11 @@ export default function ReservationCardList({
                 </Col>
             ) : (
                 data.map((res: DashboardReservation) => (
-                    <ReservationCard reservation={res} key={res.id} />
+                    <ReservationCard
+                        reservation={res}
+                        key={res.id}
+                        hideDate={hideDate}
+                    />
                 ))
             )}
         </Row>

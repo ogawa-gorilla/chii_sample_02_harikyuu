@@ -1,20 +1,43 @@
 import dayjs from 'dayjs'
-import { Card, Col } from 'react-bootstrap'
+import { Button, Card, Col, Row } from 'react-bootstrap'
 import { DashboardReservation } from '../types/DashboardReservation'
 
 interface ReservationCardProps {
     reservation: DashboardReservation
-    expanded: boolean
+    hideDate?: boolean
 }
 
-export default function ReservationCard({ reservation }: ReservationCardProps) {
+export default function ReservationCard({
+    reservation,
+    hideDate,
+}: ReservationCardProps) {
     return (
         <Col key={reservation.id}>
             <Card className="h-100">
+                <Card.Header>
+                    <Row className="align-items-center">
+                        <Col>
+                            <Card.Title className="mb-0">
+                                {reservation.client}
+                            </Card.Title>
+                        </Col>
+                        <Col xs="auto">
+                            <div className="d-flex gap-2">
+                                <Button size="sm" variant="outline-primary">
+                                    詳細
+                                </Button>
+                                <Button size="sm" variant="outline-secondary">
+                                    施術記録
+                                </Button>
+                            </div>
+                        </Col>
+                    </Row>
+                </Card.Header>
                 <Card.Body>
-                    <Card.Title>{reservation.client}</Card.Title>
                     <Card.Text>
-                        {dayjs(reservation.date).format('MM/DD(ddd)')}
+                        {!hideDate && (
+                            <>{dayjs(reservation.date).format('MM/DD(ddd)')}</>
+                        )}
                         {reservation.time}
                     </Card.Text>
                     <Card.Text>{reservation.notes}</Card.Text>

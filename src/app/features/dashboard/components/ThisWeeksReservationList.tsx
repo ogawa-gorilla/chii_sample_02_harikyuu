@@ -33,7 +33,10 @@ export default function ThisWeeksReservationList({
                             {dayReservations.map(
                                 (res: DashboardReservation) => (
                                     <Col key={res.id}>
-                                        <ReservationCard reservation={res} />
+                                        <ReservationCard
+                                            reservation={res}
+                                            hideDate
+                                        />
                                     </Col>
                                 )
                             )}
