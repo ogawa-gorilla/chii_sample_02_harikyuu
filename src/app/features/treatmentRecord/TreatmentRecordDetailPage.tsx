@@ -1,4 +1,5 @@
 import { useAppDispatch, useAppSelector } from '@/app/hooks'
+import { useLogin } from '@/app/hooks/useLogin'
 import {
     canBack,
     popPage,
@@ -36,6 +37,10 @@ const TreatmentRecordDetail = () => {
             (record) => record.id === recordIdOnView
         )
     )
+
+    const { isManager, isOffice, loginUser } = useLogin()
+    const canEdit =
+        isManager || isOffice || (record && loginUser!.id === record?.staffId)
 
     const staff = useAppSelector((state) =>
         state.user.users.find((user) => user.id === record?.staffId)
@@ -125,9 +130,11 @@ const TreatmentRecordDetail = () => {
                     </Card.Body>
                     <Card.Footer className="d-flex justify-content-end gap-2">
                         <ButtonGroup size="sm" className="w-100">
-                            <Button variant="primary" onClick={handleEdit}>
-                                編集
-                            </Button>
+                            {canEdit && (
+                                <Button variant="primary" onClick={handleEdit}>
+                                    編集
+                                </Button>
+                            )}
                             <Button variant="secondary" onClick={handleBack}>
                                 戻る
                             </Button>
