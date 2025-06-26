@@ -1,11 +1,11 @@
 import { VIRTUAL_TODAY } from '@/app/constants/virtualToday'
 import dayjs from 'dayjs'
 import { Card, Col, Row } from 'react-bootstrap'
-import { ReservationForDashboard } from '../types/ReservationForDashboard'
+import { DashboardReservation } from '../types/DashboardReservation'
 import ReservationCard from './ReservationCard'
 
 interface ThisWeeksReservationListProps {
-    groupedWeekReservations: [string, ReservationForDashboard[]][]
+    groupedWeekReservations: [string, DashboardReservation[]][]
 }
 
 export default function ThisWeeksReservationList({
@@ -31,7 +31,7 @@ export default function ThisWeeksReservationList({
                         </h6>
                         <Row xs={1} sm={2} md={3} lg={4} className="g-3">
                             {dayReservations.map(
-                                (res: ReservationForDashboard) => (
+                                (res: DashboardReservation) => (
                                     <Col key={res.id}>
                                         <ReservationCard reservation={res} />
                                     </Col>

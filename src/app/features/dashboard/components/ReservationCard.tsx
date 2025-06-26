@@ -1,9 +1,9 @@
 import dayjs from 'dayjs'
 import { Card, Col } from 'react-bootstrap'
-import { ReservationForDashboard } from '../types/ReservationForDashboard'
+import { DashboardReservation } from '../types/DashboardReservation'
 
 interface ReservationCardProps {
-    reservation: ReservationForDashboard
+    reservation: DashboardReservation
 }
 
 export default function ReservationCard({ reservation }: ReservationCardProps) {

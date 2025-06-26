@@ -1,9 +1,9 @@
 import { Card, Col, Row } from 'react-bootstrap'
-import { ReservationForDashboard } from '../types/ReservationForDashboard'
+import { DashboardReservation } from '../types/DashboardReservation'
 import ReservationCard from './ReservationCard'
 
 interface ReservationCardListProps {
-    data: ReservationForDashboard[]
+    data: DashboardReservation[]
 }
 
 export default function ReservationCardList({
@@ -18,7 +18,7 @@ export default function ReservationCardList({
                     </Card>
                 </Col>
             ) : (
-                data.map((res: ReservationForDashboard) => (
+                data.map((res: DashboardReservation) => (
                     <ReservationCard reservation={res} key={res.id} />
                 ))
             )}

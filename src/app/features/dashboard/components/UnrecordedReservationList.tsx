@@ -1,10 +1,10 @@
 import { VIRTUAL_TODAY } from '@/app/constants/virtualToday'
 import dayjs from 'dayjs'
-import { ReservationForDashboard } from '../types/ReservationForDashboard'
+import { DashboardReservation } from '../types/DashboardReservation'
 import ReservationCardList from './ReservationCardList'
 
 interface UnrecordedReservationListProps {
-    data: ReservationForDashboard[]
+    data: DashboardReservation[]
 }
 
 export default function UnrecordedReservationList({

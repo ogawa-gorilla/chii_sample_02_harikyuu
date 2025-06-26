@@ -1,6 +1,6 @@
 import { TreatmentRecord } from '@/app/types/treatmentRecord'
 
-export interface ReservationForDashboard {
+export interface DashboardReservation {
     id: string
     client: string
     date: string
