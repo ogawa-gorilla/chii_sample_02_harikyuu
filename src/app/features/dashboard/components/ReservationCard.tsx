@@ -40,14 +40,18 @@ export default function ReservationCard({
                             <div className="d-flex gap-2">
                                 <Button
                                     size="sm"
-                                    variant="outline-primary"
+                                    variant="primary"
                                     onClick={handleDetailClick}
                                 >
                                     詳細
                                 </Button>
                                 <Button
                                     size="sm"
-                                    variant="outline-secondary"
+                                    variant={
+                                        reservation.record
+                                            ? 'success'
+                                            : 'outline-success'
+                                    }
                                     onClick={handleRecordClick}
                                 >
                                     {reservation.record
