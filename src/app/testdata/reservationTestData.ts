@@ -1,5 +1,5 @@
 import { Reservation } from '@/app/types/reservation'
-import { Role } from '@/app/types/role'
+import { USER_TESTDATA } from './userTestData'
 
 export const RESERVATION_TESTDATA: Reservation[] = [
     {
@@ -9,14 +9,7 @@ export const RESERVATION_TESTDATA: Reservation[] = [
         time: '09:00',
         duration: 1,
         status: '予約済',
-        staff: {
-            id: '3',
-            name: '山田',
-            email: 'yamada@example.com',
-            role: Role.STAFF,
-            password: 'password',
-            themeColor: '#4B000F',
-        },
+        staff: USER_TESTDATA.find((user) => user.id === '3')!,
         notes: '',
     },
     {
@@ -26,14 +19,7 @@ export const RESERVATION_TESTDATA: Reservation[] = [
         time: '09:00',
         duration: 1,
         status: '予約済',
-        staff: {
-            id: '1',
-            name: '鈴木',
-            email: 'manager@example.com',
-            role: Role.MANAGER,
-            password: 'suzuki',
-            themeColor: '#0A192F',
-        },
+        staff: USER_TESTDATA.find((user) => user.id === '3')!,
         notes: '',
     },
     {
@@ -43,14 +29,7 @@ export const RESERVATION_TESTDATA: Reservation[] = [
         time: '15:00',
         duration: 1,
         status: '予約済',
-        staff: {
-            id: '1',
-            name: '鈴木',
-            email: 'manager@example.com',
-            role: Role.MANAGER,
-            password: 'suzuki',
-            themeColor: '#0A192F',
-        },
+        staff: USER_TESTDATA.find((user) => user.id === '1')!,
         notes: '',
     },
     {
@@ -60,14 +39,7 @@ export const RESERVATION_TESTDATA: Reservation[] = [
         time: '10:00',
         duration: 1,
         status: '予約済',
-        staff: {
-            id: '2',
-            name: '佐藤',
-            email: 'sato@example.com',
-            role: Role.STAFF,
-            password: 'sato',
-            themeColor: '#2D0B5A',
-        },
+        staff: USER_TESTDATA.find((user) => user.id === '2')!,
         notes: '',
     },
     {
@@ -77,14 +49,7 @@ export const RESERVATION_TESTDATA: Reservation[] = [
         time: '14:00',
         duration: 1,
         status: '予約済',
-        staff: {
-            id: '3',
-            name: '山田',
-            email: 'yamada@example.com',
-            role: Role.STAFF,
-            password: 'yamada',
-            themeColor: '#4B000F',
-        },
+        staff: USER_TESTDATA.find((user) => user.id === '3')!,
         notes: '',
     },
     {
@@ -94,14 +59,7 @@ export const RESERVATION_TESTDATA: Reservation[] = [
         time: '16:00',
         duration: 1,
         status: '予約済',
-        staff: {
-            id: '2',
-            name: '佐藤',
-            email: 'sato@example.com',
-            role: Role.STAFF,
-            password: 'sato',
-            themeColor: '#2D0B5A',
-        },
+        staff: USER_TESTDATA.find((user) => user.id === '2')!,
         notes: '',
     },
     {
@@ -111,14 +69,7 @@ export const RESERVATION_TESTDATA: Reservation[] = [
         time: '09:00',
         duration: 1,
         status: '予約済',
-        staff: {
-            id: '1',
-            name: '鈴木',
-            email: 'manager@example.com',
-            role: Role.MANAGER,
-            password: 'suzuki',
-            themeColor: '#0A192F',
-        },
+        staff: USER_TESTDATA.find((user) => user.id === '1')!,
         notes: '紹介 高橋さん',
     },
     {
@@ -128,14 +79,7 @@ export const RESERVATION_TESTDATA: Reservation[] = [
         time: '13:00',
         duration: 1,
         status: '予約済',
-        staff: {
-            id: '3',
-            name: '山田',
-            email: 'yamada@example.com',
-            role: Role.STAFF,
-            password: 'yamada',
-            themeColor: '#4B000F',
-        },
+        staff: USER_TESTDATA.find((user) => user.id === '3')!,
         notes: '',
     },
     {
@@ -145,14 +89,7 @@ export const RESERVATION_TESTDATA: Reservation[] = [
         time: '15:00',
         duration: 1,
         status: '予約済',
-        staff: {
-            id: '2',
-            name: '佐藤',
-            email: 'sato@example.com',
-            role: Role.STAFF,
-            password: 'sato',
-            themeColor: '#2D0B5A',
-        },
+        staff: USER_TESTDATA.find((user) => user.id === '2')!,
         notes: '針灸は初めてとのこと',
     },
     {
@@ -162,14 +99,7 @@ export const RESERVATION_TESTDATA: Reservation[] = [
         time: '11:00',
         duration: 1,
         status: '予約済',
-        staff: {
-            id: '1',
-            name: '鈴木',
-            email: 'manager@example.com',
-            role: Role.MANAGER,
-            password: 'suzuki',
-            themeColor: '#0A192F',
-        },
+        staff: USER_TESTDATA.find((user) => user.id === '1')!,
         notes: '',
     },
     {
@@ -179,14 +109,7 @@ export const RESERVATION_TESTDATA: Reservation[] = [
         time: '17:00',
         duration: 1,
         status: '予約済',
-        staff: {
-            id: '3',
-            name: '山田',
-            email: 'yamada@example.com',
-            role: Role.STAFF,
-            password: 'yamada',
-            themeColor: '#4B000F',
-        },
+        staff: USER_TESTDATA.find((user) => user.id === '3')!,
         notes: '',
     },
     {
@@ -196,14 +119,7 @@ export const RESERVATION_TESTDATA: Reservation[] = [
         time: '17:00',
         duration: 1,
         status: '予約済',
-        staff: {
-            id: '1',
-            name: '鈴木',
-            email: 'suzuki@example.com',
-            role: Role.MANAGER,
-            password: 'suzuki',
-            themeColor: '#0A192F',
-        },
+        staff: USER_TESTDATA.find((user) => user.id === '1')!,
         notes: '',
     },
     {
@@ -213,14 +129,7 @@ export const RESERVATION_TESTDATA: Reservation[] = [
         time: '14:00',
         duration: 1,
         status: '予約済',
-        staff: {
-            id: '3',
-            name: '山田',
-            email: 'yamada@example.com',
-            role: Role.STAFF,
-            password: 'yamada',
-            themeColor: '#4B000F',
-        },
+        staff: USER_TESTDATA.find((user) => user.id === '3')!,
         notes: '紹介 高橋さん',
     },
     {
@@ -230,14 +139,7 @@ export const RESERVATION_TESTDATA: Reservation[] = [
         time: '09:00',
         duration: 1,
         status: '予約済',
-        staff: {
-            id: '1',
-            name: '鈴木',
-            email: 'manager@example.com',
-            role: Role.MANAGER,
-            password: 'suzuki',
-            themeColor: '#0A192F',
-        },
+        staff: USER_TESTDATA.find((user) => user.id === '1')!,
         notes: '肩こりの鍼治療',
     },
     {
@@ -247,14 +149,7 @@ export const RESERVATION_TESTDATA: Reservation[] = [
         time: '10:00',
         duration: 1,
         status: '予約済',
-        staff: {
-            id: '2',
-            name: '佐藤',
-            email: 'sato@example.com',
-            role: Role.STAFF,
-            password: 'sato',
-            themeColor: '#2D0B5A',
-        },
+        staff: USER_TESTDATA.find((user) => user.id === '2')!,
         notes: '腰痛への施術',
     },
     {
@@ -264,14 +159,7 @@ export const RESERVATION_TESTDATA: Reservation[] = [
         time: '14:00',
         duration: 1,
         status: '予約済',
-        staff: {
-            id: '1',
-            name: '鈴木',
-            email: 'manager@example.com',
-            role: Role.MANAGER,
-            password: 'suzuki',
-            themeColor: '#0A192F',
-        },
+        staff: USER_TESTDATA.find((user) => user.id === '1')!,
         notes: '首のこり',
     },
     {
@@ -281,14 +169,7 @@ export const RESERVATION_TESTDATA: Reservation[] = [
         time: '15:00',
         duration: 1,
         status: '予約済',
-        staff: {
-            id: '2',
-            name: '佐藤',
-            email: 'sato@example.com',
-            role: Role.STAFF,
-            password: 'sato',
-            themeColor: '#2D0B5A',
-        },
+        staff: USER_TESTDATA.find((user) => user.id === '2')!,
         notes: '背中の張り',
     },
     {
@@ -298,14 +179,7 @@ export const RESERVATION_TESTDATA: Reservation[] = [
         time: '11:00',
         duration: 1,
         status: '予約済',
-        staff: {
-            id: '1',
-            name: '鈴木',
-            email: 'manager@example.com',
-            role: Role.MANAGER,
-            password: 'suzuki',
-            themeColor: '#0A192F',
-        },
+        staff: USER_TESTDATA.find((user) => user.id === '1')!,
         notes: '冷え性への対応',
     },
     {
@@ -315,14 +189,7 @@ export const RESERVATION_TESTDATA: Reservation[] = [
         time: '16:00',
         duration: 1,
         status: '予約済',
-        staff: {
-            id: '3',
-            name: '山田',
-            email: 'yamada@example.com',
-            role: Role.STAFF,
-            password: 'yamada',
-            themeColor: '#4B000F',
-        },
+        staff: USER_TESTDATA.find((user) => user.id === '3')!,
         notes: 'ストレスによる不眠',
     },
     {
@@ -332,14 +199,7 @@ export const RESERVATION_TESTDATA: Reservation[] = [
         time: '13:00',
         duration: 1,
         status: '予約済',
-        staff: {
-            id: '2',
-            name: '佐藤',
-            email: 'sato@example.com',
-            role: Role.STAFF,
-            password: 'sato',
-            themeColor: '#2D0B5A',
-        },
+        staff: USER_TESTDATA.find((user) => user.id === '2')!,
         notes: '肩関節の可動域改善',
     },
 
@@ -350,14 +210,7 @@ export const RESERVATION_TESTDATA: Reservation[] = [
         time: '15:00',
         duration: 1,
         status: '予約済',
-        staff: {
-            id: '1',
-            name: '鈴木',
-            email: 'manager@example.com',
-            role: Role.MANAGER,
-            password: 'suzuki',
-            themeColor: '#0A192F',
-        },
+        staff: USER_TESTDATA.find((user) => user.id === '1')!,
         notes: 'ストレスによる不眠',
     },
 ]
