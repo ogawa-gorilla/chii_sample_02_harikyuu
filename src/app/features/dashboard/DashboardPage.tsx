@@ -1,10 +1,11 @@
-import { VIRTUAL_TODAY } from '@/app/constants/virtualToday'
+import { VIRTUAL_TODAY, VIRTUAL_TODAY_TIME } from '@/app/constants/virtualToday'
 import { useAppSelector } from '@/app/hooks'
 import { useRef } from 'react'
 import { Alert, Container } from 'react-bootstrap'
 import ThisWeeksReservationList from './components/ThisWeeksReservationList'
 import TodaysReservationList from './components/TodaysReservationList'
 import UnrecordedReservationList from './components/UnrecordedReservationList'
+import { useReservationPseudoBackend } from './hooks/useReservationPseudoBackend'
 
 // 日付比較ヘルパー
 const isToday = (dateStr: string) => dateStr === VIRTUAL_TODAY
@@ -33,17 +34,22 @@ const groupReservationsByDate = (reservations: any[]) => {
     )
 }
 
-const DashboardPage = ({ userName = '佐藤' }) => {
-    const loginUser = useAppSelector((state) => state.login.user)
-    const reservations = useAppSelector(
-        (state) => state.reservation.reservations
-    ).filter((r) => r.staff.id === loginUser?.id)
+const DashboardPage = () => {
+    const loginUser = useAppSelector((state) => state.login.user)!
+
+    const { getDashboardReservations, getReservationsNeedRecords } =
+        useReservationPseudoBackend()
+
+    const todaysReservations = getDashboardReservations.filter((r) =>
+        isToday(r.date)
+    )
+    const thisWeekReservations = getDashboardReservations.filter((r) =>
+        isThisWeek(r.date)
+    )
+    const pendingRecords = getReservationsNeedRecords
 
     const pendingRecordsRef = useRef<HTMLDivElement>(null)
 
-    const todayReservations = reservations.filter((r) => isToday(r.date))
-    const thisWeekReservations = reservations.filter((r) => isThisWeek(r.date))
-    const pendingRecords = reservations.filter((r) => !r.records?.length)
     const groupedWeekReservations =
         groupReservationsByDate(thisWeekReservations)
 
@@ -56,7 +62,10 @@ const DashboardPage = ({ userName = '佐藤' }) => {
 
     return (
         <Container className="my-4">
-            <h4 className="mb-4">{userName}さんのダッシュボード</h4>
+            <h4 className="mb-4">{loginUser.name}さんのダッシュボード</h4>
+            <h5 className="mb-4 small">
+                {VIRTUAL_TODAY} {VIRTUAL_TODAY_TIME}現在
+            </h5>
 
             {/* 施術記録未完了の警告 */}
             {pendingRecords.length > 0 && (
@@ -76,11 +85,14 @@ const DashboardPage = ({ userName = '佐藤' }) => {
                 </Alert>
             )}
 
-            <TodaysReservationList data={todayReservations} />
+            <TodaysReservationList data={todaysReservations} />
             <ThisWeeksReservationList
                 groupedWeekReservations={groupedWeekReservations}
             />
-            <UnrecordedReservationList data={pendingRecords} />
+            <UnrecordedReservationList
+                data={pendingRecords}
+                ref={pendingRecordsRef}
+            />
         </Container>
     )
 }

@@ -5,13 +5,15 @@ import ReservationCardList from './ReservationCardList'
 
 interface UnrecordedReservationListProps {
     data: DashboardReservation[]
+    ref: React.RefObject<HTMLDivElement | null>
 }
 
 export default function UnrecordedReservationList({
     data,
+    ref,
 }: UnrecordedReservationListProps) {
     return (
-        <section className="mb-5">
+        <section className="mb-5" ref={ref}>
             <h5 className="mb-3">⚠️ 施術記録がまだの予約があります</h5>
             <h6 className="mb-3 text-primary">
                 {dayjs(VIRTUAL_TODAY).format('MM/DD(ddd)')}
