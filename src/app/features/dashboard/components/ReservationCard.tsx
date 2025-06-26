@@ -2,7 +2,7 @@ import { TreatmentRecord } from '@/app/types/treatmentRecord'
 import dayjs from 'dayjs'
 import { Button, Card, Col, Row } from 'react-bootstrap'
 import { useReservationNavigation } from '../../reservation/hooks/useReservationNavigation'
-import { useTreatmentForm } from '../../treatmentRecord/hooks/useTreatmentForm'
+import { useTreatmentNavigation } from '../../treatmentRecord/hooks/useTreatmentNavigation'
 import { DashboardReservation } from '../types/DashboardReservation'
 
 interface ReservationCardProps {
@@ -14,7 +14,8 @@ export default function ReservationCard({
     reservation,
     hideDate,
 }: ReservationCardProps) {
-    const { openOrCreateTreatmentRecordForReservation } = useTreatmentForm()
+    const { openOrCreateTreatmentRecordForReservation } =
+        useTreatmentNavigation()
     const { openReservationDetail } = useReservationNavigation()
 
     const handleDetailClick = () => {

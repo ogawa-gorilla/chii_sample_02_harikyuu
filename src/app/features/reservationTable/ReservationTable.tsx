@@ -2,6 +2,7 @@ import dayjs from 'dayjs'
 import { useMemo, useState } from 'react'
 import { Button, Container, Form, Table } from 'react-bootstrap'
 import { useReservationNavigation } from '../reservation/hooks/useReservationNavigation'
+import { useTreatmentNavigation } from '../treatmentRecord/hooks/useTreatmentNavigation'
 import MonthNavigation from './components/MonthNavigation'
 import { useReservationTablePseudoBackend } from './hooks/useReservationTablePseudoBackend'
 
@@ -18,6 +19,8 @@ const representiveDay = (month: Month) => {
 
 export default function ReservationTable() {
     const { openReservationDetail } = useReservationNavigation()
+    const { openOrCreateTreatmentRecordForReservation } =
+        useTreatmentNavigation()
     const { getTableReservations } = useReservationTablePseudoBackend()
     const reservations = getTableReservations
 
@@ -118,7 +121,7 @@ export default function ReservationTable() {
                             <td>{reservation.notes || ''}</td>
                             <td className="text-center">
                                 <Button
-                                    variant="outline-primary"
+                                    variant="primary"
                                     size="sm"
                                     onClick={() => {
                                         openReservationDetail(reservation.id)
@@ -128,9 +131,29 @@ export default function ReservationTable() {
                                 </Button>
                             </td>
                             <td className="text-center">
-                                {reservation.recordId && (
-                                    <Button variant="outline-primary" size="sm">
+                                {reservation.recordId ? (
+                                    <Button
+                                        variant="primary"
+                                        size="sm"
+                                        onClick={() => {
+                                            openOrCreateTreatmentRecordForReservation(
+                                                reservation.id
+                                            )
+                                        }}
+                                    >
                                         閲覧
+                                    </Button>
+                                ) : (
+                                    <Button
+                                        variant="outline-success"
+                                        size="sm"
+                                        onClick={() => {
+                                            openOrCreateTreatmentRecordForReservation(
+                                                reservation.id
+                                            )
+                                        }}
+                                    >
+                                        作成
                                     </Button>
                                 )}
                             </td>
