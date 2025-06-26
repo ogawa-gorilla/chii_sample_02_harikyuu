@@ -1,10 +1,7 @@
-import { useAppDispatch, useAppSelector } from '@/app/hooks'
-import { pushPage } from '@/app/store/navigationSlice'
-import { setSelectedReservation } from '@/app/store/reservationSlice'
-import { Page } from '@/app/types/Page'
 import { TreatmentRecord } from '@/app/types/treatmentRecord'
 import dayjs from 'dayjs'
 import { Button, Card, Col, Row } from 'react-bootstrap'
+import { useReservationForm } from '../../reservation/hooks/useReservationForm'
 import { useTreatmentForm } from '../../treatmentRecord/hooks/useTreatmentForm'
 import { DashboardReservation } from '../types/DashboardReservation'
 
@@ -17,20 +14,15 @@ export default function ReservationCard({
     reservation,
     hideDate,
 }: ReservationCardProps) {
-    const dispatch = useAppDispatch()
-    const { openOrCreateForReservation } = useTreatmentForm()
-
-    const targetReservation = useAppSelector((state) =>
-        state.reservation.reservations.find((r) => r.id === reservation.id)
-    )!
+    const { openOrCreateTreatmentRecordForReservation } = useTreatmentForm()
+    const { openReservationDetail } = useReservationForm()
 
     const handleDetailClick = () => {
-        dispatch(setSelectedReservation(targetReservation))
-        dispatch(pushPage(Page.RESERVE_DETAIL))
+        openReservationDetail(reservation.id)
     }
 
     const handleRecordClick = () => {
-        openOrCreateForReservation(reservation.id)
+        openOrCreateTreatmentRecordForReservation(reservation.id)
     }
 
     return (
@@ -79,5 +71,8 @@ export default function ReservationCard({
     )
 }
 function setSelectedTreatmentRecord(record: TreatmentRecord): any {
+    throw new Error('Function not implemented.')
+}
+function openReservationDetail(id: string) {
     throw new Error('Function not implemented.')
 }

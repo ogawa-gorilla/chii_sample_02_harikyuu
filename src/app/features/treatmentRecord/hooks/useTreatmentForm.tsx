@@ -16,7 +16,7 @@ export const useTreatmentForm = () => {
         (state) => state.reservation.reservations
     )
 
-    const openOrCreateForReservation = useCallback(
+    const openOrCreateTreatmentRecordForReservation = useCallback(
         (reservationId: string) => {
             const reservation = reservations.find(
                 (r) => r.id === reservationId
@@ -45,8 +45,10 @@ export const useTreatmentForm = () => {
                 dispatch(pushPage(Page.TREATMENT_RECORD_CREATE))
             }
         },
-        [dispatch]
+        [dispatch, records, reservations]
     )
 
-    return { openOrCreateForReservation }
+    return {
+        openOrCreateTreatmentRecordForReservation,
+    }
 }
