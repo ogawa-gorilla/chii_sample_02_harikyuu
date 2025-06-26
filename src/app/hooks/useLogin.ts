@@ -2,6 +2,7 @@ import { useAppDispatch, useAppSelector } from '../hooks'
 import { logout } from '../store/loginSlice'
 import { setCurrentPage } from '../store/navigationSlice'
 import { Page } from '../types/Page'
+import { Role } from '../types/role'
 
 export const useLogin = () => {
     const dispatch = useAppDispatch()
@@ -12,5 +13,8 @@ export const useLogin = () => {
         dispatch(setCurrentPage(Page.HOME))
     }
 
-    return { loginUser, handleLogout }
+    const isManager = loginUser && loginUser.role === Role.MANAGER
+    const isOffice = loginUser && loginUser.role === Role.OFFICE
+
+    return { loginUser, handleLogout, isManager, isOffice }
 }
