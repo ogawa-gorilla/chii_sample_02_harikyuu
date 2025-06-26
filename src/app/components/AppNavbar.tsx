@@ -26,7 +26,9 @@ export default function AppNavbar() {
         >
             {loggedin ? (
                 <Container>
-                    <Navbar.Brand href="#">針灸院</Navbar.Brand>
+                    <Navbar.Brand href="#">
+                        鈴木針灸院 予約管理システム
+                    </Navbar.Brand>
                     <Navbar.Toggle aria-controls="navbar-main" />
                     <Navbar.Collapse id="navbar-main">
                         <Nav className="me-auto">
@@ -49,6 +51,14 @@ export default function AppNavbar() {
                                 }
                             >
                                 予約カレンダー
+                            </Nav.Link>
+                            <Nav.Link
+                                href="#"
+                                onClick={() =>
+                                    handleNavLinkClick(Page.RESERVATION_TABLE)
+                                }
+                            >
+                                予約台帳
                             </Nav.Link>
                             <Nav.Link
                                 href="#"
@@ -97,7 +107,9 @@ export default function AppNavbar() {
                 </Container>
             ) : (
                 <Container>
-                    <Navbar.Brand href="#">針灸院</Navbar.Brand>
+                    <Navbar.Brand href="#">
+                        鈴木針灸院 予約管理システム
+                    </Navbar.Brand>
                 </Container>
             )}
         </Navbar>

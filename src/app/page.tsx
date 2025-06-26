@@ -7,6 +7,7 @@ import ReservationCreatePage from './features/reservation/ReservationCreatePage'
 import ReservationDetailPage from './features/reservation/ReservationDetailPage'
 import ReservationEditPage from './features/reservation/ReservationEditPage'
 import ReservationCreateCalendarPage from './features/reservationCreateCalendar/ReservationCreateCalendarPage'
+import ReservationTable from './features/reservationTable/ReservationTable'
 import ReservationCalendarPage from './features/reservationViewCalendar/ReservationViewCalendarPage'
 import ShiftCalendarPage from './features/shiftCalendar/ShiftCalendarPage'
 import TreatmentRecordCreatePage from './features/treatmentRecord/TreatmentRecordCreatePage'
@@ -26,6 +27,8 @@ const showPage = (page: Page) => {
             return <ReservationCalendarPage />
         case Page.RESERVATION_CREATE_CALENDAR:
             return <ReservationCreateCalendarPage />
+        case Page.RESERVATION_TABLE:
+            return <ReservationTable />
         case Page.RESERVE_CREATE:
             return <ReservationCreatePage />
         case Page.RESERVE_DETAIL:

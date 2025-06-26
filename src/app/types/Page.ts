@@ -16,6 +16,8 @@ export const Page = {
     RESERVATION_CALENDAR: 'reservation-calendar',
     RESERVES_ON_DATE: 'reserves-on-date',
 
+    RESERVATION_TABLE: 'reservation-table',
+
     RESERVATION_CREATE_CALENDAR: 'reservation-create-calendar',
 
     SHIFT: 'shift',
