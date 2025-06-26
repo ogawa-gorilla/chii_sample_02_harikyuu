@@ -9,7 +9,7 @@ export const RESERVATION_TESTDATA: Reservation[] = [
         time: '09:00',
         duration: 1,
         status: '予約済',
-        staff: USER_TESTDATA.find((user) => user.id === '3')!,
+        staff: USER_TESTDATA.find((user) => user.id === '1')!,
         notes: '',
     },
     {
