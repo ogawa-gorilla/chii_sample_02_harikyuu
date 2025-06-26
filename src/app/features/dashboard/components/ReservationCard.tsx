@@ -1,3 +1,7 @@
+import { useAppDispatch, useAppSelector } from '@/app/hooks'
+import { pushPage } from '@/app/store/navigationSlice'
+import { setSelectedReservation } from '@/app/store/reservationSlice'
+import { Page } from '@/app/types/Page'
 import dayjs from 'dayjs'
 import { Button, Card, Col, Row } from 'react-bootstrap'
 import { DashboardReservation } from '../types/DashboardReservation'
@@ -11,6 +15,21 @@ export default function ReservationCard({
     reservation,
     hideDate,
 }: ReservationCardProps) {
+    const dispatch = useAppDispatch()
+
+    const targetReservation = useAppSelector((state) =>
+        state.reservation.reservations.find((r) => r.id === reservation.id)
+    )!
+
+    const handleDetailClick = () => {
+        dispatch(setSelectedReservation(targetReservation))
+        dispatch(pushPage(Page.RESERVE_DETAIL))
+    }
+
+    const handleRecordClick = () => {
+        console.log(reservation)
+    }
+
     return (
         <Col key={reservation.id}>
             <Card className="h-100">
@@ -23,10 +42,18 @@ export default function ReservationCard({
                         </Col>
                         <Col xs="auto">
                             <div className="d-flex gap-2">
-                                <Button size="sm" variant="outline-primary">
+                                <Button
+                                    size="sm"
+                                    variant="outline-primary"
+                                    onClick={handleDetailClick}
+                                >
                                     詳細
                                 </Button>
-                                <Button size="sm" variant="outline-secondary">
+                                <Button
+                                    size="sm"
+                                    variant="outline-secondary"
+                                    onClick={handleRecordClick}
+                                >
                                     施術記録
                                 </Button>
                             </div>
