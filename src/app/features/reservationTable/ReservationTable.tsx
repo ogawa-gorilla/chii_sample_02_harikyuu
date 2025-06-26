@@ -75,9 +75,9 @@ export default function ReservationTable() {
     return (
         <Container>
             <div className="mb-5">
-                <h1 className="text-center">
+                <h5 className="text-center mb-3">
                     予約台帳: {month.year}年{month.month + 1}月
-                </h1>
+                </h5>
             </div>
             <MonthNavigation
                 onPrevMonth={handlePrevMonth}
