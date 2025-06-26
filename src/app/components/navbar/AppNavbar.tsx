@@ -1,9 +1,10 @@
 import { useState } from 'react'
-import { Container, Nav, Navbar, NavDropdown } from 'react-bootstrap'
-import { useAppDispatch, useAppSelector } from '../hooks'
-import { isLoggedin } from '../store/loginSlice'
-import { setCurrentPage } from '../store/navigationSlice'
-import { Page } from '../types/Page'
+import { Container, Nav, Navbar } from 'react-bootstrap'
+import { useAppDispatch, useAppSelector } from '../../hooks'
+import { isLoggedin } from '../../store/loginSlice'
+import { setCurrentPage } from '../../store/navigationSlice'
+import { Page } from '../../types/Page'
+import UserDropdown from './components/UserDropdown'
 
 export default function AppNavbar() {
     const dispatch = useAppDispatch()
@@ -32,6 +33,14 @@ export default function AppNavbar() {
                     <Navbar.Toggle aria-controls="navbar-main" />
                     <Navbar.Collapse id="navbar-main">
                         <Nav className="me-auto">
+                            <Nav.Link
+                                href="#"
+                                onClick={() =>
+                                    handleNavLinkClick(Page.DASHBOARD)
+                                }
+                            >
+                                ホーム
+                            </Nav.Link>
                             <Nav.Link
                                 href="#"
                                 onClick={() =>
@@ -76,32 +85,9 @@ export default function AppNavbar() {
                             >
                                 シフト管理
                             </Nav.Link>
-                            <Nav.Link
-                                href="#"
-                                onClick={() =>
-                                    handleNavLinkClick(Page.DASHBOARD)
-                                }
-                            >
-                                ダッシュボード
-                            </Nav.Link>
                         </Nav>
                         <Nav>
-                            <NavDropdown
-                                title="ユーザー: "
-                                id="user-dropdown"
-                                align="end"
-                            >
-                                <NavDropdown.Item href="#">
-                                    プロフィール
-                                </NavDropdown.Item>
-                                <NavDropdown.Item href="#">
-                                    設定
-                                </NavDropdown.Item>
-                                <NavDropdown.Divider />
-                                <NavDropdown.Item href="#">
-                                    ログアウト
-                                </NavDropdown.Item>
-                            </NavDropdown>
+                            <UserDropdown />
                         </Nav>
                     </Navbar.Collapse>
                 </Container>

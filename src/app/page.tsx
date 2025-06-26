@@ -1,7 +1,7 @@
 'use client'
 
-import AppNavbar from './components/AppNavbar'
 import Footer from './components/Footer'
+import AppNavbar from './components/navbar/AppNavbar'
 import DashboardPage from './features/dashboard/DashboardPage'
 import ReservationCreatePage from './features/reservation/ReservationCreatePage'
 import ReservationDetailPage from './features/reservation/ReservationDetailPage'
