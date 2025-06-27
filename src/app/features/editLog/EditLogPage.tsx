@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from '@/app/hooks'
 import { setSearchConditions } from '@/app/store/editLogSlice'
 import { EditLogSearchConditions, EditLogTarget } from '@/app/types/EditLog'
 import dayjs from 'dayjs'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { Card, Container, ListGroup } from 'react-bootstrap'
 import SearchSection from './components/SearchSection'
 
@@ -28,11 +28,18 @@ const EditLogPage = () => {
     const searchConditions = useAppSelector(
         (state) => state.editLog.searchConditions
     )
+    const [isSearchSectionOpen, setIsSearchSectionOpen] = useState(true)
+
     const handleSearchConditionsChange = (
         conditions: EditLogSearchConditions
     ) => {
         dispatch(setSearchConditions(conditions))
     }
+
+    const handleSearchSectionToggle = (isOpen: boolean) => {
+        setIsSearchSectionOpen(isOpen)
+    }
+
     console.log(searchConditions)
 
     const filteredEditLogs = useMemo(() => {
@@ -61,9 +68,12 @@ const EditLogPage = () => {
             .sort((a, b) => dayjs(b.editedAt).diff(dayjs(a.editedAt)))
     }, [editLogs, searchConditions])
 
+    // SearchSectionの状態に応じて上部余白を調整
+    const topMargin = isSearchSectionOpen ? '280px' : '80px'
+
     return (
         <Container className="my-4">
-            <div style={{ marginTop: '180px' }}>
+            <div style={{ marginTop: topMargin }}>
                 <h4 className="mb-4">編集履歴</h4>
 
                 <ExplanationCard
@@ -74,6 +84,7 @@ const EditLogPage = () => {
                 <SearchSection
                     conditions={searchConditions}
                     onConditionsChange={handleSearchConditionsChange}
+                    onToggle={handleSearchSectionToggle}
                 />
 
                 <Card>
