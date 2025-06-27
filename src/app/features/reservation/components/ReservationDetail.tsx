@@ -1,5 +1,10 @@
+import { useTreatmentNavigation } from '@/app/features/treatmentRecord/hooks/useTreatmentNavigation'
 import { useAppSelector } from '@/app/hooks'
+import { useLogin } from '@/app/hooks/useLogin'
 import { Reservation } from '@/app/types/reservation'
+import React from 'react'
+import { Col } from 'react-bootstrap'
+import { useReservationPseudoBackend } from '../hooks/useReservationPseudoBackend'
 
 interface ReservationDetailProps {
     reservation: Reservation
@@ -14,6 +19,14 @@ export default function ReservationDetail({
     onDelete,
     onBack,
 }: ReservationDetailProps) {
+    const { hasTreatmentRecord } = useReservationPseudoBackend()
+    const { openOrCreateTreatmentRecordForReservation } =
+        useTreatmentNavigation()
+
+    const { isManager, isOffice, loginUser } = useLogin()
+    const canCreateTreatmentRecord =
+        isManager || isOffice || reservation.staff.id === loginUser!.id
+
     const handleEdit = () => {
         onEdit?.(reservation.id)
     }
@@ -22,6 +35,14 @@ export default function ReservationDetail({
         if (window.confirm('この予約を削除してもよろしいですか？')) {
             onDelete?.(reservation.id)
         }
+    }
+
+    const handleCreateTreatmentRecord = () => {
+        openOrCreateTreatmentRecordForReservation(reservation.id)
+    }
+
+    const handleViewTreatmentRecord = () => {
+        openOrCreateTreatmentRecordForReservation(reservation.id)
     }
 
     const pageStack = useAppSelector(
@@ -74,7 +95,7 @@ export default function ReservationDetail({
                     </div>
 
                     {/* ボタン */}
-                    <div className="flex gap-3 pt-4">
+                    <Col className="flex gap-3 pt-4">
                         {onBack && pageStack > 1 && (
                             <button
                                 type="button"
@@ -102,9 +123,36 @@ export default function ReservationDetail({
                                 削除
                             </button>
                         )}
-                    </div>
+                    </Col>
+                    <Col className="flex gap-3 pt-4">
+                        {hasTreatmentRecord(reservation) ? (
+                            <React.Fragment>
+                                <span>施術記録あり</span>
+                                <button
+                                    type="button"
+                                    onClick={handleViewTreatmentRecord}
+                                    className="flex-1 bg-green-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors"
+                                >
+                                    施術記録を閲覧
+                                </button>
+                            </React.Fragment>
+                        ) : (
+                            canCreateTreatmentRecord && (
+                                <button
+                                    type="button"
+                                    onClick={handleViewTreatmentRecord}
+                                    className="flex-1 bg-green-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors"
+                                >
+                                    施術記録を作成
+                                </button>
+                            )
+                        )}
+                    </Col>
                 </div>
             </div>
         </div>
     )
+}
+function openOrCreateTreatmentRecordForReservation(id: string) {
+    throw new Error('Function not implemented.')
 }
