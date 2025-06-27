@@ -66,7 +66,9 @@ export default function useReservationEditor() {
                 loginUser!
             )
             dispatch(updateReservation(newReservation))
-            dispatch(addEditLog(log))
+            if (log.edits.length > 0) {
+                dispatch(addEditLog(log))
+            }
         },
         [dispatch, loginUser, reservations]
     )
