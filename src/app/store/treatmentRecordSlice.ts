@@ -27,6 +27,7 @@ const initialState: TreatmentRecordState = {
         client: '',
         staffId: '',
         date: '',
+        time: '',
         content: '',
         attached_images: [],
     },
