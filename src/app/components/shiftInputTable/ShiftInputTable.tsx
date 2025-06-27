@@ -32,6 +32,7 @@ export default function ShiftInputTable({
         handleDraftSplit,
         handleDraftMerge,
         handleUndo,
+        canUndo,
     } = useShiftDraftManager()
 
     const [showConfirmDialog, setShowConfirmDialog] = useState(false)
@@ -68,7 +69,11 @@ export default function ShiftInputTable({
     }
 
     const handleCancel = () => {
-        setShowConfirmDialog(true)
+        if (canUndo) {
+            setShowConfirmDialog(true)
+        } else {
+            onAbort()
+        }
     }
 
     const handleConfirmCancel = () => {
