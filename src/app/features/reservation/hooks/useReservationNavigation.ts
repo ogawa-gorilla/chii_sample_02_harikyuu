@@ -21,5 +21,16 @@ export const useReservationNavigation = () => {
         [dispatch, reservations]
     )
 
-    return { openReservationDetail }
+    const editReservation = useCallback(
+        (reservationId: string) => {
+            const reservation = reservations.find(
+                (r) => r.id === reservationId
+            )!
+            dispatch(setSelectedReservation(reservation))
+            dispatch(pushPage(Page.RESERVE_EDIT))
+        },
+        [dispatch, reservations]
+    )
+
+    return { openReservationDetail, editReservation }
 }

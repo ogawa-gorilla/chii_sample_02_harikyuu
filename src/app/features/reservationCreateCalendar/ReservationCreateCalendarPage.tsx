@@ -76,6 +76,7 @@ export default function ReservationCreateCalendarPage() {
                     }
                     onEditClick={handleEditClick}
                     onDetailClick={handleDetailClick}
+                    onCreateByStaff={handleCreateByStaff}
                 />
             )}
         </Container>
