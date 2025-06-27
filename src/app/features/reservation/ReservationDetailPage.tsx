@@ -4,6 +4,7 @@ import { popPage, pushPage } from '@/app/store/navigationSlice'
 import { setSelectedReservation } from '@/app/store/reservationSlice'
 import { Page } from '@/app/types/Page'
 import ReservationDetail from './components/ReservationDetail'
+import useReservationEditor from './hooks/useReservationEditor'
 
 export default function ReservationDetailPage() {
     const dispatch = useAppDispatch()
@@ -11,6 +12,7 @@ export default function ReservationDetailPage() {
         (state) => state.reservation.selectedReservation
     )!
     const { isManager, isOffice, loginUser } = useLogin()
+    const { deleteReservationEntry } = useReservationEditor()
 
     const canEdit =
         isManager || isOffice || reservation.staff.id === loginUser!.id
@@ -21,7 +23,8 @@ export default function ReservationDetailPage() {
     }
 
     const handleDelete = () => {
-        console.log('del')
+        deleteReservationEntry(reservation.id)
+        dispatch(popPage())
     }
 
     const handleBack = () => {

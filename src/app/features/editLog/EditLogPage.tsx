@@ -1,7 +1,11 @@
 import ExplanationCard from '@/app/components/common/ExplanationCard'
 import { useAppDispatch, useAppSelector } from '@/app/hooks'
 import { setSearchConditions } from '@/app/store/editLogSlice'
-import { EditLogSearchConditions, EditLogTarget } from '@/app/types/EditLog'
+import {
+    EditLogSearchConditions,
+    EditLogTag,
+    EditLogTarget,
+} from '@/app/types/EditLog'
 import dayjs from 'dayjs'
 import { useMemo, useState } from 'react'
 import { Card, Container, ListGroup } from 'react-bootstrap'
@@ -40,7 +44,14 @@ const EditLogPage = () => {
         setIsSearchSectionOpen(isOpen)
     }
 
-    console.log(searchConditions)
+    const getTagClass = (tag: EditLogTag) => {
+        const tagMap: { [key: string]: string } = {
+            [EditLogTag.DELETE]: 'bg-danger',
+            [EditLogTag.EDIT]: 'bg-primary',
+            [EditLogTag.CREATE]: 'bg-success',
+        }
+        return tagMap[tag] || ''
+    }
 
     const filteredEditLogs = useMemo(() => {
         return editLogs
@@ -78,7 +89,9 @@ const EditLogPage = () => {
 
                 <ExplanationCard
                     title="説明"
-                    text="編集履歴ページは、データの編集を行ったユーザー、編集の内容、編集の日時を表示します。"
+                    text={
+                        '編集履歴ページは、データの編集を行ったユーザー、編集の内容、編集の日時を表示します。\n削除されたデータの復元もここで行えます。'
+                    }
                 />
 
                 <SearchSection
@@ -98,13 +111,27 @@ const EditLogPage = () => {
                                     <div className="d-flex justify-content-between align-items-start mb-2">
                                         <div className="d-flex align-items-center">
                                             <span
-                                                className="badge bg-primary me-2"
+                                                className="badge bg-secondary me-2"
                                                 style={{ fontSize: '0.75rem' }}
                                             >
                                                 {getEditTargetDisplayName(
                                                     editLog.editTarget
                                                 )}
                                             </span>
+                                            {editLog.tags.map((tag) => (
+                                                <span
+                                                    key={tag}
+                                                    className={
+                                                        'badge me-2 ' +
+                                                        getTagClass(tag)
+                                                    }
+                                                    style={{
+                                                        fontSize: '0.75rem',
+                                                    }}
+                                                >
+                                                    {tag}
+                                                </span>
+                                            ))}
                                             <span className="text-muted small">
                                                 {editLog.user.name}
                                             </span>

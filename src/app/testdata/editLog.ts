@@ -1,4 +1,4 @@
-import { EditLog, EditLogTarget } from '../types/EditLog'
+import { EditLog, EditLogTag, EditLogTarget } from '../types/EditLog'
 import { Role } from '../types/role'
 import { USER_TESTDATA } from './userTestData'
 
@@ -19,6 +19,7 @@ export const EDIT_LOG_TESTDATA: EditLog[] = [
             '予約時間を14:00から15:00に変更',
             'クライアント名を「田中」から「佐藤」に変更',
         ],
+        tags: [EditLogTag.EDIT],
     },
     {
         id: '2',
@@ -33,6 +34,7 @@ export const EDIT_LOG_TESTDATA: EditLog[] = [
         },
         editedAt: '2025-06-01T16:45:00Z',
         edits: ['勤務時間を9:00-18:00から10:00-19:00に変更'],
+        tags: [EditLogTag.EDIT],
     },
     {
         id: '3',
@@ -47,6 +49,7 @@ export const EDIT_LOG_TESTDATA: EditLog[] = [
         },
         editedAt: '2025-06-02T12:20:00Z',
         edits: ['施術内容を追加', '注意事項を更新'],
+        tags: [EditLogTag.EDIT],
     },
     {
         id: '4',
@@ -54,5 +57,6 @@ export const EDIT_LOG_TESTDATA: EditLog[] = [
         user: USER_TESTDATA[3],
         editedAt: '2025-06-03T12:20:00Z',
         edits: ['施術内容を追加', '注意事項を更新'],
+        tags: [EditLogTag.EDIT],
     },
 ]

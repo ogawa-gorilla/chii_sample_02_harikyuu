@@ -35,6 +35,11 @@ export const reservationSlice = createSlice({
         setSelectedReservation: (state, action: PayloadAction<Reservation>) => {
             state.selectedReservation = action.payload
         },
+        deleteReservation: (state, action: PayloadAction<string>) => {
+            state.reservations = state.reservations.filter(
+                (reservation) => reservation.id !== action.payload
+            )
+        },
     },
 })
 
@@ -43,6 +48,7 @@ export const {
     createReservation,
     updateReservation,
     setSelectedReservation,
+    deleteReservation,
 } = reservationSlice.actions
 
 export default reservationSlice.reducer

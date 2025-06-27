@@ -16,7 +16,7 @@ export default function SearchSection({
     onToggle,
 }: SearchSectionProps) {
     const users = useAppSelector((state) => state.user.users)
-    const [isOpen, setIsOpen] = useState(true)
+    const [isOpen, setIsOpen] = useState(false)
 
     useEffect(() => {
         onToggle?.(isOpen)
