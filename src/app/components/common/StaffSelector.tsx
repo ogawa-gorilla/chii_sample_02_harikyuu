@@ -8,6 +8,7 @@ interface StaffSelectorForReservationProps {
     required?: boolean
     allowAll?: boolean
     labelForAll?: string
+    header?: boolean
 }
 
 export default function StaffSelector({
@@ -16,14 +17,18 @@ export default function StaffSelector({
     required = true,
     allowAll = true,
     labelForAll = 'すべて',
+    header = true,
 }: StaffSelectorForReservationProps) {
     const staffs = useAppSelector(getStaffs)
 
     return (
         <div className="mb-3">
-            <Form.Label className="fw-bold">
-                スタッフ {required && <span className="text-danger">*</span>}
-            </Form.Label>
+            {header && (
+                <Form.Label className="fw-bold">
+                    スタッフ{' '}
+                    {required && <span className="text-danger">*</span>}
+                </Form.Label>
+            )}
             <Form.Select
                 value={selectedStaff}
                 onChange={(e) => onStaffChange(e.target.value)}

@@ -16,9 +16,8 @@ export const EditLogTarget = {
 export type EditLogTarget = (typeof EditLogTarget)[keyof typeof EditLogTarget]
 
 export interface EditLogSearchConditions {
-    target: EditLogTarget
+    target: EditLogTarget | null
     startDate: string
     endDate: string
-    searchText: string
     staffId: string
 }
