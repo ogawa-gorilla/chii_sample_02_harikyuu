@@ -1,10 +1,12 @@
 import dayjs from 'dayjs'
 import { useMemo, useState } from 'react'
-import { Container, Form, Table } from 'react-bootstrap'
+import { Button, Col, Container, Form, Row, Table } from 'react-bootstrap'
 import MonthNavigation from './components/MonthNavigation'
+import SortMethodSelector from './components/SortMethodSelector'
+import { filterReservations } from './hooks/filterReservations'
+import { sortFunc, SortKey } from './hooks/SortFunc'
 import { useReservationTablePseudoBackend } from './hooks/useReservationTablePseudoBackend'
 import ReservationTableRow from './ReservationTableRow'
-import { ReservationTableReservation } from './types/ReservationTableReservation'
 
 interface Month {
     month: number
@@ -17,67 +19,28 @@ const representiveDay = (month: Month) => {
     )
 }
 
-const SortKey = {
-    DATE_ASC: 'date_asc',
-    DATE_DESC: 'date_desc',
-    CLIENT_ASC: 'client_asc',
-    CLIENT_DESC: 'client_desc',
-    STAFF_ASC: 'staff_asc',
-    STAFF_DESC: 'staff_desc',
-} as const
-type SortKey = (typeof SortKey)[keyof typeof SortKey]
-
 export default function ReservationTable() {
     const { getTableReservations } = useReservationTablePseudoBackend()
-    const reservations = getTableReservations
+    const allReservations = getTableReservations
 
     const [month, setMonth] = useState<Month>({ month: 5, year: 2025 })
     const [searchText, setSearchText] = useState('')
     const [sortKey, setSortKey] = useState<SortKey>(SortKey.DATE_ASC)
 
     const reservationsInMonth = useMemo(() => {
-        return reservations.filter((reservation) => {
+        return allReservations.filter((reservation) => {
             const reservationDate = dayjs(reservation.date)
             return (
                 reservationDate.month() === month.month &&
                 reservationDate.year() === month.year
             )
         })
-    }, [reservations, month])
+    }, [allReservations, month])
 
-    const sortFunc = (
-        a: ReservationTableReservation,
-        b: ReservationTableReservation
-    ) => {
-        if (sortKey === SortKey.DATE_ASC) {
-            return dayjs(a.date).diff(dayjs(b.date))
-        } else if (sortKey === SortKey.DATE_DESC) {
-            return dayjs(b.date).diff(dayjs(a.date))
-        } else if (sortKey === SortKey.CLIENT_ASC) {
-            return a.client.localeCompare(b.client)
-        } else if (sortKey === SortKey.CLIENT_DESC) {
-            return b.client.localeCompare(a.client)
-        } else if (sortKey === SortKey.STAFF_ASC) {
-            return a.staff.name.localeCompare(b.staff.name)
-        } else if (sortKey === SortKey.STAFF_DESC) {
-            return b.staff.name.localeCompare(a.staff.name)
-        } else {
-            return 0
-        }
-    }
-
-    const filteredReservations = useMemo(() => {
-        return reservationsInMonth
-            .filter((reservation) => {
-                return (
-                    searchText === '' ||
-                    reservation.client.includes(searchText) ||
-                    reservation.staff.name.includes(searchText) ||
-                    reservation.date.includes(searchText)
-                )
-            })
-            .sort(sortFunc)
-    }, [reservationsInMonth, searchText, sortKey])
+    const reservations = filterReservations(
+        reservationsInMonth,
+        searchText
+    ).sort(sortFunc(sortKey))
 
     const handlePrevMonth = () => {
         const prevMonth = representiveDay(month).subtract(1, 'month')
@@ -101,10 +64,18 @@ export default function ReservationTable() {
 
     return (
         <Container>
-            <div className="mb-5">
-                <h5 className="text-center mb-3">
-                    予約台帳: {month.year}年{month.month + 1}月
-                </h5>
+            <div className="mb-3">
+                <Row className="d-flex justify-content-between align-items-center">
+                    <Col> </Col>
+                    <Col>
+                        <h5 className="text-center mb-0">
+                            予約台帳: {month.year}年{month.month + 1}月
+                        </h5>
+                    </Col>
+                    <Col className="text-end">
+                        <Button variant="success">Excel出力</Button>
+                    </Col>
+                </Row>
             </div>
             <MonthNavigation
                 onPrevMonth={handlePrevMonth}
@@ -128,25 +99,7 @@ export default function ReservationTable() {
             </div>
             <div className="mb-3">
                 <label>並び替え</label>
-                <Form.Select
-                    value={sortKey}
-                    onChange={(e) => setSortKey(e.target.value as SortKey)}
-                >
-                    <option value={SortKey.DATE_ASC}>日付(早い順)</option>
-                    <option value={SortKey.DATE_DESC}>日付(遅い順)</option>
-                    <option value={SortKey.CLIENT_ASC}>
-                        顧客名(あいうえお順)
-                    </option>
-                    <option value={SortKey.CLIENT_DESC}>
-                        顧客名(あいうえお逆順)
-                    </option>
-                    <option value={SortKey.STAFF_ASC}>
-                        施術者(あいうえお順)
-                    </option>
-                    <option value={SortKey.STAFF_DESC}>
-                        施術者降順(あいうえお逆順)
-                    </option>
-                </Form.Select>
+                <SortMethodSelector sortKey={sortKey} onChange={setSortKey} />
             </div>
             <Table bordered>
                 <thead className="text-center">
@@ -160,7 +113,7 @@ export default function ReservationTable() {
                     </tr>
                 </thead>
                 <tbody>
-                    {filteredReservations.map((reservation) => (
+                    {reservations.map((reservation) => (
                         <ReservationTableRow
                             key={reservation.id}
                             reservation={reservation}
