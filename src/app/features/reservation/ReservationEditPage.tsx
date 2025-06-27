@@ -13,7 +13,8 @@ export default function ReservationEditPage() {
         (state) => state.reservation.selectedReservation
     )!
     const allStaffs = useAppSelector(getStaffs)
-    const { updateReservationEntry } = useReservationEditor()
+    const { updateReservationEntry, deleteReservationEntry } =
+        useReservationEditor()
 
     const handleSubmit = (formData: ReservationFormData) => {
         const reservation: Reservation = {
@@ -36,6 +37,11 @@ export default function ReservationEditPage() {
         dispatch(popPage())
     }
 
+    const handleDelete = () => {
+        deleteReservationEntry(selectedReservation.id)
+        dispatch(popPage())
+    }
+
     return (
         <div>
             <h5 className="text-center mb-3">予約編集</h5>
@@ -49,6 +55,7 @@ export default function ReservationEditPage() {
                 reservationId={selectedReservation.id}
                 onSubmit={handleSubmit}
                 onCancel={handleCancel}
+                onDelete={handleDelete}
             />
         </div>
     )
