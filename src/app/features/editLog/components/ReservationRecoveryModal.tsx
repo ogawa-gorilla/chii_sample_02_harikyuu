@@ -1,3 +1,4 @@
+import { useAppSelector } from '@/app/hooks'
 import { EditLogTag } from '@/app/types/EditLog'
 import { Reservation } from '@/app/types/reservation'
 import { Button, Modal } from 'react-bootstrap'
@@ -20,6 +21,15 @@ export default function ReservationRecoveryModal({
 }: ReservationRecoveryModalProps) {
     const isDelete = tags.includes(EditLogTag.DELETE)
 
+    const doublebookedReservation = useAppSelector(
+        (state) => state.reservation.reservations
+    ).find(
+        (r) =>
+            r.date === backupReservation?.date &&
+            r.time === backupReservation?.time &&
+            r.staff.id === backupReservation?.staff.id
+    )
+
     let message = isDelete
         ? '削除された予約を復元しますか？'
         : '以下の予約を復元しますか？'
@@ -35,6 +45,15 @@ export default function ReservationRecoveryModal({
                     <ReservationDetail reservation={backupReservation} />
                 )}
             </Modal.Body>
+
+            {doublebookedReservation && (
+                <Modal.Body className="bg-danger-subtle">
+                    <p className="text-danger">
+                        この予約は以下の予約と重複しています。本当に復元しますか？
+                    </p>
+                    <ReservationDetail reservation={doublebookedReservation} />
+                </Modal.Body>
+            )}
             <Modal.Footer>
                 <Button variant="secondary" onClick={onHide}>
                     キャンセル
