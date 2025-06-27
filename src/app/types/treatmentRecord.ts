@@ -7,7 +7,7 @@ export interface TreatmentRecord {
     date: string
     content: string
     attached_images: string[]
-    for_reservation?: Reservation
+    for_reservation: Reservation
 }
 
 export interface TreatmentRecordSearchConditions {

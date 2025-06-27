@@ -1,15 +1,17 @@
 import { useAppDispatch, useAppSelector } from '@/app/hooks'
 import { popPage } from '@/app/store/navigationSlice'
-import { createRecord, setRecordOnView } from '@/app/store/treatmentRecordSlice'
+import { setRecordOnView } from '@/app/store/treatmentRecordSlice'
 import TreatmentRecordCreateForm from './components/TreatmentRecordCreateForm'
+import { useTreatmentForm } from './hooks/useTreatmentForm'
 
 const TreatmentRecordCreatePage = () => {
     const dispatch = useAppDispatch()
 
     const draft = useAppSelector((state) => state.treatmentRecords.recordDraft)
+    const { createRecordEntry } = useTreatmentForm()
 
     const handleSubmit = () => {
-        dispatch(createRecord(draft))
+        createRecordEntry(draft)
         dispatch(setRecordOnView(draft.id))
         dispatch(popPage())
     }
