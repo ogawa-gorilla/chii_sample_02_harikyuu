@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from '@/app/hooks'
-import { popPage, pushPage } from '@/app/store/navigationSlice'
+import { popPage, setCurrentPage } from '@/app/store/navigationSlice'
 import { setSelectedReservation } from '@/app/store/reservationSlice'
 import { getStaffs } from '@/app/store/userSlice'
 import { Page } from '@/app/types/Page'
@@ -29,7 +29,7 @@ export default function ReservationEditPage() {
 
         updateReservationEntry(reservation)
         dispatch(setSelectedReservation(reservation))
-        dispatch(pushPage(Page.RESERVE_DETAIL))
+        dispatch(setCurrentPage(Page.RESERVE_DETAIL))
     }
 
     const handleCancel = () => {
