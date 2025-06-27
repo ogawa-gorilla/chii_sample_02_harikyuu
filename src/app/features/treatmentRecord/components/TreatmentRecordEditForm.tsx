@@ -44,6 +44,7 @@ export default function TreatmentRecordEditForm({
                         value={draft.client}
                         onChange={handleChange}
                         required
+                        disabled
                     />
                 </Form.Group>
 
@@ -55,6 +56,7 @@ export default function TreatmentRecordEditForm({
                         value={draft.date}
                         onChange={handleChange}
                         required
+                        disabled
                     />
                 </Form.Group>
 
