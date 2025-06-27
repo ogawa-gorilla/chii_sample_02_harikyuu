@@ -1,7 +1,8 @@
 import { VIRTUAL_TODAY, VIRTUAL_TODAY_TIME } from '@/app/constants/virtualToday'
 import { useAppSelector } from '@/app/hooks'
 import { useRef } from 'react'
-import { Alert, Container } from 'react-bootstrap'
+import { Alert, Card, Container } from 'react-bootstrap'
+import { roleText } from './components/roleText'
 import ThisWeeksReservationList from './components/ThisWeeksReservationList'
 import TodaysReservationList from './components/TodaysReservationList'
 import UnrecordedReservationList from './components/UnrecordedReservationList'
@@ -62,10 +63,29 @@ const DashboardPage = () => {
 
     return (
         <Container className="my-4">
-            <h4 className="mb-4">{loginUser.name}さんのホーム</h4>
+            <h4 className="mb-4">
+                {loginUser.name}さん({loginUser.role})のホーム
+            </h4>
             <h5 className="mb-4 small">
                 {VIRTUAL_TODAY} {VIRTUAL_TODAY_TIME}現在
             </h5>
+
+            <Card className="mb-4">
+                <Card.Body>
+                    <Card.Title className="h6 text-muted mb-2">
+                        アカウント説明
+                    </Card.Title>
+                    <div className="text-muted small">
+                        {roleText(loginUser.role)
+                            .split('\n')
+                            .map((line, index) => (
+                                <p key={index} className="mb-1">
+                                    {line}
+                                </p>
+                            ))}
+                    </div>
+                </Card.Body>
+            </Card>
 
             {/* 施術記録未完了の警告 */}
             {pendingRecords.length > 0 && (

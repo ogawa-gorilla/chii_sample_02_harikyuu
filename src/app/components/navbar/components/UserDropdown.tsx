@@ -7,7 +7,9 @@ export default function UserDropdown() {
     const { handleLogout } = useLogin()
     return (
         <NavDropdown
-            title={'ユーザー: ' + loginUser!.name}
+            title={
+                'ユーザー: ' + loginUser!.name + ' (' + loginUser!.role + ')'
+            }
             id="user-dropdown"
             align="end"
         >
