@@ -1,8 +1,10 @@
+import SimpleConfirmModal from '@/app/components/common/SimpleConfirmModal'
 import { useAppDispatch, useAppSelector } from '@/app/hooks'
 import { useLogin } from '@/app/hooks/useLogin'
 import { popPage, pushPage } from '@/app/store/navigationSlice'
 import { setSelectedReservation } from '@/app/store/reservationSlice'
 import { Page } from '@/app/types/Page'
+import { useState } from 'react'
 import { Col } from 'react-bootstrap'
 import { useReservationPseudoBackend } from '../dashboard/hooks/useReservationPseudoBackend'
 import { useTreatmentNavigation } from '../treatmentRecord/hooks/useTreatmentNavigation'
@@ -16,6 +18,7 @@ export default function ReservationDetailPage() {
     )!
     const { isManager, isOffice, loginUser } = useLogin()
     const { deleteReservationEntry } = useReservationEditor()
+    const [showModal, setShowModal] = useState(false)
 
     const { hasTreatmentRecord } = useReservationPseudoBackend()
 
@@ -35,6 +38,14 @@ export default function ReservationDetailPage() {
     }
 
     const handleDelete = () => {
+        setShowModal(true)
+    }
+
+    const handleModalCancel = () => {
+        setShowModal(false)
+    }
+
+    const handleModalConfirm = () => {
         deleteReservationEntry(reservation.id)
         dispatch(popPage())
     }
@@ -56,6 +67,11 @@ export default function ReservationDetailPage() {
             <h5 className="text-center mb-3">予約詳細</h5>
             {reservation && (
                 <>
+                    <SimpleConfirmModal
+                        show={showModal}
+                        onConfirm={handleModalConfirm}
+                        onCancel={handleModalCancel}
+                    />
                     <ReservationDetail reservation={reservation} />
                     {/* ボタン */}
                     <div className="px-4">
