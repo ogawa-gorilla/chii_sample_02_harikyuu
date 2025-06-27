@@ -6,14 +6,11 @@ import { v4 } from 'uuid'
 import ShiftInputTable from '../../components/shiftInputTable/ShiftInputTable'
 import { useAppSelector } from '../../hooks'
 import { useShiftDraftManager } from '../../hooks/useShiftDraftManager'
-import {
-    deleteShift,
-    selectShiftsInPeriod,
-    updateOrCreateShift,
-} from '../../store/shiftSlice'
+import { deleteShift, selectShiftsInPeriod } from '../../store/shiftSlice'
 import { Shift, ShiftDraft } from '../../types/shift'
 import { TimeIdentifier } from '../../types/timeIdentifier'
 import ApplyTemplateModal from './components/ApplyTemplateModal'
+import useShiftEditor from './hooks/useShiftEditor'
 
 interface ShiftInputPageProps {
     staffId: string
@@ -61,6 +58,8 @@ export default function ShiftInputPage({
     const { initializeDrafts, shiftDrafts, batchDrafts } =
         useShiftDraftManager()
 
+    const { commitShifts } = useShiftEditor()
+
     const handleCommit = (drafts: ShiftDraft[]) => {
         // ドラフトに存在するものの保存とアップデート
         for (const draft of drafts) {
@@ -69,7 +68,7 @@ export default function ShiftInputPage({
                 staffId: staffId,
                 date: draft.date.value,
             }
-            dispatch(updateOrCreateShift(shift))
+            commitShifts(drafts, staffId)
         }
 
         // 元のデータから消えたものの削除
