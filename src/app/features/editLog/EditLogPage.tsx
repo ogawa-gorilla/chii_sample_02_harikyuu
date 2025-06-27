@@ -1,30 +1,13 @@
 import ExplanationCard from '@/app/components/common/ExplanationCard'
 import { useAppDispatch, useAppSelector } from '@/app/hooks'
 import { setSearchConditions } from '@/app/store/editLogSlice'
-import {
-    EditLogSearchConditions,
-    EditLogTag,
-    EditLogTarget,
-} from '@/app/types/EditLog'
+import { EditLog, EditLogSearchConditions } from '@/app/types/EditLog'
 import dayjs from 'dayjs'
 import { useMemo, useState } from 'react'
 import { Card, Container, ListGroup } from 'react-bootstrap'
+import EditLogEntry from './components/EditLogEntry'
+import RecoveryModule from './components/RecoveryModule'
 import SearchSection from './components/SearchSection'
-
-// 編集対象の日本語表示名を取得
-const getEditTargetDisplayName = (editTarget: EditLogTarget): string => {
-    const targetMap: { [key: string]: string } = {
-        [EditLogTarget.RESERVATION]: '予約',
-        [EditLogTarget.SHIFT]: 'シフト',
-        [EditLogTarget.TREATMENT_RECORD]: '施術記録',
-    }
-    return targetMap[editTarget] || editTarget
-}
-
-// 日付をフォーマット
-const formatDate = (dateString: string): string => {
-    return dayjs(dateString).format('YYYY年MM月DD日 HH:mm')
-}
 
 const EditLogPage = () => {
     const dispatch = useAppDispatch()
@@ -33,6 +16,7 @@ const EditLogPage = () => {
         (state) => state.editLog.searchConditions
     )
     const [isSearchSectionOpen, setIsSearchSectionOpen] = useState(true)
+    const [targetLog, setTargetLog] = useState<EditLog | null>(null)
 
     const handleSearchConditionsChange = (
         conditions: EditLogSearchConditions
@@ -44,13 +28,8 @@ const EditLogPage = () => {
         setIsSearchSectionOpen(isOpen)
     }
 
-    const getTagClass = (tag: EditLogTag) => {
-        const tagMap: { [key: string]: string } = {
-            [EditLogTag.DELETE]: 'bg-danger',
-            [EditLogTag.EDIT]: 'bg-primary',
-            [EditLogTag.CREATE]: 'bg-success',
-        }
-        return tagMap[tag] || ''
+    const handleBackupRequest = (editLog: EditLog) => {
+        setTargetLog(editLog)
     }
 
     const filteredEditLogs = useMemo(() => {
@@ -84,6 +63,10 @@ const EditLogPage = () => {
 
     return (
         <Container className="my-4">
+            <RecoveryModule
+                targetLog={targetLog}
+                onHide={() => setTargetLog(null)}
+            />
             <div style={{ marginTop: topMargin }}>
                 <h4 className="mb-4">編集履歴</h4>
 
@@ -104,58 +87,13 @@ const EditLogPage = () => {
                     <Card.Body className="p-0">
                         <ListGroup variant="flush">
                             {filteredEditLogs.map((editLog, index) => (
-                                <ListGroup.Item
+                                <EditLogEntry
                                     key={index}
-                                    className="border-0"
-                                >
-                                    <div className="d-flex justify-content-between align-items-start mb-2">
-                                        <div className="d-flex align-items-center">
-                                            <span
-                                                className="badge bg-secondary me-2"
-                                                style={{ fontSize: '0.75rem' }}
-                                            >
-                                                {getEditTargetDisplayName(
-                                                    editLog.editTarget
-                                                )}
-                                            </span>
-                                            {editLog.tags.map((tag) => (
-                                                <span
-                                                    key={tag}
-                                                    className={
-                                                        'badge me-2 ' +
-                                                        getTagClass(tag)
-                                                    }
-                                                    style={{
-                                                        fontSize: '0.75rem',
-                                                    }}
-                                                >
-                                                    {tag}
-                                                </span>
-                                            ))}
-                                            <span className="text-muted small">
-                                                {editLog.user.name}
-                                            </span>
-                                        </div>
-                                        <span className="text-muted small">
-                                            {formatDate(editLog.editedAt)}
-                                        </span>
-                                    </div>
-
-                                    <div className="ms-0">
-                                        {editLog.edits.map(
-                                            (edit, editIndex) => (
-                                                <div
-                                                    key={editIndex}
-                                                    className="mb-1"
-                                                >
-                                                    <span className="text-dark small">
-                                                        • {edit}
-                                                    </span>
-                                                </div>
-                                            )
-                                        )}
-                                    </div>
-                                </ListGroup.Item>
+                                    editLog={editLog}
+                                    onBackupRequest={() =>
+                                        handleBackupRequest(editLog)
+                                    }
+                                />
                             ))}
                         </ListGroup>
                     </Card.Body>

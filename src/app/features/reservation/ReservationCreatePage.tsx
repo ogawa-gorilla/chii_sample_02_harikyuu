@@ -1,13 +1,11 @@
 import { useAppDispatch, useAppSelector } from '@/app/hooks'
-import { popPage, setCurrentPage } from '@/app/store/navigationSlice'
-import {
-    createReservation,
-    setSelectedReservation,
-} from '@/app/store/reservationSlice'
+import { popPage, pushPage } from '@/app/store/navigationSlice'
+import { setSelectedReservation } from '@/app/store/reservationSlice'
 import { Page } from '@/app/types/Page'
 import { Reservation, ReservationFormData } from '@/app/types/reservation'
 import { v4 } from 'uuid'
 import ReservationForm from './components/ReservationForm'
+import useReservationEditor from './hooks/useReservationEditor'
 
 export default function ReservationCreatePage() {
     const dispatch = useAppDispatch()
@@ -15,6 +13,7 @@ export default function ReservationCreatePage() {
         (state) => state.reservation.reservationDraft
     )
     const allStaffs = useAppSelector((state) => state.user.users)
+    const { createReservationEntry } = useReservationEditor()
 
     const handleSubmit = (formData: ReservationFormData) => {
         const reservation: Reservation = {
@@ -27,9 +26,11 @@ export default function ReservationCreatePage() {
             status: 'pending',
             notes: formData.notes,
         }
-        dispatch(createReservation(reservation))
+        createReservationEntry(reservation)
+
+        // 新しく作成した予約オブジェクトを直接使用して詳細ページに遷移
         dispatch(setSelectedReservation(reservation))
-        dispatch(setCurrentPage(Page.RESERVE_DETAIL))
+        dispatch(pushPage(Page.RESERVE_DETAIL))
     }
 
     const handleCancel = () => {

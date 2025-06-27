@@ -2,6 +2,7 @@ import { useAppDispatch, useAppSelector } from '@/app/hooks'
 import { useLogin } from '@/app/hooks/useLogin'
 import { addEditLog } from '@/app/store/editLogSlice'
 import {
+    createReservation,
     deleteReservation,
     updateReservation,
 } from '@/app/store/reservationSlice'
@@ -11,6 +12,26 @@ import { User } from '@/app/types/user'
 import dayjs from 'dayjs'
 import { useCallback } from 'react'
 import { v4 } from 'uuid'
+
+const constructReservationCreateLog = (
+    createdReservation: Reservation,
+    createdBy: User
+) => {
+    const editLog: EditLog = {
+        editTarget: EditLogTarget.RESERVATION,
+        user: createdBy,
+        id: v4(),
+        editedAt: dayjs().toISOString(),
+        edits: [
+            `予約を作成 ${createdReservation.date} ${createdReservation.time} 顧客:${createdReservation.client} 担当:${createdReservation.staff.name}`,
+        ],
+        tags: [EditLogTag.CREATE],
+    }
+    const tags: Set<EditLogTag> = new Set()
+    tags.add(EditLogTag.CREATE)
+    editLog.tags = Array.from(tags)
+    return editLog
+}
 
 const constructReservationEditLog = (
     newReservation: Reservation,
@@ -94,6 +115,7 @@ export default function useReservationEditor() {
             )
             dispatch(updateReservation(newReservation))
             if (log.edits.length > 0) {
+                log.backup = JSON.stringify(originalEntry)
                 dispatch(addEditLog(log))
             }
         },
@@ -110,10 +132,24 @@ export default function useReservationEditor() {
                 loginUser!
             )
             dispatch(deleteReservation(reservationId))
+            log.backup = JSON.stringify(deletedReservation)
             dispatch(addEditLog(log))
         },
         [dispatch, loginUser, reservations]
     )
 
-    return { updateReservationEntry, deleteReservationEntry }
+    const createReservationEntry = useCallback(
+        (reservation: Reservation) => {
+            const log = constructReservationCreateLog(reservation, loginUser!)
+            dispatch(createReservation(reservation))
+            dispatch(addEditLog(log))
+        },
+        [dispatch, loginUser]
+    )
+
+    return {
+        updateReservationEntry,
+        deleteReservationEntry,
+        createReservationEntry,
+    }
 }
