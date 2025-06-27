@@ -19,7 +19,7 @@ const createCreateLog = (record: TreatmentRecord, user: User): EditLog => {
         user: user,
         editedAt: dayjs().toISOString(),
         edits: [
-            `施術日時: ${record.date} ${record.for_reservation.time}, 顧客: ${record.client}, 施術内容: ${record.content}, 担当: ${user.name}`,
+            `施術日時: ${record.date} ${record.time}, 顧客: ${record.client}, 施術内容: ${record.content}, 担当: ${user.name}`,
         ],
         tags: [EditLogTag.CREATE],
     }
@@ -101,8 +101,11 @@ export const useTreatmentForm = () => {
     }
 
     const createRecordEntry = useCallback(
-        (record: TreatmentRecord) => {
+        (record: TreatmentRecord, additionalTags?: EditLogTag[]) => {
             const log = createCreateLog(record, loginUser!)
+            if (additionalTags) {
+                log.tags.push(...additionalTags)
+            }
             dispatch(createRecord(record))
             dispatch(addEditLog(log))
         },
@@ -110,9 +113,12 @@ export const useTreatmentForm = () => {
     )
 
     const updateRecordEntry = useCallback(
-        (record: TreatmentRecord) => {
+        (record: TreatmentRecord, additionalTags?: EditLogTag[]) => {
             const originalRecord = records.find((r) => r.id === record.id)!
             const log = createUpdateLog(originalRecord, record, loginUser!)
+            if (additionalTags) {
+                log.tags.push(...additionalTags)
+            }
             dispatch(updateRecord(record))
             if (log.edits.length > 0) {
                 log.backup = JSON.stringify(originalRecord)

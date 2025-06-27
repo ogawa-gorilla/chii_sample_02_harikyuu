@@ -13,16 +13,9 @@ import {
 import { Page } from '@/app/types/Page'
 import { TreatmentRecord } from '@/app/types/treatmentRecord'
 import { useState } from 'react'
-import {
-    Button,
-    ButtonGroup,
-    Card,
-    Col,
-    Container,
-    Image,
-    Row,
-} from 'react-bootstrap'
+import { Button, ButtonGroup, Card, Container } from 'react-bootstrap'
 import ImageModal from './components/ImageModal'
+import TreatmentRecordSection from './components/TreatmentRecordSection'
 
 const TreatmentRecordDetail = () => {
     const dispatch = useAppDispatch()
@@ -80,53 +73,10 @@ const TreatmentRecordDetail = () => {
             <Container className="my-5">
                 <Card>
                     <Card.Header as="h5">施術記録詳細</Card.Header>
-                    <Card.Body>
-                        <Card.Text>
-                            <strong>クライアント:</strong> {record.client}
-                        </Card.Text>
-                        <Card.Text>
-                            <strong>施術日:</strong> {record.date}
-                        </Card.Text>
-                        <Card.Text>
-                            <strong>担当スタッフ:</strong> {staff?.name}
-                        </Card.Text>
-                        <Card.Text>
-                            <strong>施術内容:</strong>
-                            <br />
-                            {record.content}
-                        </Card.Text>
-
-                        {record.attached_images.length > 0 && (
-                            <>
-                                <strong>添付画像:</strong>
-                                <Row className="mt-3">
-                                    {record.attached_images.map(
-                                        (imgUrl, idx) => (
-                                            <Col
-                                                key={idx}
-                                                xs={6}
-                                                md={4}
-                                                lg={3}
-                                                className="mb-3"
-                                            >
-                                                <Image
-                                                    src={imgUrl}
-                                                    thumbnail
-                                                    fluid
-                                                    style={{
-                                                        cursor: 'pointer',
-                                                    }}
-                                                    onClick={() =>
-                                                        handleImageClick(imgUrl)
-                                                    }
-                                                />
-                                            </Col>
-                                        )
-                                    )}
-                                </Row>
-                            </>
-                        )}
-                    </Card.Body>
+                    <TreatmentRecordSection
+                        record={record}
+                        onImageClick={handleImageClick}
+                    />
                     <Card.Footer className="d-flex justify-content-end gap-2">
                         <ButtonGroup size="sm" className="w-100">
                             {canEdit && (

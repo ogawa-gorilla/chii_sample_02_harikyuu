@@ -39,6 +39,7 @@ export const useTreatmentNavigation = () => {
                         client: reservation.client,
                         staffId: reservation.staff.id,
                         date: reservation.date,
+                        time: reservation.time,
                     })
                 )
                 dispatch(pushPage(Page.TREATMENT_RECORD_CREATE))

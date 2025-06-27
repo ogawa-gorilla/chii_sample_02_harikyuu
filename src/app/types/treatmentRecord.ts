@@ -5,9 +5,10 @@ export interface TreatmentRecord {
     client: string
     staffId: string
     date: string
+    time: string
     content: string
     attached_images: string[]
-    for_reservation: Reservation
+    for_reservation?: Reservation
 }
 
 export interface TreatmentRecordSearchConditions {
