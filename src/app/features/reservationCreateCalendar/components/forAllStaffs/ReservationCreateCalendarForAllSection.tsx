@@ -1,4 +1,5 @@
 import Calendar from '@/app/components/calendar'
+import ExplanationCard from '@/app/components/common/ExplanationCard'
 import { useAppSelector } from '@/app/hooks'
 import { Reservation } from '@/app/types/reservation'
 import { User } from '@/app/types/user'
@@ -73,6 +74,12 @@ export default function ReservationCreateCalendarForAllSection({
 
     return (
         <div>
+            <ExplanationCard
+                title="予約作成画面"
+                text={
+                    'スタッフ「すべて」を選択していると、各時間枠の予約可能なスタッフ数が表示されます。\nコマをクリックすることで、その時間に予約を作成することができます。'
+                }
+            />
             <AvailableStaffModal
                 show={showAvailableStaffModal}
                 onHide={() => setShowAvailableStaffModal(false)}

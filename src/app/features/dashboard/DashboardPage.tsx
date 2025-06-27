@@ -64,17 +64,23 @@ const DashboardPage = () => {
 
     return (
         <Container className="my-4">
+            <ExplanationCard
+                title="アカウント説明"
+                text={roleText(loginUser.role)}
+            />
+
+            <ExplanationCard
+                title="ホーム画面"
+                text={
+                    'ホーム画面では、本日と今週の予約を確認できます。\nまた、"予約の時間が過ぎているが施術記録のない予約"についても通知が表示されます。'
+                }
+            />
             <h4 className="mb-4">
                 {loginUser.name}さん({loginUser.role})のホーム
             </h4>
             <h5 className="mb-4 small">
                 {VIRTUAL_TODAY} {VIRTUAL_TODAY_TIME}現在
             </h5>
-
-            <ExplanationCard
-                title="アカウント説明"
-                text={roleText(loginUser.role)}
-            />
 
             {/* 施術記録未完了の警告 */}
             {pendingRecords.length > 0 && (

@@ -49,14 +49,13 @@ const EditLogPage = () => {
                 onHide={() => setTargetLog(null)}
             />
             <div style={{ marginTop: topMargin }}>
-                <h4 className="mb-4">編集履歴</h4>
-
                 <ExplanationCard
                     title="説明"
                     text={
                         '編集履歴ページは、データの編集を行ったユーザー、編集の内容、編集の日時を表示します。\n削除されたデータの復元もここで行えます。'
                     }
                 />
+                <h4 className="mb-4">編集履歴</h4>
 
                 <SearchSection
                     conditions={searchConditions}

@@ -1,3 +1,4 @@
+import ExplanationCard from '@/app/components/common/ExplanationCard'
 import dayjs from 'dayjs'
 import { useMemo, useState } from 'react'
 import { Button, Col, Container, Form, Row, Table } from 'react-bootstrap'
@@ -94,6 +95,12 @@ export default function ReservationTable() {
 
     return (
         <Container>
+            <ExplanationCard
+                title="予約台帳"
+                text={
+                    '予約の台帳表示です。紙に慣れている方はこちらのほうが使いやすいかもしれません。\n台帳をExcelで出力することもできます。'
+                }
+            />
             <div className="mb-3">
                 <Row className="d-flex justify-content-between align-items-center">
                     <Col> </Col>

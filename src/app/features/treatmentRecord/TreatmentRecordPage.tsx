@@ -1,3 +1,4 @@
+import ExplanationCard from '@/app/components/common/ExplanationCard'
 import { useAppDispatch, useAppSelector } from '@/app/hooks'
 import { useLogin } from '@/app/hooks/useLogin'
 import { pushPage } from '@/app/store/navigationSlice'
@@ -70,6 +71,12 @@ const TreatmentRecordList = () => {
                 onConditionsChange={handleConditionsChange}
             />
             <div style={{ marginTop: '200px' }}>
+                <ExplanationCard
+                    title="施術記録画面"
+                    text={
+                        '施術記録の一覧です。\n施術記録の詳細は、クリックすることで確認できます。'
+                    }
+                />
                 {sortedDates.map((date) => (
                     <div key={date} className="mb-5">
                         <h5 className="mb-3 border-bottom pb-2">{date}</h5>

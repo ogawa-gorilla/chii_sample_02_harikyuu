@@ -1,4 +1,5 @@
 import Calendar from '@/app/components/calendar'
+import ExplanationCard from '@/app/components/common/ExplanationCard'
 import { useAppSelector } from '@/app/hooks'
 import { Reservation } from '@/app/types/reservation'
 import { User } from '@/app/types/user'
@@ -67,6 +68,13 @@ export default function ReservationCreateCalendarSection({
 
     return (
         <div>
+            <ExplanationCard
+                title="予約作成画面(個人)"
+                text={
+                    selectedStaff.name +
+                    'さんの空き状況が表示されています。\nコマをクリックすることで、その時間に予約を作成することができます。\nシフト設定されていない日には予約を作成できません。'
+                }
+            />
             <ReservationCreationModal
                 show={showReservationCreationModal}
                 onHide={() => setShowReservationCreationModal(false)}

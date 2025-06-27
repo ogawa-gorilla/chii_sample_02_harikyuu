@@ -1,4 +1,5 @@
 'use client'
+import ExplanationCard from '@/app/components/common/ExplanationCard'
 import { useCalendar } from '@/app/hooks/useCalendar'
 import { useLogin } from '@/app/hooks/useLogin'
 import dayjs from 'dayjs'
@@ -48,6 +49,12 @@ export default function ShiftCalendarPage() {
                 />
             ) : (
                 <div>
+                    <ExplanationCard
+                        title="シフトカレンダー"
+                        text={
+                            'シフトの一覧です。\nシフト入力ボタンを押すと、シフトを入力できます。\n入力が楽になるよう、ユーザごとに一週間のシフトのテンプレートを設定することもできます。'
+                        }
+                    />
                     <h5 className="text-center mb-3">シフト一覧</h5>
                     {canSelectStaff && (
                         <StaffSelector

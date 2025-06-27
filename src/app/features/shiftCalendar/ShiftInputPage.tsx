@@ -1,3 +1,4 @@
+import ExplanationCard from '@/app/components/common/ExplanationCard'
 import dayjs from 'dayjs'
 import { useEffect, useMemo, useState } from 'react'
 import { Button, Container } from 'react-bootstrap'
@@ -152,6 +153,12 @@ export default function ShiftInputPage({
 
     return (
         <Container style={{ paddingBottom: '80px' }}>
+            <ExplanationCard
+                title="シフト入力ページ"
+                text={
+                    'シフトを入力できます。シフトが1日の中で2回に分かれる場合は、分割ボタンを押して設定できます。\nテンプレートから一括入力もできます。'
+                }
+            />
             <h1 className="text-center mb-3">
                 {staff?.name}さんの {startDate.format('YYYY年M月D日')} ～{' '}
                 {endDate.format('YYYY年M月D日')} シフト
@@ -162,7 +169,7 @@ export default function ShiftInputPage({
                     size="sm"
                     onClick={handleApplyTemplate}
                 >
-                    テンプレートから一括入力
+                    4週分をテンプレートから一括入力
                 </Button>
             </div>
             <ShiftInputTable
