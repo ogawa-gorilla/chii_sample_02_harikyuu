@@ -2,7 +2,6 @@ import { useTreatmentNavigation } from '@/app/features/treatmentRecord/hooks/use
 import { useAppSelector } from '@/app/hooks'
 import { useLogin } from '@/app/hooks/useLogin'
 import { Reservation } from '@/app/types/reservation'
-import React from 'react'
 import { Col } from 'react-bootstrap'
 import { useReservationPseudoBackend } from '../hooks/useReservationPseudoBackend'
 
@@ -126,16 +125,13 @@ export default function ReservationDetail({
                     </Col>
                     <Col className="flex gap-3 pt-4">
                         {hasTreatmentRecord(reservation) ? (
-                            <React.Fragment>
-                                <span>施術記録あり</span>
-                                <button
-                                    type="button"
-                                    onClick={handleViewTreatmentRecord}
-                                    className="flex-1 bg-green-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors"
-                                >
-                                    施術記録を閲覧
-                                </button>
-                            </React.Fragment>
+                            <button
+                                type="button"
+                                onClick={handleViewTreatmentRecord}
+                                className="flex-1 bg-green-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors"
+                            >
+                                施術記録を閲覧
+                            </button>
                         ) : (
                             canCreateTreatmentRecord && (
                                 <button
