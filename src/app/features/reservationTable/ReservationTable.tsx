@@ -62,6 +62,36 @@ export default function ReservationTable() {
         setMonth({ month: 5, year: 2025 })
     }
 
+    function downloadWithBom(filename: string, content: string) {
+        // BOM (\uFEFF) を先頭に追加
+        const bom = '\uFEFF'
+        const blob = new Blob([bom + content], {
+            type: 'text/plain;charset=utf-8;',
+        })
+
+        const link = document.createElement('a')
+        link.href = URL.createObjectURL(blob)
+        link.download = filename
+        link.click()
+
+        // クリーンアップ
+        URL.revokeObjectURL(link.href)
+    }
+
+    const handleExcelExport = () => {
+        const csv = [
+            '日付,時刻,担当者,顧客名,特記事項',
+            ...reservations.map((reservation) => {
+                return `${reservation.date},${reservation.time},${reservation.staff.name},${reservation.client},${reservation.notes}`
+            }),
+        ]
+        const csvContent = csv.join('\n')
+        downloadWithBom(
+            `予約台帳_${month.year}年${month.month + 1}月.csv`,
+            csvContent
+        )
+    }
+
     return (
         <Container>
             <div className="mb-3">
@@ -73,7 +103,9 @@ export default function ReservationTable() {
                         </h5>
                     </Col>
                     <Col className="text-end">
-                        <Button variant="success">Excel出力</Button>
+                        <Button variant="success" onClick={handleExcelExport}>
+                            Excel出力
+                        </Button>
                     </Col>
                 </Row>
             </div>
