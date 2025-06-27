@@ -1,9 +1,10 @@
-import { EditLogTarget } from '../types/EditLog'
+import { EditLog, EditLogTarget } from '../types/EditLog'
 import { Role } from '../types/role'
 import { USER_TESTDATA } from './userTestData'
 
-export const EDIT_LOG_TESTDATA = [
+export const EDIT_LOG_TESTDATA: EditLog[] = [
     {
+        id: '1',
         editTarget: EditLogTarget.RESERVATION,
         user: {
             id: '1',
@@ -20,6 +21,7 @@ export const EDIT_LOG_TESTDATA = [
         ],
     },
     {
+        id: '2',
         editTarget: EditLogTarget.SHIFT,
         user: {
             id: '2',
@@ -33,6 +35,7 @@ export const EDIT_LOG_TESTDATA = [
         edits: ['勤務時間を9:00-18:00から10:00-19:00に変更'],
     },
     {
+        id: '3',
         editTarget: EditLogTarget.TREATMENT_RECORD,
         user: {
             id: '3',
@@ -46,6 +49,7 @@ export const EDIT_LOG_TESTDATA = [
         edits: ['施術内容を追加', '注意事項を更新'],
     },
     {
+        id: '4',
         editTarget: EditLogTarget.TREATMENT_RECORD,
         user: USER_TESTDATA[3],
         editedAt: '2025-06-03T12:20:00Z',
