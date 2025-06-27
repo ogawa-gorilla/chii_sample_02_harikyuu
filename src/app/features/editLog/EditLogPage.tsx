@@ -8,6 +8,7 @@ import { Card, Container, ListGroup } from 'react-bootstrap'
 import EditLogEntry from './components/EditLogEntry'
 import RecoveryModule from './components/RecoveryModule'
 import SearchSection from './components/SearchSection'
+import { logMatches } from './utils/logMatches'
 
 const EditLogPage = () => {
     const dispatch = useAppDispatch()
@@ -34,27 +35,7 @@ const EditLogPage = () => {
 
     const filteredEditLogs = useMemo(() => {
         return editLogs
-            .filter((editLog) => {
-                const staffIdMatches =
-                    searchConditions.staffId === 'all' ||
-                    editLog.user.id === searchConditions.staffId
-                const startDateSpecified = searchConditions.startDate !== ''
-                const endDateSpecified = searchConditions.endDate !== ''
-                const isAfterStartDate = dayjs(editLog.editedAt).isAfter(
-                    dayjs(searchConditions.startDate)
-                )
-                const isBeforeEndDate = dayjs(editLog.editedAt).isBefore(
-                    dayjs(searchConditions.endDate)
-                )
-                const dateMatches =
-                    (!startDateSpecified || isAfterStartDate) &&
-                    (!endDateSpecified || isBeforeEndDate)
-                const typeSpecified = searchConditions.target !== null
-                const typeMatches =
-                    !typeSpecified ||
-                    editLog.editTarget === searchConditions.target
-                return staffIdMatches && dateMatches && typeMatches
-            })
+            .filter((log) => logMatches(log, searchConditions))
             .sort((a, b) => dayjs(b.editedAt).diff(dayjs(a.editedAt)))
     }, [editLogs, searchConditions])
 
