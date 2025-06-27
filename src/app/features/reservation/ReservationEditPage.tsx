@@ -1,9 +1,11 @@
+import SimpleConfirmModal from '@/app/components/common/SimpleConfirmModal'
 import { useAppDispatch, useAppSelector } from '@/app/hooks'
 import { popPage, setCurrentPage } from '@/app/store/navigationSlice'
 import { setSelectedReservation } from '@/app/store/reservationSlice'
 import { getStaffs } from '@/app/store/userSlice'
 import { Page } from '@/app/types/Page'
 import { Reservation, ReservationFormData } from '@/app/types/reservation'
+import { useState } from 'react'
 import ReservationForm from './components/ReservationForm'
 import useReservationEditor from './hooks/useReservationEditor'
 
@@ -15,6 +17,8 @@ export default function ReservationEditPage() {
     const allStaffs = useAppSelector(getStaffs)
     const { updateReservationEntry, deleteReservationEntry } =
         useReservationEditor()
+
+    const [showModal, setShowModal] = useState(false)
 
     const handleSubmit = (formData: ReservationFormData) => {
         const reservation: Reservation = {
@@ -38,12 +42,25 @@ export default function ReservationEditPage() {
     }
 
     const handleDelete = () => {
+        setShowModal(true)
+    }
+
+    const handleModalCancel = () => {
+        setShowModal(false)
+    }
+
+    const handleModalConfirm = () => {
         deleteReservationEntry(selectedReservation.id)
         dispatch(popPage())
     }
 
     return (
         <div>
+            <SimpleConfirmModal
+                show={showModal}
+                onConfirm={handleModalConfirm}
+                onCancel={handleModalCancel}
+            />
             <h5 className="text-center mb-3">予約編集</h5>
             <ReservationForm
                 scheduledDate={selectedReservation.date}
