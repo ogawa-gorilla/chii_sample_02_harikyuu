@@ -85,6 +85,14 @@ export default function AppNavbar() {
                             >
                                 シフト管理
                             </Nav.Link>
+                            <Nav.Link
+                                href="#"
+                                onClick={() =>
+                                    handleNavLinkClick(Page.EDIT_LOG)
+                                }
+                            >
+                                編集履歴
+                            </Nav.Link>
                         </Nav>
                         <Nav>
                             <UserDropdown />

@@ -29,6 +29,8 @@ export const Page = {
     TREATMENT_RECORD_EDIT: 'treatment-record-edit',
 
     DASHBOARD: 'dashboard',
+
+    EDIT_LOG: 'edit-log',
 } as const
 
 export type Page = (typeof Page)[keyof typeof Page]

@@ -3,6 +3,7 @@
 import Footer from './components/Footer'
 import AppNavbar from './components/navbar/AppNavbar'
 import DashboardPage from './features/dashboard/DashboardPage'
+import EditLogPage from './features/editLog/EditLogPage'
 import ReservationCreatePage from './features/reservation/ReservationCreatePage'
 import ReservationDetailPage from './features/reservation/ReservationDetailPage'
 import ReservationEditPage from './features/reservation/ReservationEditPage'
@@ -47,6 +48,8 @@ const showPage = (page: Page) => {
             return <TreatmentRecordCreatePage />
         case Page.DASHBOARD:
             return <DashboardPage />
+        case Page.EDIT_LOG:
+            return <EditLogPage />
         default:
             return <NotImplementedPage />
     }
