@@ -1,6 +1,6 @@
 import { VIRTUAL_TODAY, VIRTUAL_TODAY_TIME } from '@/app/constants/virtualToday'
 import { useAppSelector } from '@/app/hooks'
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import { DashboardReservation } from '../types/DashboardReservation'
 
 export const useReservationPseudoBackend = () => {
@@ -39,8 +39,18 @@ export const useReservationPseudoBackend = () => {
         )
     }, [getDashboardReservations])
 
+    const hasTreatmentRecord = useCallback(
+        (reservationId: string) => {
+            return treatmentRecords.some(
+                (tr) => tr.for_reservation?.id === reservationId
+            )
+        },
+        [treatmentRecords]
+    )
+
     return {
         getDashboardReservations,
         getReservationsNeedRecords,
+        hasTreatmentRecord,
     }
 }
