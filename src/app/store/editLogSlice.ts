@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { EDIT_LOG_TESTDATA } from '../testdata/editLog'
 import {
     EditLog,
     EditLogSearchConditions,
@@ -11,7 +12,7 @@ interface editLogState {
 }
 
 const initialState: editLogState = {
-    editLogs: [],
+    editLogs: EDIT_LOG_TESTDATA,
     searchConditions: {
         target: EditLogTarget.RESERVATION,
         startDate: '',

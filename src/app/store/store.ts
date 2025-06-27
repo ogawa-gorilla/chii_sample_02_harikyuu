@@ -1,4 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit'
+import editLogReducer from './editLogSlice'
 import loginReducer from './loginSlice'
 import navigationReducer from './navigationSlice'
 import reservationReducer from './reservationSlice'
@@ -14,6 +15,7 @@ export const store = configureStore({
         reservation: reservationReducer,
         shift: shiftReducer,
         treatmentRecords: treatmentRecordReducer,
+        editLog: editLogReducer,
     },
 })
 
