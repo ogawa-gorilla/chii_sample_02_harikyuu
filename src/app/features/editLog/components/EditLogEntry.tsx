@@ -1,4 +1,7 @@
+import { useLogin } from '@/app/hooks/useLogin'
 import { EditLog, EditLogTag, EditLogTarget } from '@/app/types/EditLog'
+import { Role } from '@/app/types/role'
+import { User } from '@/app/types/user'
 import dayjs from 'dayjs'
 import { Button, ListGroup } from 'react-bootstrap'
 
@@ -7,10 +10,27 @@ interface EditLogEntryProps {
     onBackupRequest: () => void
 }
 
+const canRestore = (editLog: EditLog, loginUser: User) => {
+    switch (editLog.editTarget) {
+        case EditLogTarget.RESERVATION:
+            return (
+                loginUser.role === Role.MANAGER ||
+                loginUser.role === Role.OFFICE ||
+                editLog.user.id === loginUser.id
+            )
+        case EditLogTarget.TREATMENT_RECORD:
+            return loginUser.id === editLog.user.id
+        default:
+            return false
+    }
+}
+
 export default function EditLogEntry({
     editLog,
     onBackupRequest,
 }: EditLogEntryProps) {
+    const { loginUser } = useLogin()
+
     const getTagClass = (tag: EditLogTag) => {
         const tagMap: { [key: string]: string } = {
             [EditLogTag.DELETE]: 'bg-danger',
@@ -73,7 +93,7 @@ export default function EditLogEntry({
                     </div>
                 ))}
             </div>
-            {editLog.backup && (
+            {editLog.backup && canRestore(editLog, loginUser!) && (
                 <div className="ms-0">
                     <Button
                         variant="success"
