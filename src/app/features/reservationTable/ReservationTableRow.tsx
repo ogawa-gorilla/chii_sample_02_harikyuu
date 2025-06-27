@@ -11,9 +11,8 @@ interface ReservationTableRowProps {
 export default function ReservationTableRow({
     reservation,
 }: ReservationTableRowProps) {
-    const { isManager, isOffice, loginUser } = useLogin()
-    const canCreate =
-        isManager || isOffice || loginUser!.id === reservation.staff.id
+    const { loginUser } = useLogin()
+    const canCreate = loginUser!.id === reservation.staff.id
 
     const { openReservationDetail } = useReservationNavigation()
     const { openOrCreateTreatmentRecordForReservation } =

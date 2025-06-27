@@ -38,9 +38,8 @@ const TreatmentRecordDetail = () => {
         )
     )
 
-    const { isManager, isOffice, loginUser } = useLogin()
-    const canEdit =
-        isManager || isOffice || (record && loginUser!.id === record?.staffId)
+    const { loginUser } = useLogin()
+    const canEdit = record && loginUser!.id === record?.staffId
 
     const staff = useAppSelector((state) =>
         state.user.users.find((user) => user.id === record?.staffId)

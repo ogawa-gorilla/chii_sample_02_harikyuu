@@ -20,7 +20,7 @@ export default function MonthNavigation({
                 今月へ
             </Button>
             <Button variant="outline-primary" size="sm" onClick={onNextMonth}>
-                次の1週間 &gt;
+                次の月 &gt;
             </Button>
         </div>
     )

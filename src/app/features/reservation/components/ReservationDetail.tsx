@@ -22,9 +22,8 @@ export default function ReservationDetail({
     const { openOrCreateTreatmentRecordForReservation } =
         useTreatmentNavigation()
 
-    const { isManager, isOffice, loginUser } = useLogin()
-    const canCreateTreatmentRecord =
-        isManager || isOffice || reservation.staff.id === loginUser!.id
+    const { loginUser } = useLogin()
+    const canCreateTreatmentRecord = reservation.staff.id === loginUser!.id
 
     const handleEdit = () => {
         onEdit?.(reservation.id)
