@@ -22,6 +22,7 @@ export const EditLogTag = {
     DELETE: '削除',
     EDIT: '編集',
     CREATE: '作成',
+    RESTORE: '復元',
 } as const
 
 export type EditLogTag = (typeof EditLogTag)[keyof typeof EditLogTag]

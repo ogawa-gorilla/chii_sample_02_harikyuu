@@ -1,7 +1,8 @@
-import { useAppDispatch } from '@/app/hooks'
+import { useAppDispatch, useAppSelector } from '@/app/hooks'
+import { deleteEditLog } from '@/app/store/editLogSlice'
 import { setCurrentPage } from '@/app/store/navigationSlice'
 import { setSelectedReservation } from '@/app/store/reservationSlice'
-import { EditLog, EditLogTarget } from '@/app/types/EditLog'
+import { EditLog, EditLogTag, EditLogTarget } from '@/app/types/EditLog'
 import { Page } from '@/app/types/Page'
 import { Reservation } from '@/app/types/reservation'
 import useReservationEditor from '../../reservation/hooks/useReservationEditor'
@@ -25,13 +26,24 @@ export default function RecoveryModule({
     let showReservationRecoveryModal = false
     let backupReservation: Reservation | null = null
 
-    const { createReservationEntry } = useReservationEditor()
+    const reservations = useAppSelector(
+        (state) => state.reservation.reservations
+    )
+
+    const { createReservationEntry, updateReservationEntry } =
+        useReservationEditor()
 
     const handleRestore = () => {
         switch (targetLog.editTarget) {
             case EditLogTarget.RESERVATION:
                 const reservation = JSON.parse(targetLog.backup!) as Reservation
-                createReservationEntry(reservation)
+
+                if (reservations.some((r) => r.id === reservation.id)) {
+                    updateReservationEntry(reservation, [EditLogTag.RESTORE])
+                } else {
+                    createReservationEntry(reservation, [EditLogTag.RESTORE])
+                }
+                dispatch(deleteEditLog(targetLog.id))
                 dispatch(setSelectedReservation(reservation))
                 dispatch(setCurrentPage(Page.RESERVE_DETAIL))
                 break

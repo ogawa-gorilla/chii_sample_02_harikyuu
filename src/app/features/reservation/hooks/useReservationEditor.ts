@@ -25,7 +25,7 @@ const constructReservationCreateLog = (
         edits: [
             `予約を作成 ${createdReservation.date} ${createdReservation.time} 顧客:${createdReservation.client} 担当:${createdReservation.staff.name}`,
         ],
-        tags: [EditLogTag.CREATE],
+        tags: [],
     }
     const tags: Set<EditLogTag> = new Set()
     tags.add(EditLogTag.CREATE)
@@ -104,7 +104,7 @@ export default function useReservationEditor() {
     )
 
     const updateReservationEntry = useCallback(
-        (newReservation: Reservation) => {
+        (newReservation: Reservation, additionalTags?: EditLogTag[]) => {
             const originalEntry = reservations.find(
                 (r) => r.id === newReservation.id
             )!
@@ -113,6 +113,9 @@ export default function useReservationEditor() {
                 originalEntry,
                 loginUser!
             )
+            if (additionalTags) {
+                log.tags.push(...additionalTags)
+            }
             dispatch(updateReservation(newReservation))
             if (log.edits.length > 0) {
                 log.backup = JSON.stringify(originalEntry)
@@ -139,8 +142,11 @@ export default function useReservationEditor() {
     )
 
     const createReservationEntry = useCallback(
-        (reservation: Reservation) => {
+        (reservation: Reservation, additionalTags?: EditLogTag[]) => {
             const log = constructReservationCreateLog(reservation, loginUser!)
+            if (additionalTags) {
+                log.tags.push(...additionalTags)
+            }
             dispatch(createReservation(reservation))
             dispatch(addEditLog(log))
         },

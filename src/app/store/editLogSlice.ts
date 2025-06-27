@@ -24,6 +24,11 @@ export const editLogSlice = createSlice({
         addEditLog: (state, action: PayloadAction<EditLog>) => {
             state.editLogs.push(action.payload)
         },
+        deleteEditLog: (state, action: PayloadAction<string>) => {
+            state.editLogs = state.editLogs.filter(
+                (log) => log.id !== action.payload
+            )
+        },
         setSearchConditions: (
             state,
             action: PayloadAction<EditLogSearchConditions>
@@ -33,5 +38,6 @@ export const editLogSlice = createSlice({
     },
 })
 
-export const { addEditLog, setSearchConditions } = editLogSlice.actions
+export const { addEditLog, deleteEditLog, setSearchConditions } =
+    editLogSlice.actions
 export default editLogSlice.reducer

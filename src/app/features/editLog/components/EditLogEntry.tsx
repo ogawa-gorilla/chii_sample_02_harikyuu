@@ -16,6 +16,7 @@ export default function EditLogEntry({
             [EditLogTag.DELETE]: 'bg-danger',
             [EditLogTag.EDIT]: 'bg-primary',
             [EditLogTag.CREATE]: 'bg-success',
+            [EditLogTag.RESTORE]: 'bg-warning',
         }
         return tagMap[tag] || ''
     }

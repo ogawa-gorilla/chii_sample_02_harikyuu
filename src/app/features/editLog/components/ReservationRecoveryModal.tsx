@@ -27,12 +27,13 @@ export default function ReservationRecoveryModal({
         (r) =>
             r.date === backupReservation?.date &&
             r.time === backupReservation?.time &&
-            r.staff.id === backupReservation?.staff.id
+            r.staff.id === backupReservation?.staff.id &&
+            r.id !== backupReservation?.id
     )
 
     let message = isDelete
         ? '削除された予約を復元しますか？'
-        : '以下の予約を復元しますか？'
+        : '予約を以下の状態に復元しますか？'
 
     return (
         <Modal show={show} onHide={onHide} size="lg" centered>
