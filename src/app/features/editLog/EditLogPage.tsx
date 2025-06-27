@@ -1,4 +1,5 @@
-import { EditLog } from '@/app/types/editLog'
+import ExplanationCard from '@/app/components/common/ExplanationCard'
+import { EditLog } from '@/app/types/EditLog'
 import dayjs from 'dayjs'
 import { Card, Container, ListGroup } from 'react-bootstrap'
 
@@ -68,6 +69,11 @@ const EditLogPage = () => {
     return (
         <Container className="my-4">
             <h4 className="mb-4">編集履歴</h4>
+
+            <ExplanationCard
+                title="説明"
+                text="編集履歴ページは、データの編集を行ったユーザー、編集の内容、編集の日時を表示します。"
+            />
 
             <Card>
                 <Card.Body className="p-0">

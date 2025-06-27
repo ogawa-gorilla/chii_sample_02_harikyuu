@@ -14,3 +14,11 @@ export const EditLogTarget = {
 } as const
 
 export type EditLogTarget = (typeof EditLogTarget)[keyof typeof EditLogTarget]
+
+export interface EditLogSearchConditions {
+    target: EditLogTarget
+    startDate: string
+    endDate: string
+    searchText: string
+    staffId: string
+}
