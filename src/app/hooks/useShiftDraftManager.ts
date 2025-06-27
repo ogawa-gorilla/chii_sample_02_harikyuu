@@ -1,8 +1,10 @@
+import dayjs from 'dayjs'
 import { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { v4 } from 'uuid'
 import { useAppSelector } from '../hooks'
 import {
+    clearHistory,
     deleteShiftDraft,
     historyLength,
     pushHistory,
@@ -43,16 +45,24 @@ export function useShiftDraftManager() {
                     return draft
                 })
             dispatch(setShiftDrafts(initialDrafts))
-            dispatch(pushHistory())
             dispatch(setTargetDates(targetDates))
+            dispatch(clearHistory())
+            memorize()
+        },
+        [dispatch]
+    )
+
+    const setDrafts = useCallback(
+        (drafts: ShiftDraft[], targetDates: TimeIdentifier[]) => {
+            dispatch(setShiftDrafts(drafts))
+            dispatch(setTargetDates(targetDates))
+            dispatch(clearHistory())
         },
         [dispatch]
     )
 
     const memorize = () => {
-        setTimeout(() => {
-            dispatch(pushHistory())
-        }, 0)
+        dispatch(pushHistory())
     }
 
     const handleDraftUpdate = useCallback(
@@ -140,16 +150,39 @@ export function useShiftDraftManager() {
         dispatch(undo())
     }, [dispatch])
 
+    const batchDrafts = useCallback(
+        (
+            originalData: ShiftDraft[],
+            addedDrafts: ShiftDraft[],
+            targetDates: dayjs.Dayjs[]
+        ) => {
+            const updated = originalData.filter(
+                (draft) =>
+                    !targetDates.some(
+                        (td) => td.format('YYYY-MM-DD') === draft.date.value
+                    )
+            )
+
+            updated.push(...addedDrafts)
+
+            dispatch(setShiftDrafts(updated))
+            memorize()
+        },
+        [dispatch]
+    )
+
     return {
         shiftDrafts,
         targetDates,
         initializeDrafts,
+        setDrafts,
         handleDraftUpdate,
         handleDraftCreate,
         handleDraftDelete,
         handleDraftSplit,
         handleDraftMerge,
         handleUndo,
+        batchDrafts,
         canUndo,
     }
 }

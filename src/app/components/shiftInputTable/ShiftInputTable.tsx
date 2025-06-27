@@ -1,3 +1,4 @@
+import { TimeIdentifier } from '@/app/types/timeIdentifier'
 import {
     validateShiftDraft,
     validateShiftDrafts,
@@ -12,11 +13,15 @@ import ShiftInputActionBar from './components/ShiftInputActionBar'
 interface ShiftInputTableProps {
     onCommit: (drafts: ShiftDraft[]) => void
     onAbort: () => void
+    onTemplateOnWeek?: (date: TimeIdentifier) => void
+    showTemplateColumn?: boolean
 }
 
 export default function ShiftInputTable({
     onCommit,
     onAbort,
+    onTemplateOnWeek,
+    showTemplateColumn = false,
 }: ShiftInputTableProps) {
     const {
         shiftDrafts,
@@ -27,6 +32,7 @@ export default function ShiftInputTable({
         handleDraftSplit,
         handleDraftMerge,
         handleUndo,
+        canUndo,
     } = useShiftDraftManager()
 
     const [showConfirmDialog, setShowConfirmDialog] = useState(false)
@@ -63,7 +69,11 @@ export default function ShiftInputTable({
     }
 
     const handleCancel = () => {
-        setShowConfirmDialog(true)
+        if (canUndo) {
+            setShowConfirmDialog(true)
+        } else {
+            onAbort()
+        }
     }
 
     const handleConfirmCancel = () => {
@@ -116,8 +126,11 @@ export default function ShiftInputTable({
             >
                 <thead>
                     <tr>
-                        <th className="table-header">日</th>
+                        <th className="table-header w-5">日</th>
                         <th className="table-header">シフト</th>
+                        {showTemplateColumn && (
+                            <th className="table-header w-10"></th>
+                        )}
                     </tr>
                 </thead>
                 <tbody>
@@ -135,6 +148,10 @@ export default function ShiftInputTable({
                                 onDraftDelete={handleDraftDelete}
                                 onDraftSplit={handleDraftSplit}
                                 onDraftMerge={handleDraftMerge}
+                                onTemplateOnWeek={
+                                    onTemplateOnWeek || (() => {})
+                                }
+                                showTemplateColumn={showTemplateColumn}
                             />
                         )
                     })}

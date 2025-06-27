@@ -1,6 +1,7 @@
 import { useHolidayCheck } from '@/app/hooks/useHolidayCheck'
 import { TimeIdentifier } from '@/app/types/timeIdentifier'
 import dayjs from 'dayjs'
+import { Button } from 'react-bootstrap'
 import { ShiftDraft } from '../../../types/shift'
 import ShiftCell from './ShiftCell'
 
@@ -12,6 +13,8 @@ interface RowForDayProps {
     onDraftDelete: (date: TimeIdentifier) => void
     onDraftSplit: (date: TimeIdentifier) => void
     onDraftMerge: (date: TimeIdentifier) => void
+    onTemplateOnWeek: (date: TimeIdentifier) => void
+    showTemplateColumn: boolean
 }
 
 export default function RowForDay({
@@ -22,6 +25,8 @@ export default function RowForDay({
     onDraftDelete,
     onDraftSplit,
     onDraftMerge,
+    onTemplateOnWeek,
+    showTemplateColumn,
 }: RowForDayProps) {
     const { isHoliday, holidayReason } = useHolidayCheck(date)
 
@@ -73,6 +78,26 @@ export default function RowForDay({
                     />
                 </td>
             )}
+            {showTemplateColumn &&
+            date.type === 'date' &&
+            dayjs(date.value).day() === 1 ? (
+                <td rowSpan={7}>
+                    <Button
+                        variant="outline-success"
+                        size="sm"
+                        style={{
+                            writingMode: 'vertical-rl',
+                            textOrientation: 'upright',
+                        }}
+                        className="h-50"
+                        onClick={() => {
+                            onTemplateOnWeek(date)
+                        }}
+                    >
+                        この週にテンプレート適用
+                    </Button>
+                </td>
+            ) : null}
         </tr>
     )
 }

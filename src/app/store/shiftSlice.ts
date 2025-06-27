@@ -1,7 +1,9 @@
 import { Shift, ShiftDraft, ShiftTemplate } from '@/app/types/shift'
 import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import dayjs from 'dayjs'
-import { SHIFT_TESTDATA } from '../components/testdata/shiftTestData'
+import { v4 } from 'uuid'
+import { SHIFT_TEMPLATE_TESTDATA } from '../testdata/shiftTemplateTestData'
+import { SHIFT_TESTDATA } from '../testdata/shiftTestData'
 import { TemporalHoliday } from '../types/temporalHoliday'
 import { TimeIdentifier } from '../types/timeIdentifier'
 import { RootState } from './store'
@@ -25,113 +27,7 @@ const initialState: ShiftState = {
         history: [],
     },
     temporalHolidays: [{ date: '2025-06-07', name: '店長出張' }],
-    shiftTemplates: [
-        // 店長は全部出勤
-        {
-            id: '1',
-            userId: '1',
-            configPerDay: [
-                [
-                    '0',
-                    {
-                        day: '0',
-                        times: [{ startTime: '09:00', endTime: '18:00' }],
-                    },
-                ], // 日
-                [
-                    '3',
-                    {
-                        day: '3',
-                        times: [{ startTime: '09:00', endTime: '18:00' }],
-                    },
-                ], // 水
-                [
-                    '4',
-                    {
-                        day: '4',
-                        times: [{ startTime: '09:00', endTime: '18:00' }],
-                    },
-                ], // 木
-                [
-                    '5',
-                    {
-                        day: '5',
-                        times: [{ startTime: '09:00', endTime: '18:00' }],
-                    },
-                ], // 金
-                [
-                    '6',
-                    {
-                        day: '6',
-                        times: [{ startTime: '09:00', endTime: '18:00' }],
-                    },
-                ], // 土
-            ],
-        },
-        // 佐藤：水金休み
-        {
-            id: '2',
-            userId: '2',
-            configPerDay: [
-                [
-                    '0',
-                    {
-                        day: '0',
-                        times: [{ startTime: '09:00', endTime: '18:00' }],
-                    },
-                ], // 日
-                [
-                    '4',
-                    {
-                        day: '4',
-                        times: [{ startTime: '09:00', endTime: '18:00' }],
-                    },
-                ], // 木
-                [
-                    '6',
-                    {
-                        day: '6',
-                        times: [{ startTime: '09:00', endTime: '18:00' }],
-                    },
-                ], // 土
-            ],
-        },
-        // 山田：木休み
-        {
-            id: '3',
-            userId: '3',
-            configPerDay: [
-                [
-                    '0',
-                    {
-                        day: '0',
-                        times: [{ startTime: '09:00', endTime: '18:00' }],
-                    },
-                ], // 日
-                [
-                    '3',
-                    {
-                        day: '3',
-                        times: [{ startTime: '09:00', endTime: '18:00' }],
-                    },
-                ], // 水
-                [
-                    '5',
-                    {
-                        day: '5',
-                        times: [{ startTime: '09:00', endTime: '18:00' }],
-                    },
-                ], // 金
-                [
-                    '6',
-                    {
-                        day: '6',
-                        times: [{ startTime: '09:00', endTime: '18:00' }],
-                    },
-                ], // 土
-            ],
-        },
-    ],
+    shiftTemplates: SHIFT_TEMPLATE_TESTDATA,
 }
 
 const shiftSlice = createSlice({
@@ -140,7 +36,6 @@ const shiftSlice = createSlice({
     reducers: {
         setShiftDrafts: (state, action: PayloadAction<ShiftDraft[]>) => {
             state.shiftDraft.drafts = action.payload
-            state.shiftDraft.history = []
         },
         updateOrCreateShift: (state, action: PayloadAction<Shift>) => {
             const targetIndex = state.shifts.findIndex(
@@ -182,6 +77,9 @@ const shiftSlice = createSlice({
         setTargetDates: (state, action: PayloadAction<TimeIdentifier[]>) => {
             state.shiftDraft.targetDates = action.payload
         },
+        clearHistory: (state) => {
+            state.shiftDraft.history = []
+        },
         pushHistory: (state) => {
             state.shiftDraft.history.push(state.shiftDraft.drafts)
             if (state.shiftDraft.history.length > 20) {
@@ -200,6 +98,22 @@ const shiftSlice = createSlice({
                 } else {
                     state.shiftDraft.drafts = []
                 }
+            }
+        },
+        createShiftTemplate: (state, action: PayloadAction<string>) => {
+            const newTemplate: ShiftTemplate = {
+                id: v4(),
+                userId: action.payload,
+                shiftDrafts: [],
+            }
+            state.shiftTemplates.push(newTemplate)
+        },
+        updateShiftTemplate: (state, action: PayloadAction<ShiftTemplate>) => {
+            const targetIndex = state.shiftTemplates.findIndex(
+                (template) => template.id === action.payload.id
+            )
+            if (targetIndex !== -1) {
+                state.shiftTemplates[targetIndex] = action.payload
             }
         },
     },
@@ -225,16 +139,20 @@ export const selectShiftDraftsForDay = createSelector(
         )
 )
 
-export const getMonthlyShifts = createSelector(
+export const selectShiftsInPeriod = createSelector(
     [
         (state: RootState) => state.shift.shifts,
-        (_: RootState, month: number) => month,
-        (_: RootState, month: number, staffId: string) => staffId,
+        (_: RootState, startDate: string, endDate: string) => startDate,
+        (_: RootState, startDate: string, endDate: string) => endDate,
+        (_: RootState, startDate: string, endDate: string, staffId: string) =>
+            staffId,
     ],
-    (shifts, month, staffId) =>
+    (shifts, startDate, endDate, staffId) =>
         shifts.filter(
             (shift: Shift) =>
-                dayjs(shift.date).month() === month && shift.staffId === staffId
+                dayjs(shift.date) >= dayjs(startDate) &&
+                dayjs(shift.date) <= dayjs(endDate) &&
+                shift.staffId === staffId
         )
 )
 
@@ -254,8 +172,11 @@ export const {
     deleteShiftDraft,
     clearShiftDrafts,
     setTargetDates,
+    clearHistory,
     pushHistory,
     undo,
+    createShiftTemplate,
+    updateShiftTemplate,
 } = shiftSlice.actions
 
 export default shiftSlice.reducer

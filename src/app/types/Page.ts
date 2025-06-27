@@ -16,15 +16,21 @@ export const Page = {
     RESERVATION_CALENDAR: 'reservation-calendar',
     RESERVES_ON_DATE: 'reserves-on-date',
 
+    RESERVATION_TABLE: 'reservation-table',
+
     RESERVATION_CREATE_CALENDAR: 'reservation-create-calendar',
 
     SHIFT: 'shift',
     SHIFT_EDIT: 'shift-edit',
 
-    SESSION_LIST: 'session-list',
-    SESSION_DETAIL: 'session-detail',
+    TREATMENT_RECORD_LIST: 'treatment-record-list',
+    TREATMENT_RECORD_DETAIL: 'treatment-record-detail',
+    TREATMENT_RECORD_CREATE: 'treatment-record-create',
+    TREATMENT_RECORD_EDIT: 'treatment-record-edit',
 
     DASHBOARD: 'dashboard',
+
+    EDIT_LOG: 'edit-log',
 } as const
 
 export type Page = (typeof Page)[keyof typeof Page]
