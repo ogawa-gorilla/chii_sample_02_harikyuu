@@ -1,39 +1,50 @@
+import { useAppDispatch, useAppSelector } from '@/app/hooks'
+import { pushPage } from '@/app/store/navigationSlice'
+import { setSelectedReservation } from '@/app/store/reservationSlice'
+import { Page } from '@/app/types/Page'
 import { TreatmentRecord } from '@/app/types/treatmentRecord'
 import dayjs from 'dayjs'
 import { Button, Card, Col, Row } from 'react-bootstrap'
-import { useReservationNavigation } from '../../reservation/hooks/useReservationNavigation'
 import { useTreatmentNavigation } from '../../treatmentRecord/hooks/useTreatmentNavigation'
 import { DashboardReservation } from '../types/DashboardReservation'
 
 interface ReservationCardProps {
-    reservation: DashboardReservation
+    reservationInfo: DashboardReservation
     hideDate?: boolean
 }
 
 export default function ReservationCard({
-    reservation,
+    reservationInfo,
     hideDate,
 }: ReservationCardProps) {
+    const reservations = useAppSelector(
+        (state) => state.reservation.reservations
+    )
+
     const { openOrCreateTreatmentRecordForReservation } =
         useTreatmentNavigation()
-    const { openReservationDetail } = useReservationNavigation()
-
+    const dispatch = useAppDispatch()
     const handleDetailClick = () => {
-        openReservationDetail(reservation.id)
+        dispatch(
+            setSelectedReservation(
+                reservations.find((r) => r.id === reservationInfo.id)!
+            )
+        )
+        dispatch(pushPage(Page.RESERVE_DETAIL))
     }
 
     const handleRecordClick = () => {
-        openOrCreateTreatmentRecordForReservation(reservation.id)
+        openOrCreateTreatmentRecordForReservation(reservationInfo.id)
     }
 
     return (
-        <Col key={reservation.id}>
+        <Col key={reservationInfo.id}>
             <Card className="h-100">
                 <Card.Header>
                     <Row className="align-items-center">
                         <Col>
                             <Card.Title className="mb-0">
-                                {reservation.client}
+                                {reservationInfo.client}
                             </Card.Title>
                         </Col>
                         <Col xs="auto">
@@ -48,13 +59,13 @@ export default function ReservationCard({
                                 <Button
                                     size="sm"
                                     variant={
-                                        reservation.record
+                                        reservationInfo.record
                                             ? 'success'
                                             : 'outline-success'
                                     }
                                     onClick={handleRecordClick}
                                 >
-                                    {reservation.record
+                                    {reservationInfo.record
                                         ? '施術記録を編集'
                                         : '施術記録を作成'}
                                 </Button>
@@ -65,11 +76,15 @@ export default function ReservationCard({
                 <Card.Body>
                     <Card.Text>
                         {!hideDate && (
-                            <>{dayjs(reservation.date).format('MM/DD(ddd)')}</>
+                            <>
+                                {dayjs(reservationInfo.date).format(
+                                    'MM/DD(ddd)'
+                                )}
+                            </>
                         )}
-                        {reservation.time}
+                        {reservationInfo.time}
                     </Card.Text>
-                    <Card.Text>{reservation.notes}</Card.Text>
+                    <Card.Text>{reservationInfo.notes}</Card.Text>
                 </Card.Body>
             </Card>
         </Col>

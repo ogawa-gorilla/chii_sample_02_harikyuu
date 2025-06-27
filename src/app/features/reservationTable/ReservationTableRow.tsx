@@ -1,6 +1,9 @@
+import { useAppDispatch, useAppSelector } from '@/app/hooks'
 import { useLogin } from '@/app/hooks/useLogin'
+import { pushPage } from '@/app/store/navigationSlice'
+import { setSelectedReservation } from '@/app/store/reservationSlice'
+import { Page } from '@/app/types/Page'
 import { Button } from 'react-bootstrap'
-import { useReservationNavigation } from '../reservation/hooks/useReservationNavigation'
 import { useTreatmentNavigation } from '../treatmentRecord/hooks/useTreatmentNavigation'
 import { ReservationTableReservation } from './types/ReservationTableReservation'
 
@@ -13,8 +16,10 @@ export default function ReservationTableRow({
 }: ReservationTableRowProps) {
     const { loginUser } = useLogin()
     const canCreate = loginUser!.id === reservation.staff.id
-
-    const { openReservationDetail } = useReservationNavigation()
+    const reservations = useAppSelector(
+        (state) => state.reservation.reservations
+    )
+    const dispatch = useAppDispatch()
     const { openOrCreateTreatmentRecordForReservation } =
         useTreatmentNavigation()
 
@@ -31,7 +36,14 @@ export default function ReservationTableRow({
                     variant="primary"
                     size="sm"
                     onClick={() => {
-                        openReservationDetail(reservation.id)
+                        dispatch(
+                            setSelectedReservation(
+                                reservations.find(
+                                    (r) => r.id === reservation.id
+                                )!
+                            )
+                        )
+                        dispatch(pushPage(Page.RESERVE_DETAIL))
                     }}
                 >
                     閲覧

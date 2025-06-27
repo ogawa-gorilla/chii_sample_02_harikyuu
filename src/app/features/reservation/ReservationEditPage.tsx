@@ -1,10 +1,11 @@
 import { useAppDispatch, useAppSelector } from '@/app/hooks'
-import { popPage } from '@/app/store/navigationSlice'
+import { popPage, pushPage } from '@/app/store/navigationSlice'
+import { setSelectedReservation } from '@/app/store/reservationSlice'
 import { getStaffs } from '@/app/store/userSlice'
+import { Page } from '@/app/types/Page'
 import { Reservation, ReservationFormData } from '@/app/types/reservation'
 import ReservationForm from './components/ReservationForm'
 import useReservationEditor from './hooks/useReservationEditor'
-import { useReservationNavigation } from './hooks/useReservationNavigation'
 
 export default function ReservationEditPage() {
     const dispatch = useAppDispatch()
@@ -13,7 +14,6 @@ export default function ReservationEditPage() {
     )!
     const allStaffs = useAppSelector(getStaffs)
     const { updateReservationEntry } = useReservationEditor()
-    const { openReservationDetail } = useReservationNavigation()
 
     const handleSubmit = (formData: ReservationFormData) => {
         const reservation: Reservation = {
@@ -28,7 +28,8 @@ export default function ReservationEditPage() {
         }
 
         updateReservationEntry(reservation)
-        openReservationDetail(reservation.id)
+        dispatch(setSelectedReservation(reservation))
+        dispatch(pushPage(Page.RESERVE_DETAIL))
     }
 
     const handleCancel = () => {

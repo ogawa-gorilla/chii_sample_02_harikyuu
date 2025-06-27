@@ -22,7 +22,7 @@ export default function ReservationCardList({
             ) : (
                 data.map((res: DashboardReservation) => (
                     <ReservationCard
-                        reservation={res}
+                        reservationInfo={res}
                         key={res.id}
                         hideDate={hideDate}
                     />

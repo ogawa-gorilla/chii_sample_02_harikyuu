@@ -34,7 +34,7 @@ export default function ThisWeeksReservationList({
                                 (res: DashboardReservation) => (
                                     <Col key={res.id}>
                                         <ReservationCard
-                                            reservation={res}
+                                            reservationInfo={res}
                                             hideDate
                                         />
                                     </Col>
