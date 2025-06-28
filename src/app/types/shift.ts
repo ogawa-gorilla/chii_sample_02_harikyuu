@@ -6,7 +6,6 @@ export interface Shift {
     date: string
     startTime: string
     endTime: string
-    isOnShift: boolean
 }
 
 /**
@@ -17,7 +16,6 @@ export interface ShiftDraft {
     startTime: string
     endTime: string
     id: string
-    isOnShift: boolean
 }
 
 export interface ShiftTemplate {

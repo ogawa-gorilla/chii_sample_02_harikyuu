@@ -8,7 +8,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-05-28',
         startTime: '09:00',
         endTime: '12:00',
-        isOnShift: true,
     }, // 変則: 朝と夜に分割出勤
     {
         id: 's1-20250528-2',
@@ -16,7 +15,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-05-28',
         startTime: '15:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's1-20250529',
@@ -24,7 +22,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-05-29',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's1-20250530',
@@ -32,7 +29,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-05-30',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's1-20250531',
@@ -40,7 +36,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-05-31',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's1-20250601',
@@ -48,7 +43,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-01',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's1-20250604',
@@ -56,7 +50,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-04',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     // 例外的に3日に出勤
     {
@@ -65,7 +58,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-03',
         startTime: '09:00',
         endTime: '11:00',
-        isOnShift: true,
     },
     // 変則: 朝と夜に分割出勤
     {
@@ -74,7 +66,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-05',
         startTime: '09:00',
         endTime: '11:00',
-        isOnShift: true,
     },
     {
         id: 's1-20250605-2',
@@ -82,7 +73,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-05',
         startTime: '13:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's1-20250606',
@@ -90,7 +80,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-06',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's1-20250608',
@@ -98,7 +87,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-08',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's1-20250609',
@@ -106,7 +94,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-09',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     // 2025-06-11は鈴木の全休日
     {
@@ -115,7 +102,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-12',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's1-20250613',
@@ -123,7 +109,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-13',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's1-20250614',
@@ -131,7 +116,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-14',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's1-20250615',
@@ -139,7 +123,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-15',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's1-20250616',
@@ -147,7 +130,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-16',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's1-20250617',
@@ -155,7 +137,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-17',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's1-20250618',
@@ -163,7 +144,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-18',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's1-20250619',
@@ -171,7 +151,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-19',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's1-20250620',
@@ -179,7 +158,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-20',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's1-20250621',
@@ -187,7 +165,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-21',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's1-20250622',
@@ -195,7 +172,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-22',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's1-20250623',
@@ -203,7 +179,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-23',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's1-20250624',
@@ -211,7 +186,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-24',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's1-20250625',
@@ -219,7 +193,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-25',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's1-20250626',
@@ -227,7 +200,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-26',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's1-20250627',
@@ -235,7 +207,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-27',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's1-20250628',
@@ -243,7 +214,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-28',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's1-20250629',
@@ -251,7 +221,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-29',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
 
     // 佐藤(id='2') - 水・金はお休み（水曜日: 2025-05-28, 06-04, 06-11, 06-18, 06-25、金曜日: 2025-05-30, 06-06, 06-13, 06-20, 06-27は勤務なし）
@@ -261,7 +230,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-05-29',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's2-20250531',
@@ -269,7 +237,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-05-31',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's2-20250601',
@@ -277,7 +244,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-01',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's2-20250602',
@@ -285,7 +251,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-02',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's2-20250603',
@@ -293,7 +258,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-03',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's2-20250605',
@@ -301,7 +265,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-05',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's2-20250608',
@@ -309,7 +272,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-08',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's2-20250609',
@@ -317,7 +279,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-09',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's2-20250610',
@@ -325,7 +286,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-10',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's2-20250612',
@@ -333,7 +293,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-12',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's2-20250614',
@@ -341,7 +300,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-14',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's2-20250615',
@@ -349,7 +307,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-15',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's2-20250616',
@@ -357,7 +314,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-16',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's2-20250617',
@@ -365,7 +321,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-17',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's2-20250619',
@@ -373,7 +328,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-19',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's2-20250621',
@@ -381,7 +335,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-21',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's2-20250622',
@@ -389,7 +342,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-22',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's2-20250623',
@@ -397,7 +349,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-23',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's2-20250624',
@@ -405,7 +356,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-24',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's2-20250626',
@@ -413,7 +363,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-26',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's2-20250628',
@@ -421,7 +370,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-28',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's2-20250629',
@@ -429,7 +377,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-29',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
 
     // 山田(id='3') - 木曜日はお休み、2025-06-06と2025-06-21は午前半休（午後のみ勤務）
@@ -440,7 +387,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-05-28',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's3-20250530',
@@ -448,7 +394,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-05-30',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's3-20250531',
@@ -456,7 +401,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-05-31',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's3-20250601',
@@ -464,7 +408,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-01',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's3-20250604',
@@ -472,7 +415,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-04',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's3-20250603',
@@ -480,7 +422,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-06',
         startTime: '13:00',
         endTime: '18:00',
-        isOnShift: true,
     }, // 午前半休
     {
         id: 's3-20250608',
@@ -488,7 +429,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-08',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's3-20250609',
@@ -496,7 +436,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-09',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's3-20250610',
@@ -504,7 +443,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-10',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's3-20250611',
@@ -512,7 +450,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-11',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's3-20250613',
@@ -520,7 +457,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-13',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's3-20250614',
@@ -528,7 +464,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-14',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's3-20250615',
@@ -536,7 +471,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-15',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's3-20250616',
@@ -544,7 +478,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-16',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's3-20250617',
@@ -552,7 +485,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-17',
         startTime: '13:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's3-20250618',
@@ -560,7 +492,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-18',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's3-20250620',
@@ -568,7 +499,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-20',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's3-20250621',
@@ -576,7 +506,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-21',
         startTime: '13:00',
         endTime: '18:00',
-        isOnShift: true,
     }, // 午前半休
     {
         id: 's3-20250622',
@@ -584,7 +513,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-22',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's3-20250623',
@@ -592,7 +520,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-23',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's3-20250624',
@@ -600,7 +527,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-24',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's3-20250625',
@@ -608,7 +534,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-25',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's3-20250627',
@@ -616,7 +541,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-27',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's3-20250628',
@@ -624,7 +548,6 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-28',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
     {
         id: 's3-20250629',
@@ -632,6 +555,5 @@ export const SHIFT_TESTDATA: Shift[] = [
         date: '2025-06-29',
         startTime: '09:00',
         endTime: '18:00',
-        isOnShift: true,
     },
 ]
