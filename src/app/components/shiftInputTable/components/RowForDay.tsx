@@ -85,11 +85,7 @@ export default function RowForDay({
                     <Button
                         variant="outline-success"
                         size="sm"
-                        style={{
-                            writingMode: 'vertical-rl',
-                            textOrientation: 'upright',
-                        }}
-                        className="h-50"
+                        className="h-50 vertical-text"
                         onClick={() => {
                             onTemplateOnWeek(date)
                         }}
