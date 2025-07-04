@@ -26,3 +26,28 @@ body {
 .navbar-collapse.collapse.show {
     visibility: visible !important;
 }
+
+/* iOS Safari対応の垂直テキストスタイル */
+.vertical-text {
+    writing-mode: vertical-rl;
+    letter-spacing: 0.5em;
+    /* iOS Safari対応のフォールバック */
+    -webkit-writing-mode: vertical-rl;
+    -webkit-text-orientation: mixed;
+    /* レイアウト崩れを防ぐための追加プロパティ */
+    display: inline-block;
+    white-space: nowrap;
+    transform-origin: center;
+}
+
+/* iOS Safariでwriting-modeがサポートされていない場合の代替スタイル */
+@supports not (writing-mode: vertical-rl) {
+    .vertical-text {
+        writing-mode: initial;
+        letter-spacing: initial;
+        transform: rotate(90deg);
+        transform-origin: center;
+        display: inline-block;
+        white-space: nowrap;
+    }
+}

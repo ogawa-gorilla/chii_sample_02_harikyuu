@@ -16,12 +16,7 @@ interface CalendarTimeRowProps<
 
 const firstRowForClosedDays = (day: dayjs.Dayjs, reason: string) => (
     <td key={day.format()} rowSpan={HOURS} className="closed">
-        <span
-            className="text-muted"
-            style={{ writingMode: 'vertical-rl', letterSpacing: '0.5em' }}
-        >
-            {reason}
-        </span>
+        <span className="vertical-text text-muted">{reason}</span>
     </td>
 )
 
